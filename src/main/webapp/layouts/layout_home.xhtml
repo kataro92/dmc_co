@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title>Đặng Mai Co Ltd</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet"/>
+    <!-- Your custom styles (optional) -->
+    <link href="css/style.css" rel="stylesheet"/>
+</h:head>
+<h:body styleClass="bg-light">
+
+    <div id="navbar">
+        <ui:insert name="navbar" >
+            <ui:include src="#{home.currentTemplate}/navbar.xhtml" />
+        </ui:insert>
+    </div>
+    <div id="wrapper">
+        <div id="header">
+            #{home.checkLoggedAuthenicate()}
+            <ui:insert name="header" >
+                <ui:include src="#{home.currentTemplate}/header.xhtml" />
+            </ui:insert>
+        </div>
+        <h:form id="main">
+            <div id="content">
+                <ui:insert name="content" >
+                </ui:insert>
+            </div>
+            <p:defaultCommand target="dummy"/>
+            <p:commandButton id="dummy" process="@none" global="false" style="display:none;"/>
+        </h:form>
+        <div id="footer">
+            <ui:insert name="footer" >
+                <ui:include src="#{home.currentTemplate}/footer.xhtml" />
+            </ui:insert>
+        </div>
+    </div>
+
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+</h:body>
+</html>

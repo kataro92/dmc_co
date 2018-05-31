@@ -1,0 +1,5 @@
+jsf:
+  primefaces:
+    theme: cupertino
+server:
+  port: 9090

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:view>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <c:forEach var="menu" items="#{authority.loggedUser.lstPermission}">
+                    <c:if test="#{menu.objectType == 'page_group' and menu.hasPermission == true}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-#{menu.objectId}"
+                               data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <c:if test="#{menu.objectIcon != null}">
+                                    <img style="float: left;" height="25" alt="#{menu.objectIcon}" src="#{request.contextPath}/img/icon/#{menu.objectIcon}.png"/>
+                                </c:if>
+                                #{menu.objectTitle}</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-#{menu.objectId}">
+                                <c:if test="#{menu.lstChildObject != null}">
+                                    <c:forEach var="lvl2Menu" items="#{menu.lstChildObject}">
+                                        <a class="dropdown-item" href="./#{lvl2Menu.objectValue}">#{lvl2Menu.objectTitle}</a>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{menu.objectType == 'page' and menu.hasPermission == true}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./#{menu.objectValue}">
+                                <c:if test="#{menu.objectIcon != null}">
+                                    <img style="float: left;" height="25" alt="#{menu.objectIcon}" src="#{request.contextPath}/img/icon/#{menu.objectIcon}.png"/>
+                                </c:if>
+                                #{menu.objectTitle}</a>
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+            <h:form styleClass="form-inline my-2 my-md-0">
+                <a class="text-light bg-dark">#{authority.loggedUser.empName}</a>
+                <p:commandLink styleClass="btn btn-blue btn-md" actionListener="#{login.actLogout()}" value="Đăng xuất" icon="ui-icon-extlink" />
+            </h:form>
+        </div>
+    </nav>
+</f:view>
+</html>

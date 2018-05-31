@@ -3,3 +3,13 @@
     bottom: 0px;
     right: 0px;
 }
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.footer-pad{
+    width: 100%;
+    height: 50px;
+    clear: both;
+}

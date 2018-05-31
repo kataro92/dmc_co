@@ -30,8 +30,8 @@ public class HomeController implements Serializable {
         if(authorityController.getLoggedUser() == null){
             FacesContext.getCurrentInstance().getExternalContext().redirect("/login");
         }else{
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/home");
-            currentPage = "/pages/dashboard.xhtml";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/main");
+            currentPage = "/pages/dash.xhtml";
         }
     }
 

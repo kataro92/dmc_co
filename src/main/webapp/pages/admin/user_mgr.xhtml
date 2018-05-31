@@ -52,7 +52,7 @@
                     <p:outputLabel for="txtCode" value="Mã số"/>
                     <p:inputText id="txtCode" styleClass="form-control"
                                  readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
-                                value="#{userMgr.selectedUser.code}" />
+                                 value="#{userMgr.selectedUser.code}" />
                     <p:outputLabel for="txtFullname" value="Họ và tên"/>
                     <p:inputText id="txtFullname" styleClass="form-control"
                                  readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
@@ -114,11 +114,11 @@
                              var="rows"
                              rowKey="#{rows.userId}"
                              value="#{userMgr.lstAllUser}"
-                             rows="25"
+                             rows="20"
                              paginator="true"
                              paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,25, 50">
+                             rowsPerPageTemplate="5,10,20, 50">
                     <p:ajax event="rowSelect" listener="#{userMgr.selectUser}"
                             update=":main:pnlDetail" />
                     <p:column headerText="Idx" style="width: 50px; text-align: center;">

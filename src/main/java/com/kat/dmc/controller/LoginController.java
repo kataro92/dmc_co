@@ -43,7 +43,7 @@ public class LoginController implements Serializable {
             RescusiveUtil.rescusiveSetPermission(lstPermission, objectIDHasPermission);
             loggedUser.setLstPermission(lstPermission);
             authorityController.setLoggedUser(loggedUser);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/home");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/main");
         }
     }
 

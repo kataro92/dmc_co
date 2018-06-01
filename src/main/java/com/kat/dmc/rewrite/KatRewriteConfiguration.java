@@ -29,6 +29,7 @@ public class KatRewriteConfiguration extends HttpConfigurationProvider {
                 .addRule(Join.path("/logout").to("/pages/admin/logout.xhtml").withInboundCorrection())
                 .addRule(Join.path("/main").to("/pages/tools/dash.xhtml").withInboundCorrection())
                 .addRule(Join.path("/user_mgr").to("/pages/admin/user_mgr.xhtml").withInboundCorrection())
+                .addRule(Join.path("/dept_mgr").to("/pages/admin/dept_mgr.xhtml").withInboundCorrection())
                 ;
     }
 }

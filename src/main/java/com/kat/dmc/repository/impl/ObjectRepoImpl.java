@@ -22,7 +22,6 @@ import java.util.List;
 @Repository
 public class ObjectRepoImpl implements ObjectRepo {
 
-
     @PersistenceContext
     private EntityManager entityManager;
 

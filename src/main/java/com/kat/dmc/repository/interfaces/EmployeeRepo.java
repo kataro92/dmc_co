@@ -10,4 +10,5 @@ public interface EmployeeRepo {
     void save(EmployeeEntity userEntity);
     void delete(EmployeeEntity userEntity);
     EmployeeEntity findById(Integer userId);
+    void deleteByDeptIdNotIn(List<Integer> lstEmpIds, Integer deptId);
 }

@@ -11,6 +11,7 @@ public class DmcObjectEntity {
     private String objectValue;
     private String objectType;
     private String objectIcon;
+    private int ord;
 
     @Id
     @Column(name = "object_id")
@@ -62,6 +63,16 @@ public class DmcObjectEntity {
         this.objectType = objectType;
     }
 
+    @Basic
+    @Column(name = "ord")
+    public int getOrd() {
+        return ord;
+    }
+
+    public void setOrd(int ord) {
+        this.ord = ord;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +86,7 @@ public class DmcObjectEntity {
         if (objectValue != null ? !objectValue.equals(that.objectValue) : that.objectValue != null) return false;
         if (objectType != null ? !objectType.equals(that.objectType) : that.objectType != null) return false;
         if (objectIcon != null ? !objectIcon.equals(that.objectIcon) : that.objectIcon != null) return false;
+        if (ord != that.ord) return false;
 
         return true;
     }
@@ -87,6 +99,7 @@ public class DmcObjectEntity {
         result = 31 * result + (objectValue != null ? objectValue.hashCode() : 0);
         result = 31 * result + (objectType != null ? objectType.hashCode() : 0);
         result = 31 * result + (objectIcon != null ? objectIcon.hashCode() : 0);
+        result = 31 * result + ord;
         return result;
     }
 

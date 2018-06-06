@@ -1,13 +1,14 @@
 package com.kat.dmc.common.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EmployeeDto implements Serializable {
     private String address;
     private String code;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     private String defCode;
 
     private String email;
@@ -15,7 +16,7 @@ public class EmployeeDto implements Serializable {
     private String gender;
     private String identityCardCardNumber;
     private String identityCardIssuedBy;
-    private String identityCardIssuedDate;
+    private Date identityCardIssuedDate;
     private String jobPositionCode;
     private String leaveDate;
     private String name;
@@ -25,11 +26,18 @@ public class EmployeeDto implements Serializable {
     private String userCode;
     private int id;
     private List<DocumentDto> lstDocuments;
+    private int deptId;
 
     public EmployeeDto() {
     }
 
-    public EmployeeDto(String address, String code, String dateOfBirth, String defCode, String email, String firstName, String gender, String identityCardCardNumber, String identityCardIssuedBy, String identityCardIssuedDate, String jobPositionCode, String leaveDate, String name, String phone, String startDate, Integer status, String userCode, int id, List<DocumentDto> lstDocuments) {
+    public EmployeeDto(String address, String code, Date dateOfBirth,
+                       String defCode, String email, String firstName,
+                       String gender, String identityCardCardNumber,
+                       String identityCardIssuedBy, Date identityCardIssuedDate,
+                       String jobPositionCode, String leaveDate, String name,
+                       String phone, String startDate, Integer status,
+                       String userCode, int id, List<DocumentDto> lstDocuments, int deptId) {
         this.address = address;
         this.code = code;
         this.dateOfBirth = dateOfBirth;
@@ -49,10 +57,14 @@ public class EmployeeDto implements Serializable {
         this.userCode = userCode;
         this.id = id;
         this.lstDocuments = lstDocuments;
+        this.deptId = deptId;
     }
 
     public EmployeeDto clone(){
-        return new EmployeeDto(address, code, dateOfBirth, defCode, email, firstName, gender, identityCardCardNumber, identityCardIssuedBy, identityCardIssuedDate, jobPositionCode, leaveDate, name, phone, startDate, status, userCode, id, lstDocuments);
+        return new EmployeeDto(address, code, dateOfBirth, defCode, email,
+                firstName, gender, identityCardCardNumber, identityCardIssuedBy,
+                identityCardIssuedDate, jobPositionCode, leaveDate, name, phone,
+                startDate, status, userCode, id, lstDocuments, deptId);
     }
 
     public String getAddress() {
@@ -71,11 +83,11 @@ public class EmployeeDto implements Serializable {
         this.code = code;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -127,11 +139,11 @@ public class EmployeeDto implements Serializable {
         this.identityCardIssuedBy = identityCardIssuedBy;
     }
 
-    public String getIdentityCardIssuedDate() {
+    public Date getIdentityCardIssuedDate() {
         return identityCardIssuedDate;
     }
 
-    public void setIdentityCardIssuedDate(String identityCardIssuedDate) {
+    public void setIdentityCardIssuedDate(Date identityCardIssuedDate) {
         this.identityCardIssuedDate = identityCardIssuedDate;
     }
 
@@ -200,10 +212,21 @@ public class EmployeeDto implements Serializable {
     }
 
     public List<DocumentDto> getLstDocuments() {
+        if(lstDocuments == null){
+            lstDocuments = new ArrayList<>();
+        }
         return lstDocuments;
     }
 
     public void setLstDocuments(List<DocumentDto> lstDocuments) {
         this.lstDocuments = lstDocuments;
+    }
+
+    public int getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(int deptId) {
+        this.deptId = deptId;
     }
 }

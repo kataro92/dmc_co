@@ -16,6 +16,7 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Named("login")
@@ -40,10 +41,12 @@ public class LoginController implements Serializable {
             List<Integer> objectIDHasPermission = objectService.findObjectIdByUserId(loggedUser.getUserId());
             List<ObjectDto> lstPermission = new ArrayList<>();
             lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
+            lstObject.sort(Comparator.comparingInt(ObjectDto::getOrd));
             RescusiveUtil.rescusiveSetPermission(lstPermission, objectIDHasPermission);
             loggedUser.setLstPermission(lstPermission);
             authorityController.setLoggedUser(loggedUser);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/main");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/main");
         }
     }
 

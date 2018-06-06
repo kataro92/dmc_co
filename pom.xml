@@ -39,11 +39,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.kataro92</groupId>
-            <artifactId>katstring</artifactId>
-            <!--<version>LATEST</version>-->
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.kataro92</groupId>-->
+            <!--<artifactId>katstring</artifactId>-->
+            <!--&lt;!&ndash;<version>LATEST</version>&ndash;&gt;-->
+        <!--</dependency>-->
         <!-- joinfaces -->
         <dependency>
             <groupId>org.joinfaces</groupId>
@@ -141,6 +141,19 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kat</groupId>
+            <artifactId>kat</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/kat.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.3</version>
         </dependency>
 
     </dependencies>

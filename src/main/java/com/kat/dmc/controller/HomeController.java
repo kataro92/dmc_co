@@ -8,6 +8,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -26,18 +27,26 @@ public class HomeController implements Serializable {
         currentPage = "/admin/login.xhtml";
     }
 
+    public void selectPage(String page) throws IOException {
+        FacesContext fCtx = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
+        String sessionId = session.getId();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/" + page + "?JSESSIONID=" + sessionId);
+//        FacesContext.getCurrentInstance().getExternalContext().dispatch("/" + page);
+    }
+
     public void checkAuthenicate() throws IOException {
         if(authorityController.getLoggedUser() == null){
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/login");
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/login");
         }else{
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/main");
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/main");
             currentPage = "/pages/dash.xhtml";
         }
     }
 
     public void checkLoggedAuthenicate() throws IOException {
         if(authorityController.getLoggedUser() == null){
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/login");
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/login");
         }
     }
 

@@ -11,4 +11,7 @@
             <var>msg</var>
         </resource-bundle>
     </application>
+    <lifecycle>
+        <phase-listener id="nocache">com.kat.dmc.CacheControlPhaseListener</phase-listener>
+    </lifecycle>
 </faces-config>

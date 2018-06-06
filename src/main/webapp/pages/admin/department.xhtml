@@ -17,53 +17,297 @@
                            rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
                     <p:commandLink id="btnAdd" disabled="#{deptMgr.disableAdd}"
-                                   styleClass="btn btn-blue btn-md" value="Thêm"
+                                   actionListener="#{deptMgr.actAdd}"
+                                   styleClass="btn btn-blue btn-sm" value="Thêm"
                                    update=":main" />
                     <p:commandLink id="btnCopy" disabled="#{deptMgr.disableCopy}"
-                                   styleClass="btn btn-blue btn-md" value="Chép"
+                                   actionListener="#{deptMgr.actCopy}"
+                                   styleClass="btn btn-blue btn-sm" value="Chép"
                                    update=":main" />
                     <p:commandLink id="btnEdit" disabled="#{deptMgr.disableEdit}"
-                                   styleClass="btn btn-blue btn-md" value="Sửa"
+                                   actionListener="#{deptMgr.actEdit}"
+                                   styleClass="btn btn-blue btn-sm" value="Sửa"
                                    update=":main" />
                     <p:commandLink id="btnDelete" disabled="#{deptMgr.disableDelete}"
-                                   styleClass="btn btn-blue btn-md" value="Xoá"
+                                   actionListener="#{deptMgr.actDelete}"
+                                   styleClass="btn btn-blue btn-sm" value="Xoá"
                                    update=":main" />
                 </div>
-                <p:treeTable value="#{deptMgr.root}" tableStyleClass="card-body" var="dept">
+                <p:treeTable value="#{deptMgr.root}" tableStyleClass="card-body" var="dept" selectionMode="single">
+                    <p:ajax event="select" listener="#{deptMgr.selectDept}"
+                            update=":main:pnlDetail" />
                     <p:column headerText="Tên phòng ban">
-                        <h:outputText value="" />
+                        <h:outputText value="#{dept.name}" />
                     </p:column>
-                    <p:column headerText="Trạng thái" style="width: 160px">
-                        <h:outputText value="" />
+                    <p:column headerText="Trạng thái" style="width: 120px">
+                        <h:outputText value="#{common.getCommon('DEPT_STATUS', dept.status)}" />
                     </p:column>
                 </p:treeTable>
                 <div class="card-footer">
-                    <!--Tổng cộng #{deptMgr.lstAllUser.size()} bản ghi-->
                 </div>
             </p:outputPanel>
 
             <p:outputPanel id="pnlDetail" styleClass="#{deptMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí phòng ban" rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-light-blue pull-right"
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{deptMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-light-green pull-right"
+                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{deptMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
                 </div>
-                <div class="card-body">
-
-                </div>
+                <p:panelGrid rendered="#{deptMgr.selectedDept != null}"
+                             styleClass="ui-panelgrid-blank card-body">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtDeptID" value="Mã"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtDeptID" readonly="true" styleClass="form-control"
+                                         value="#{deptMgr.selectedDept.defCode}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtDeptname" value="Tên"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtDeptname" styleClass="form-control"
+                                         readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                         value="#{deptMgr.selectedDept.name}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtParent" value="Phòng cha"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtParent" styleClass="form-control"
+                                             disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{deptMgr.selectedDept.parentCode}">
+                                <f:selectItem itemLabel="--Không có--" itemValue="" />
+                                <c:forEach items="#{deptMgr.lstAllDept}" var="dept">
+                                    <f:selectItem itemLabel="#{dept.name}" itemValue="#{dept.id}" />
+                                </c:forEach>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtStatus" value="Trạng thái"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                                             disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{deptMgr.selectedDept.status}">
+                                <f:selectItem itemLabel="Hoạt động" itemValue="0" />
+                                <f:selectItem itemLabel="Khoá" itemValue="1" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="txtNote" value="Mô tả"/>
+                        </p:column>
+                        <p:column colspan="3">
+                            <p:inputText id="txtNote" styleClass="form-control ui-g-10"
+                                         readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                         value="#{deptMgr.selectedDept.description}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
                 <div class="card-header bg-primary text-white">
-                    <h:outputText value="Danh sách nhân viên" />
+                    <h:outputText value="Danh sách nhân viên" rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}"/>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{deptMgr.actAddEmployee()}" value="Thêm"
+                                   update=":main:pnlAddEmployee" />
                 </div>
+                <p:dataTable rowIndexVar="index"
+                             var="rows"
+                             rows="20"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20, 50"
+                             value="#{deptMgr.selectedDept.lstEmployees}">
+                    <p:column headerText="STT" style="width: 60px; text-align: center;">
+                        <h:outputText value="#{index+1}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.name}" headerText="Họ và tên">
+                        <h:outputText value="#{rows.name}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.email}" headerText="Email">
+                        <h:outputText value="#{rows.email}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.phone}" headerText="Số điện thoại">
+                        <h:outputText value="#{rows.phone}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.identityCardCardNumber}" headerText="CMND">
+                        <h:outputText value="#{rows.identityCardCardNumber}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.gender}" headerText="Giới tính" style="width: 100px">
+                        <h:outputText value="#{common.getCommon('EMP_GENDER', rows.gender)}" />
+                    </p:column>
+                    <p:column headerText="Trạng thái" style="width: 90px">
+                        <h:outputText value="#{common.getCommon('EMP_STATUS', rows.status)}" />
+                    </p:column>
+                    <p:column headerText=" " style="width: 37px">
+                        <p:commandLink actionListener="#{deptMgr.actViewEmployee(index)}">
+                            <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
                 <div class="card-footer">
 
                 </div>
             </p:outputPanel>
+
+            <p:dialog id="pnlAddEmployee" style="min-height: 651px"
+                      widgetVar="pnlAddEmployee" draggable="false" resizable="false" modal="true">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Thông tin Nhân viên
+                    </h5>
+                </div>
+                <!-- Modal body -->
+                <p:panelGrid styleClass="ui-panelgrid-blank" rendered="#{deptMgr.selectedEmployee != null}">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtEmloyeeID" value="Mã"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtEmloyeeID" readonly="true" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.code}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtEmployeeName" value="Tên"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtEmployeeName" styleClass="form-control"
+                                         readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                         value="#{deptMgr.selectedEmployee.name}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtGender" value="Giới tính"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtGender" styleClass="form-control-sm"
+                                             disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{deptMgr.selectedEmployee.gender}" style="width: 200px">
+                                <f:selectItem itemLabel="Không xác định" itemValue="0" />
+                                <f:selectItem itemLabel="Nam" itemValue="1" />
+                                <f:selectItem itemLabel="Nữ" itemValue="2" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtEmail" value="Email"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtEmail" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.email}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtPhone" value="Số điện thoại"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtPhone" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.phone}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtPosition" value="Chức vụ"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtPosition" styleClass="form-control-sm"
+                                             disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{deptMgr.selectedEmployee.jobPositionCode}" style="width: 200px">
+                                <f:selectItem itemLabel="Không xác định" itemValue="0" />
+                                <c:forEach items="#{deptMgr.lstAllPosition}" var="position">
+                                    <f:selectItem itemLabel="#{position.name}" itemValue="#{position.id}" />
+                                </c:forEach>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtIdentity" value="CMND"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtIdentity" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.identityCardCardNumber}" maxlength="12"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtIdentityDate" value="Ngày cấp"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="txtIdentityDate" disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                        value="#{deptMgr.selectedEmployee.identityCardIssuedDate}" showOn="button"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtIdentityProvided" value="Nơi cấp"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtIdentityProvided" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.identityCardIssuedBy}" maxlength="200"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtAddress" value="Địa chỉ"/>
+                        </p:column>
+                        <p:column colspan="3">
+                            <p:inputText id="txtAddress" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                                         value="#{deptMgr.selectedEmployee.address}" maxlength="255"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtEmpStatus" value="Trạng thái"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtEmpStatus" styleClass="form-control-sm"
+                                             disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{deptMgr.selectedEmployee.status}" style="width: 200px">
+                                <f:selectItem itemLabel="Hoạt động" itemValue="0" />
+                                <f:selectItem itemLabel="Khoá" itemValue="1" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <hr/>
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Tài liệu tải lên
+                    </h5>
+                    <p:fileUpload fileUploadListener="#{deptMgr.handleFileUpload}"
+                                  mode="advanced" auto="true" styleClass="hidden-all"
+                                  dragDropSupport="false" id="uldDocument"
+                                  multiple="true" update="messages" sizeLimit="20000000" />
+                    <c:if test="#{deptMgr.currentAct != enumBox.getState('VIEW')}">
+                    <button type="button" class="btn btn-light-blue btn-sm float-right" onclick="$('#main\\:uldDocument_input').click()">Thêm tài liệu</button>
+                    </c:if>
+                </div>
+                <p:outputPanel id="pnlDocumentList"
+                               styleClass="modal-body"
+                               style="overflow:scroll; max-height: 200px; max-width: 800px; ">
+                    <p:repeat value="#{deptMgr.selectedEmployee.lstDocuments}" var="document" varStatus="status">
+                        <div class="card float-left" style="width: 15rem;">
+                            <div class="card-body">
+                                <h6><a href="#{request.contextPath}/api/downloadDocument/#{document.code}">#{document.name}</a></h6>
+                                <span class="card-text">#{document.code}</span>
+                                <p:commandLink rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actDeleteDocument(status.index)}" value="Xoá" styleClass="btn btn-danger btn-sm float-right"/>
+                            </div>
+                        </div>
+                    </p:repeat>
+                </p:outputPanel>
+                <!-- Modal footer -->
+                <p:outputPanel class="modal-footer">
+                    <p:commandLink rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actAcceptEmployee()}" styleClass="btn btn-primary" value="Đồng ý"/>
+                    <p:commandLink rendered="#{deptMgr.currentEmployeeAct == enumBox.getState('EDIT')}" actionListener="#{deptMgr.actDeleteEmployee()}" styleClass="btn btn-danger" value="Xoá"/>
+                    <button onclick="PF('pnlAddEmployee').hide()" type="button" class="btn btn-blue-grey">Đóng</button>
+                </p:outputPanel>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </h:body>

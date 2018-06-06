@@ -124,7 +124,7 @@ public class UserMgrController implements Serializable {
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
-                    , SQLErrorUtil.getSQLError(ex.getMessage()), "Có lỗi xảy ra"));
+                    , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
     }
     public void actBack(){
@@ -151,7 +151,7 @@ public class UserMgrController implements Serializable {
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
-                    , SQLErrorUtil.getSQLError(ex.getMessage()), "Có lỗi xảy ra"));
+                    , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
     }
 

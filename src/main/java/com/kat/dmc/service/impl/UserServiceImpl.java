@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.UserEntity;
 import com.kat.dmc.common.model.UserDto;
+import com.kat.dmc.common.model.UserEntity;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.PasswordUtil;
 import com.kat.dmc.repository.interfaces.UserRepo;
@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

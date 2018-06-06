@@ -24,7 +24,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdown-#{menu.objectId}">
                                 <c:if test="#{menu.lstChildObject != null}">
                                     <c:forEach var="lvl2Menu" items="#{menu.lstChildObject}">
-                                        <a class="dropdown-item" href="./#{lvl2Menu.objectValue}">#{lvl2Menu.objectTitle}</a>
+                                        <p:commandLink styleClass="dropdown-item"
+                                                       actionListener="#{home.selectPage(lvl2Menu.objectValue)}"
+                                                       value="#{lvl2Menu.objectTitle}"/>
                                     </c:forEach>
                                 </c:if>
                             </div>
@@ -33,11 +35,13 @@
 
                     <c:if test="#{menu.objectType == 'page' and menu.hasPermission == true}">
                         <li class="nav-item">
-                            <a class="nav-link" href="./#{menu.objectValue}">
+                            <p:commandLink styleClass="nav-link"
+                                           actionListener="#{home.selectPage(menu.objectValue)}" >
                                 <c:if test="#{menu.objectIcon != null}">
                                     <img style="float: left;" height="25" alt="#{menu.objectIcon}" src="#{request.contextPath}/img/icon/#{menu.objectIcon}.png"/>
                                 </c:if>
-                                #{menu.objectTitle}</a>
+                                #{menu.objectTitle}
+                            </p:commandLink>
                         </li>
                     </c:if>
                 </c:forEach>

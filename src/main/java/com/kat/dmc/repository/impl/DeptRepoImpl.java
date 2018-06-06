@@ -40,12 +40,12 @@ public class DeptRepoImpl implements DeptRepo {
 
     @Override
     public void save(DepartmentEntity userEntity) {
-
+        entityManager.merge(userEntity);
     }
 
     @Override
     public void delete(DepartmentEntity userEntity) {
-
+        entityManager.remove(userEntity);
     }
 
     @Override

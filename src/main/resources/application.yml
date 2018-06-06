@@ -1,5 +1,7 @@
 jsf:
   primefaces:
-    theme: cupertino
+    theme: kat
 server:
   port: 9090
+system:
+  file_upload_dir: /Users/Mystery/Desktop/dmc_img

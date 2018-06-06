@@ -9,5 +9,5 @@ public interface DeptService {
     List<DepartmentDto> findAll();
     void delete(int id);
     void save(DepartmentDto selectedDept);
-    List<EmployeeDto> findEmpByDeptId();
+    List<EmployeeDto> findEmpByDeptId(int deptId);
 }

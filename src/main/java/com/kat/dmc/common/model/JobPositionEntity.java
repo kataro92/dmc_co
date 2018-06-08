@@ -9,8 +9,6 @@ public class JobPositionEntity {
     private String code;
     private String createdBy;
     private Timestamp createdDate;
-    private String defCode;
-    private String departmentCode;
     private String editedBy;
     private String jobDuties;
     private String jobFunctions;
@@ -21,6 +19,7 @@ public class JobPositionEntity {
     private Integer status;
     private String valueToSearch;
     private int id;
+    private Integer displayWithDeptName;
 
     @Basic
     @Column(name = "code")
@@ -50,26 +49,6 @@ public class JobPositionEntity {
 
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-    }
-
-    @Basic
-    @Column(name = "def_code")
-    public String getDefCode() {
-        return defCode;
-    }
-
-    public void setDefCode(String defCode) {
-        this.defCode = defCode;
-    }
-
-    @Basic
-    @Column(name = "department_code")
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     @Basic
@@ -172,6 +151,16 @@ public class JobPositionEntity {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "display_with_dept_name")
+    public Integer getDisplayWithDeptName() {
+        return displayWithDeptName;
+    }
+
+    public void setDisplayWithDeptName(Integer displayWithDeptName) {
+        this.displayWithDeptName = displayWithDeptName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -183,9 +172,6 @@ public class JobPositionEntity {
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
-        if (defCode != null ? !defCode.equals(that.defCode) : that.defCode != null) return false;
-        if (departmentCode != null ? !departmentCode.equals(that.departmentCode) : that.departmentCode != null)
-            return false;
         if (editedBy != null ? !editedBy.equals(that.editedBy) : that.editedBy != null) return false;
         if (jobDuties != null ? !jobDuties.equals(that.jobDuties) : that.jobDuties != null) return false;
         if (jobFunctions != null ? !jobFunctions.equals(that.jobFunctions) : that.jobFunctions != null) return false;
@@ -196,6 +182,8 @@ public class JobPositionEntity {
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (valueToSearch != null ? !valueToSearch.equals(that.valueToSearch) : that.valueToSearch != null)
             return false;
+        if (displayWithDeptName != null ? !displayWithDeptName.equals(that.displayWithDeptName) : that.displayWithDeptName != null)
+            return false;
 
         return true;
     }
@@ -205,8 +193,6 @@ public class JobPositionEntity {
         int result = code != null ? code.hashCode() : 0;
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (defCode != null ? defCode.hashCode() : 0);
-        result = 31 * result + (departmentCode != null ? departmentCode.hashCode() : 0);
         result = 31 * result + (editedBy != null ? editedBy.hashCode() : 0);
         result = 31 * result + (jobDuties != null ? jobDuties.hashCode() : 0);
         result = 31 * result + (jobFunctions != null ? jobFunctions.hashCode() : 0);
@@ -217,6 +203,7 @@ public class JobPositionEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (valueToSearch != null ? valueToSearch.hashCode() : 0);
         result = 31 * result + id;
+        result = 31 * result + (displayWithDeptName != null ? displayWithDeptName.hashCode() : 0);
         return result;
     }
 }

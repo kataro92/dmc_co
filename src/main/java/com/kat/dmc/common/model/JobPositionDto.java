@@ -5,33 +5,31 @@ import java.io.Serializable;
 public class JobPositionDto implements Serializable {
 
     private String code;
-    private String defCode;
-    private String departmentCode;
     private String jobDuties;
     private String jobFunctions;
     private String jobTitleCode;
     private String name;
     private Integer status;
     private int id;
+    private Integer displayWithDeptName;
 
     public JobPositionDto() {
     }
 
-    public JobPositionDto(String code, String defCode, String departmentCode, String jobDuties, String jobFunctions, String jobTitleCode, String name, Integer status, int id) {
+    public JobPositionDto(String code, String jobDuties, String jobFunctions, String jobTitleCode, String name, Integer status, int id, Integer displayWithDeptName) {
         this.code = code;
-        this.defCode = defCode;
-        this.departmentCode = departmentCode;
         this.jobDuties = jobDuties;
         this.jobFunctions = jobFunctions;
         this.jobTitleCode = jobTitleCode;
         this.name = name;
         this.status = status;
         this.id = id;
+        this.displayWithDeptName = displayWithDeptName;
     }
 
     @Override
     public JobPositionDto clone(){
-        return new JobPositionDto(code, defCode, departmentCode, jobDuties, jobFunctions, jobTitleCode, name, status, id);
+        return new JobPositionDto(code, jobDuties, jobFunctions, jobTitleCode, name, status, id, displayWithDeptName);
     }
 
     public String getCode() {
@@ -40,22 +38,6 @@ public class JobPositionDto implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getDefCode() {
-        return defCode;
-    }
-
-    public void setDefCode(String defCode) {
-        this.defCode = defCode;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     public String getJobDuties() {
@@ -104,5 +86,13 @@ public class JobPositionDto implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getDisplayWithDeptName() {
+        return displayWithDeptName;
+    }
+
+    public void setDisplayWithDeptName(Integer displayWithDeptName) {
+        this.displayWithDeptName = displayWithDeptName;
     }
 }

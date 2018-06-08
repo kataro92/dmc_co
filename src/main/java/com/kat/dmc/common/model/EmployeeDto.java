@@ -27,6 +27,7 @@ public class EmployeeDto implements Serializable {
     private int id;
     private List<DocumentDto> lstDocuments;
     private int deptId;
+    private String deptName;
 
     public EmployeeDto() {
     }
@@ -37,7 +38,8 @@ public class EmployeeDto implements Serializable {
                        String identityCardIssuedBy, Date identityCardIssuedDate,
                        String jobPositionCode, String leaveDate, String name,
                        String phone, String startDate, Integer status,
-                       String userCode, int id, List<DocumentDto> lstDocuments, int deptId) {
+                       String userCode, int id, List<DocumentDto> lstDocuments, int deptId,
+                       String deptName) {
         this.address = address;
         this.code = code;
         this.dateOfBirth = dateOfBirth;
@@ -58,13 +60,14 @@ public class EmployeeDto implements Serializable {
         this.id = id;
         this.lstDocuments = lstDocuments;
         this.deptId = deptId;
+        this.deptName = deptName;
     }
 
     public EmployeeDto clone(){
         return new EmployeeDto(address, code, dateOfBirth, defCode, email,
                 firstName, gender, identityCardCardNumber, identityCardIssuedBy,
                 identityCardIssuedDate, jobPositionCode, leaveDate, name, phone,
-                startDate, status, userCode, id, lstDocuments, deptId);
+                startDate, status, userCode, id, lstDocuments, deptId, deptName);
     }
 
     public String getAddress() {
@@ -228,5 +231,13 @@ public class EmployeeDto implements Serializable {
 
     public void setDeptId(int deptId) {
         this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

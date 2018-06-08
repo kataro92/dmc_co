@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:body>
+    <ui:composition template="../../layouts/layout_home.xhtml">
+        <ui:define name="content">
+            <p:growl keepAlive="3000" id="messages" showDetail="true" closable="true" escape="false">
+                <p:autoUpdate />
+            </p:growl>
+            <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{clientMgr.currentAct == enumBox.getState('VIEW')}">
+                <div class="card-header text-center">
+                    <p:commandLink id="btnAdd" disabled="#{clientMgr.disableAdd}" styleClass="btn btn-blue btn-sm" value="Thêm"
+                                   actionListener="#{clientMgr.actAdd()}"
+                                   update=":main" />
+                    <p:commandLink id="btnCopy" disabled="#{clientMgr.disableCopy}" styleClass="btn btn-blue btn-sm" value="Chép"
+                                   actionListener="#{clientMgr.actCopy()}"
+                                   update=":main" />
+                    <p:commandLink id="btnEdit" disabled="#{clientMgr.disableEdit}" styleClass="btn btn-blue btn-sm" value="Sửa"
+                                   actionListener="#{clientMgr.actEdit()}"
+                                   update=":main" />
+                    <p:commandLink id="btnDelete" disabled="#{clientMgr.disableDelete}" styleClass="btn btn-blue btn-sm" value="Xoá"
+                                   actionListener="#{clientMgr.actDelete()}"
+                                   update=":main" />
+                </div>
+                <p:dataTable id="tblList" tableStyleClass="card-body"
+                             rowIndexVar="index"
+                             selectionMode="single"
+                             var="rows"
+                             rowKey="#{rows.id}"
+                             value="#{clientMgr.lstAllClient}"
+                             rows="20"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20, 50">
+                    <p:ajax event="rowSelect" listener="#{clientMgr.selectClient}"
+                            update=":main:pnlDetail" />
+                    <p:column headerText="STT" style="width: 60px; text-align: center;">
+                        <h:outputText value="#{index+1}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.code}" headerText="Mã" style="width: 100px">
+                        <h:outputText value="#{rows.code}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.name}" headerText="Tên khách hàng">
+                        <h:outputText value="#{rows.name}"/>
+                    </p:column>
+                </p:dataTable>
+                <div class="card-footer">
+                    <!--Tổng cộng #{clientMgr.lstAllClient.size()} bản ghi-->
+                </div>
+            </p:outputPanel>
+            <p:blockUI block="pnlList" widgetVar="blkList"/>
+            <p:outputPanel id="pnlDetail" styleClass="#{clientMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
+                <div class="card-header bg-primary text-white">
+                    <h:outputText value="Màn hình quản lí khách hàng" rendered="#{clientMgr.currentAct == enumBox.getState('VIEW')}"/>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   rendered="#{clientMgr.currentAct == enumBox.getState('ADD') || clientMgr.currentAct == enumBox.getState('COPY') || clientMgr.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{clientMgr.actBack()}" value="Quay lại"
+                                   update=":main" />
+                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                                   rendered="#{clientMgr.currentAct == enumBox.getState('ADD') || clientMgr.currentAct == enumBox.getState('COPY') || clientMgr.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{clientMgr.actAccept()}" value="Đồng ý"
+                                   update=":main" />
+                </div>
+            <p:panelGrid rendered="#{clientMgr.selectedClient != null}"
+                         styleClass="ui-panelgrid-blank card-body">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtClientID" value="Mã"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtClientID" readonly="true" styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.code}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtClientname" value="Tên khách hàng"/>
+                    </p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="txtClientname" styleClass="form-control"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     value="#{clientMgr.selectedClient.name}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtBrand" value="Thương hiệu"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtBrand"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.trademark}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtTaxId" value="Mã số thuế"/>
+                    </p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="txtTaxId"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.taxCode}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtPhone" value="Điện thoại"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtPhone"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.phone}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtFax" value="Fax"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtFax"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.fax}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtEmail" value="Email"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtEmail"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.email}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtAddress" value="Địa chỉ"/>
+                    </p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="txtAddress"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.address}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtContact" value="Người liên hệ"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtContact"
+                                     readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.contactPerson}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtAdmin" title="Nhân viên quản lí" value="NV Quản lí"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtAdmin"
+                                     readonly="true"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.employeeCode}"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="txtEmpname"
+                                     readonly="true"
+                                     styleClass="form-control"
+                                     value="#{clientMgr.selectedClient.empName} - #{clientMgr.selectedClient.deptName} "/>
+                    </p:column>
+                    <p:column rendered="#{clientMgr.currentAct != enumBox.getState('VIEW')}">
+                        <a href="#" onclick="PF('pnlChooseEmp').show()">
+                            <img height="16" width="20" alt="Chọn" src="#{request.contextPath}/img/icon/ico-click.png"/>
+                        </a>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            </p:outputPanel>
+            <p:blockUI block="pnlDetail" widgetVar="blkDetail"/>
+            <p:dialog id="pnlChooseEmp" widgetVar="pnlChooseEmp"
+                      draggable="false" resizable="false" modal="true">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Lựa chọn nhân viên
+                    </h5>
+                    <button onclick="PF('pnlChooseEmp').hide()" type="button" class="btn btn-blue-grey">Đóng</button>
+                </div>
+                <p:dataTable value="#{clientMgr.lstAllEmployees}" var="employee"
+                             styleClass="modal-body"
+                             rowIndexVar="index"
+                             rows="15"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             rowKey="#{employee.id}"
+                             selectionMode="single"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,15">
+                    <p:column sortBy="#{employee.code}" filterBy="#{employee.code}" filterMatchMode="contains"
+                              headerText="Mã nhân viên" style="width: 120px">
+                        #{employee.code}
+                    </p:column>
+                    <p:column sortBy="#{employee.name}" filterBy="#{employee.name}" filterMatchMode="contains"
+                            headerText="Tên nhân viên">
+                        #{employee.name}
+                    </p:column>
+                    <p:column
+                            headerText="Giới tính" style="width: 120px">
+                        #{common.getCommon('EMP_GENDER', employee.gender)}
+                    </p:column>
+                    <p:column sortBy="#{employee.identityCardCardNumber}" filterBy="#{employee.identityCardCardNumber}" filterMatchMode="contains"
+                            headerText="CMND" style="width: 120px">
+                        #{employee.identityCardCardNumber}
+                    </p:column>
+                    <p:column sortBy="#{employee.defCode}" filterBy="#{employee.defCode}" filterMatchMode="contains"
+                            headerText="Mã phòng ban" style="width: 120px">
+                        #{employee.defCode}
+                    </p:column>
+                    <p:column headerText="Tên phòng ban">
+                        #{employee.deptName}
+                    </p:column>
+                    <p:column headerText="Chọn" style="width: 57px; text-align: center;">
+                        <p:commandLink actionListener="#{clientMgr.actChooseEmployee(employee.id)}" update="main:pnlDetail">
+                            <img height="16" width="20" alt="Chọn" src="#{request.contextPath}/img/icon/ico-click.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

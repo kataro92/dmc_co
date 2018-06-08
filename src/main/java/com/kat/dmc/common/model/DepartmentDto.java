@@ -1,7 +1,6 @@
 package com.kat.dmc.common.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.List;
 
 public class DepartmentDto implements Serializable {

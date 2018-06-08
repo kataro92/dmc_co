@@ -25,6 +25,18 @@ public class MaterialEntity {
     private String unit;
     private String valueToSearch;
     private int id;
+    private String fullCode;
+
+
+    @Basic
+    @Column(name = "full_code")
+    public String getFullCode() {
+        return fullCode;
+    }
+
+    public void setFullCode(String fullCode) {
+        this.fullCode = fullCode;
+    }
 
     @Basic
     @Column(name = "code")
@@ -244,6 +256,7 @@ public class MaterialEntity {
         if (sortName != null ? !sortName.equals(that.sortName) : that.sortName != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (unit != null ? !unit.equals(that.unit) : that.unit != null) return false;
+        if (fullCode != null ? !fullCode.equals(that.fullCode) : that.fullCode != null) return false;
         if (valueToSearch != null ? !valueToSearch.equals(that.valueToSearch) : that.valueToSearch != null)
             return false;
 
@@ -270,6 +283,7 @@ public class MaterialEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (unit != null ? unit.hashCode() : 0);
         result = 31 * result + (valueToSearch != null ? valueToSearch.hashCode() : 0);
+        result = 31 * result + (fullCode != null ? fullCode.hashCode() : 0);
         result = 31 * result + id;
         return result;
     }

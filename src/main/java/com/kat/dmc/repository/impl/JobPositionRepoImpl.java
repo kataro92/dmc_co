@@ -2,7 +2,6 @@ package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.model.JobPositionEntity;
 import com.kat.dmc.common.model.JobPositionEntity_;
-import com.kat.dmc.common.model.JobPositionEntity;
 import com.kat.dmc.repository.interfaces.JobPositionRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;

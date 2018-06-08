@@ -4,20 +4,39 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "job_title", schema = "public", catalog = "dmco_sys")
-public class JobTitleEntity {
+@Table(name = "client", schema = "public", catalog = "dmco_sys")
+public class ClientEntity {
+    private String address;
     private String code;
+    private String contactPerson;
     private String createdBy;
     private Timestamp createdDate;
     private String defCode;
-    private String description;
     private String editedBy;
+    private String email;
+    private String employeeCode;
+    private String fax;
     private Timestamp lastModified;
     private String name;
+    private String phone;
     private Boolean isPublished;
     private Integer status;
+    private String taxCode;
+    private String trademark;
     private String valueToSearch;
     private int id;
+    private Integer empId;
+    private Integer deptId;
+
+    @Basic
+    @Column(name = "address")
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @Basic
     @Column(name = "code")
@@ -27,6 +46,16 @@ public class JobTitleEntity {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Basic
+    @Column(name = "contact_person")
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     @Basic
@@ -60,16 +89,6 @@ public class JobTitleEntity {
     }
 
     @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Basic
     @Column(name = "edited_by")
     public String getEditedBy() {
         return editedBy;
@@ -77,6 +96,36 @@ public class JobTitleEntity {
 
     public void setEditedBy(String editedBy) {
         this.editedBy = editedBy;
+    }
+
+    @Basic
+    @Column(name = "email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Basic
+    @Column(name = "employee_code")
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
+
+    @Basic
+    @Column(name = "fax")
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     @Basic
@@ -100,6 +149,16 @@ public class JobTitleEntity {
     }
 
     @Basic
+    @Column(name = "phone")
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Basic
     @Column(name = "is_published")
     public Boolean getPublished() {
         return isPublished;
@@ -117,6 +176,26 @@ public class JobTitleEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "tax_code")
+    public String getTaxCode() {
+        return taxCode;
+    }
+
+    public void setTaxCode(String taxCode) {
+        this.taxCode = taxCode;
+    }
+
+    @Basic
+    @Column(name = "trademark")
+    public String getTrademark() {
+        return trademark;
+    }
+
+    public void setTrademark(String trademark) {
+        this.trademark = trademark;
     }
 
     @Basic
@@ -139,44 +218,83 @@ public class JobTitleEntity {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "emp_id")
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
+
+    @Basic
+    @Column(name = "dept_id")
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JobTitleEntity that = (JobTitleEntity) o;
+        ClientEntity that = (ClientEntity) o;
 
         if (id != that.id) return false;
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
+        if (contactPerson != null ? !contactPerson.equals(that.contactPerson) : that.contactPerson != null)
+            return false;
         if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
         if (defCode != null ? !defCode.equals(that.defCode) : that.defCode != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (editedBy != null ? !editedBy.equals(that.editedBy) : that.editedBy != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (employeeCode != null ? !employeeCode.equals(that.employeeCode) : that.employeeCode != null) return false;
+        if (fax != null ? !fax.equals(that.fax) : that.fax != null) return false;
         if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (isPublished != null ? !isPublished.equals(that.isPublished) : that.isPublished != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (taxCode != null ? !taxCode.equals(that.taxCode) : that.taxCode != null) return false;
+        if (trademark != null ? !trademark.equals(that.trademark) : that.trademark != null) return false;
         if (valueToSearch != null ? !valueToSearch.equals(that.valueToSearch) : that.valueToSearch != null)
             return false;
+        if (empId != null ? !empId.equals(that.empId) : that.empId != null) return false;
+        if (deptId != null ? !deptId.equals(that.deptId) : that.deptId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = code != null ? code.hashCode() : 0;
+        int result = address != null ? address.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (contactPerson != null ? contactPerson.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (defCode != null ? defCode.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (editedBy != null ? editedBy.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (employeeCode != null ? employeeCode.hashCode() : 0);
+        result = 31 * result + (fax != null ? fax.hashCode() : 0);
         result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (isPublished != null ? isPublished.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (taxCode != null ? taxCode.hashCode() : 0);
+        result = 31 * result + (trademark != null ? trademark.hashCode() : 0);
         result = 31 * result + (valueToSearch != null ? valueToSearch.hashCode() : 0);
         result = 31 * result + id;
+        result = 31 * result + (empId != null ? empId.hashCode() : 0);
+        result = 31 * result + (deptId != null ? deptId.hashCode() : 0);
         return result;
     }
 }

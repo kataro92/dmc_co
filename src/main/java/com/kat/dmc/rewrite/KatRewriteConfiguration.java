@@ -28,9 +28,22 @@ public class KatRewriteConfiguration extends HttpConfigurationProvider {
                 .addRule(Join.path("/login").to("/pages/admin/login.xhtml").withInboundCorrection())
                 .addRule(Join.path("/logout").to("/pages/admin/logout.xhtml").withInboundCorrection())
                 .addRule(Join.path("/main").to("/pages/tools/dash.xhtml").withInboundCorrection())
+                .addRule(Join.path("/position_mgr").to("/pages/admin/jobPosition.xhtml").withInboundCorrection())
                 .addRule(Join.path("/user_mgr").to("/pages/admin/user.xhtml").withInboundCorrection())
+                .addRule(Join.path("/supplier_mgr").to("/pages/admin/supplier.xhtml").withInboundCorrection())
                 .addRule(Join.path("/dept_mgr").to("/pages/admin/department.xhtml").withInboundCorrection())
-                .addRule(Join.path("/a").to("/pages/admin/a.xhtml").withInboundCorrection())
+                .addRule(Join.path("/client_mgr").to("/pages/admin/client.xhtml").withInboundCorrection())
+                .addRule(Join.path("/material_group_mgr").to("/pages/admin/materialGroup.xhtml").withInboundCorrection())
+                .addRule(Join.path("/material_type_mgr").to("/pages/admin/materialSubgroup.xhtml").withInboundCorrection())
+                .addRule(Join.path("/material_mgr").to("/pages/admin/material.xhtml").withInboundCorrection())
+                .addRule(Join.path("/product_group_mgr").to("/pages/admin/productGroup.xhtml").withInboundCorrection())
+                .addRule(Join.path("/product_type_mgr").to("/pages/admin/productSubgroup.xhtml").withInboundCorrection())
+                .addRule(Join.path("/product_mgr").to("/pages/admin/product.xhtml").withInboundCorrection())
+                .addRule(Join.path("/warehouse_mgr").to("/pages/admin/warehouse.xhtml").withInboundCorrection())
+                .addRule(Join.path("/warehouse_import").to("/pages/admin/warehouseImport.xhtml").withInboundCorrection())
+                .addRule(Join.path("/warehouse_export").to("/pages/admin/warehouseExport.xhtml").withInboundCorrection())
+                .addRule(Join.path("/warehouse_transfer").to("/pages/admin/warehouseTransfer.xhtml").withInboundCorrection())
+                .addRule(Join.path("/warehouse_check").to("/pages/admin/warehouseCheck.xhtml").withInboundCorrection())
                 ;
     }
 }

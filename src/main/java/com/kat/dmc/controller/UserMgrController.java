@@ -93,6 +93,7 @@ public class UserMgrController implements Serializable {
         setCurrentAct(ControllerAction.State.ADD);
         selectedUser = new UserDto();
         selectedUser.setUserId(utilRepo.findSequenceNextval("user__id_seq"));
+        selectedUser.setCode("US" + String.format("%06d", selectedUser.getUserId()));
         lstPermission = new ArrayList<>();
         lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
         RescusiveUtil.rescusiveSetPermission(lstPermission, new ArrayList<>());
@@ -100,7 +101,9 @@ public class UserMgrController implements Serializable {
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){
+        selectedUser = selectedUser.clone();
         selectedUser.setUserId(utilRepo.findSequenceNextval("user__id_seq"));
+        selectedUser.setCode("US" + String.format("%06d", selectedUser.getUserId()));
         lstPermission = new ArrayList<>();
         lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
         RescusiveUtil.rescusiveSetPermission(lstPermission, new ArrayList<>());
@@ -144,6 +147,17 @@ public class UserMgrController implements Serializable {
             tempUser = selectedUser;
             if (getCurrentAct() == ControllerAction.State.ADD || getCurrentAct() == ControllerAction.State.COPY) {
                 lstAllUser.add(selectedUser);
+            }
+
+            int slIdx = -1;
+            for (int i = 0; i < lstAllUser.size(); i++) {
+                UserDto clientDto = lstAllUser.get(i);
+                if (clientDto.getUserId() == selectedUser.getUserId()) {
+                    slIdx = i;
+                }
+            }
+            if(slIdx != -1){
+                lstAllUser.set(slIdx, selectedUser);
             }
             setCurrentAct(ControllerAction.State.VIEW);
             PrimeFaces.current().executeScript("PF('blkList').hide()");

@@ -2,9 +2,7 @@ package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.model.DmcDocumentEntity;
 import com.kat.dmc.common.model.DocumentDto;
-import com.kat.dmc.controller.DeptMgrController;
 import com.kat.dmc.repository.interfaces.DocumentRepo;
-import com.kat.dmc.service.interfaces.DeptService;
 import com.kat.dmc.service.interfaces.DocumentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

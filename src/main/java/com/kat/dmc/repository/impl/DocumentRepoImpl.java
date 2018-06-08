@@ -1,7 +1,6 @@
 package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.model.DmcDocumentEntity;
-import com.kat.dmc.common.model.DmcDocumentEntity;
 import com.kat.dmc.common.model.DmcDocumentEntity_;
 import com.kat.dmc.repository.interfaces.DocumentRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;

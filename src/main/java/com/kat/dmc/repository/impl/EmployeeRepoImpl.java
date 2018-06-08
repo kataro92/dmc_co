@@ -1,6 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.EmployeeEntity;
+import com.kat.dmc.common.constant.CommonConst;
+import com.kat.dmc.common.model.EmployeeDto;
 import com.kat.dmc.common.model.EmployeeEntity;
 import com.kat.dmc.common.model.EmployeeEntity_;
 import com.kat.dmc.repository.interfaces.EmployeeRepo;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,5 +90,51 @@ public class EmployeeRepoImpl implements EmployeeRepo {
                 ")")
                 .setParameter("1", deptId);
         query.executeUpdate();
+    }
+
+    @Override
+    public List<EmployeeDto> findAllActive() {
+        String strSQL = "SELECT employee.address, employee.code emp_code, employee.date_of_birth, " +
+                "employee.def_code, employee.email, employee.first_name, " +
+                " employee.gender, employee.identity_card_card_number, " +
+                " employee.identity_card_issued_by, employee.identity_card_issued_date, " +
+                " employee.job_position_code, employee.leave_date, employee.name emp_name, " +
+                " employee.phone, employee.start_date, employee.status emp_status, employee.user_code, " +
+                "employee._id emp_id, employee.dept_id, department.name dept_name " +
+                " FROM employee JOIN department ON employee.dept_id = department._id" +
+                " WHERE employee.status = 0" +
+                " ORDER BY employee._id";
+        Query query = entityManager.createNativeQuery(strSQL);
+        List<Object[]> lstResult = query.getResultList();
+        List<EmployeeDto> lstReturn = new ArrayList<>();
+        for(Object[] objects : lstResult){
+            lstReturn.add(object2Dto(objects));
+        }
+        return lstReturn;
+    }
+
+    private EmployeeDto object2Dto(Object[] objects) {
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setAddress((String) objects[0]);
+        employeeDto.setCode((String) objects[1]);
+        employeeDto.setDateOfBirth((Timestamp) objects[2]);
+        employeeDto.setDefCode((String) objects[3]);
+        employeeDto.setEmail((String) objects[4]);
+        employeeDto.setFirstName((String) objects[5]);
+        employeeDto.setGender((String) objects[6]);
+        employeeDto.setIdentityCardCardNumber((String) objects[7]);
+        employeeDto.setIdentityCardIssuedBy((String) objects[8]);
+        employeeDto.setIdentityCardIssuedDate((Timestamp) objects[9]);
+        employeeDto.setJobPositionCode((String) objects[10]);
+        employeeDto.setLeaveDate((String) objects[11]);
+        employeeDto.setName((String) objects[12]);
+        employeeDto.setPhone((String) objects[13]);
+        employeeDto.setStartDate((String) objects[14]);
+        employeeDto.setStatus((Integer) objects[15]);
+        employeeDto.setUserCode((String) objects[16]);
+        employeeDto.setId((Integer) objects[17]);
+        employeeDto.setDeptId((Integer) objects[18]);
+        employeeDto.setDeptName((String) objects[19]);
+        return employeeDto;
     }
 }

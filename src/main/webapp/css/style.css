@@ -22,3 +22,12 @@ footer {
 .hidden-all{
     display: none;
 }
+.icon-click{
+    background-image: url(../img/icon/ico-click.png);
+}
+.tbl-scroll-y{
+    overflow-y: auto;
+}
+.wd-1000{
+    width: 1000px;
+}

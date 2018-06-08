@@ -22,6 +22,9 @@ public class ProductEntity {
     private Integer status;
     private String valueToSearch;
     private int id;
+    private String unit;
+    private String fullCode;
+    private Boolean isCodeFixed;
 
     @Basic
     @Column(name = "code")
@@ -183,6 +186,36 @@ public class ProductEntity {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "unit")
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    @Basic
+    @Column(name = "full_code")
+    public String getFullCode() {
+        return fullCode;
+    }
+
+    public void setFullCode(String fullCode) {
+        this.fullCode = fullCode;
+    }
+
+    @Basic
+    @Column(name = "is_code_fixed")
+    public Boolean getCodeFixed() {
+        return isCodeFixed;
+    }
+
+    public void setCodeFixed(Boolean codeFixed) {
+        isCodeFixed = codeFixed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -210,6 +243,9 @@ public class ProductEntity {
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (valueToSearch != null ? !valueToSearch.equals(that.valueToSearch) : that.valueToSearch != null)
             return false;
+        if (unit != null ? !unit.equals(that.unit) : that.unit != null) return false;
+        if (fullCode != null ? !fullCode.equals(that.fullCode) : that.fullCode != null) return false;
+        if (isCodeFixed != null ? !isCodeFixed.equals(that.isCodeFixed) : that.isCodeFixed != null) return false;
 
         return true;
     }
@@ -232,6 +268,9 @@ public class ProductEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (valueToSearch != null ? valueToSearch.hashCode() : 0);
         result = 31 * result + id;
+        result = 31 * result + (unit != null ? unit.hashCode() : 0);
+        result = 31 * result + (fullCode != null ? fullCode.hashCode() : 0);
+        result = 31 * result + (isCodeFixed != null ? isCodeFixed.hashCode() : 0);
         return result;
     }
 }

@@ -6,26 +6,34 @@ import com.kat.dmc.common.model.EmployeeDto;
 import com.kat.dmc.common.model.WarehouseDto;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
-import com.kat.dmc.service.interfaces.EmployeeService;
-import com.kat.dmc.service.interfaces.WarehouseService;
+import com.kat.dmc.service.interfaces.*;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("warehouseMgr")
-@ConversationScoped
+@ViewScoped
 public class WarehouseMgrController implements Serializable {
 
     @Autowired
     WarehouseService warehouseService;
+
+    @Autowired
+    WarehouseImportService warehouseImportService;
+    @Autowired
+    WarehouseExportService warehouseExportService;
+    @Autowired
+    WarehouseTransferService warehouseTransferService;
+    @Autowired
+    WarehouseDismissService warehouseDismissService;
 
     @Autowired
     UtilRepo utilRepo;
@@ -52,9 +60,30 @@ public class WarehouseMgrController implements Serializable {
         lstAllEmployees = employeeService.findAllActive();
     }
 
+    public void viewImportDetail(Integer idx){
+
+        PrimeFaces.current().executeScript("PF('pnlDetailImport').show()");
+    }
+    public void viewExportDetail(Integer idx){
+
+        PrimeFaces.current().executeScript("PF('pnlDetailExport').show()");
+    }
+    public void viewTransferDetail(Integer idx){
+
+        PrimeFaces.current().executeScript("PF('pnlDetailTransfer').show()");
+    }
+    public void viewDismissDetail(Integer idx){
+
+        PrimeFaces.current().executeScript("PF('pnlDetailDismiss').show()");
+    }
+
     public void selectWarehouse(SelectEvent selectEvent){
         tempWarehouse = (WarehouseDto) selectEvent.getObject();
         selectedWarehouse = tempWarehouse.clone();
+        selectedWarehouse.setLstImport(warehouseImportService.findAllActiveByWarehouseId(selectedWarehouse.getId()));
+        selectedWarehouse.setLstExport(warehouseExportService.findAllActiveByWarehouseId(selectedWarehouse.getId()));
+        selectedWarehouse.setLstTransfer(warehouseTransferService.findAllActiveByWarehouseId(selectedWarehouse.getId()));
+        selectedWarehouse.setLstDismiss(warehouseDismissService.findAllActiveByWarehouseId(selectedWarehouse.getId()));
     }
 
     public void actAdd(){

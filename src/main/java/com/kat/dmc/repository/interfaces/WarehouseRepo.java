@@ -10,4 +10,5 @@ public interface WarehouseRepo {
     void save(DmcWarehouseEntity userEntity);
     void delete(DmcWarehouseEntity userEntity);
     DmcWarehouseEntity findById(Integer id);
+    List<DmcWarehouseEntity> findAllActiveByPermission(Boolean canImport, Boolean canExport, Boolean canTransfer, Boolean canDismiss);
 }

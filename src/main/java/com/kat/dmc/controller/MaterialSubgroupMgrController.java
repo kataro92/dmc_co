@@ -6,7 +6,6 @@ import com.kat.dmc.common.model.EmployeeDto;
 import com.kat.dmc.common.model.MaterialDto;
 import com.kat.dmc.common.model.MaterialSubgroupDto;
 import com.kat.dmc.common.util.SQLErrorUtil;
-import com.kat.dmc.repository.interfaces.MaterialRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;
 import com.kat.dmc.service.interfaces.MaterialService;
@@ -16,15 +15,15 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("materialSubgroupMgr")
-@ConversationScoped
+@ViewScoped
 public class MaterialSubgroupMgrController implements Serializable {
 
     @Autowired

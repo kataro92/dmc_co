@@ -33,6 +33,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    public List<WarehouseDto> findAllActiveByPermission(Boolean canImport, Boolean canExport, Boolean canTransfer, Boolean canDismiss) {
+        return jobPositionRepo.findAllActiveByPermission(canImport, canExport, canTransfer, canDismiss).stream().map(this::entity2Dto).collect(Collectors.toList());
+    }
+
+    @Override
     public void save(WarehouseDto userDto) {
         DmcWarehouseEntity savingObj = modelMapper.map(userDto, DmcWarehouseEntity.class);
         jobPositionRepo.save(savingObj);

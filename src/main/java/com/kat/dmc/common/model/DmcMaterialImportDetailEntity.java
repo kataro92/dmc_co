@@ -16,6 +16,17 @@ public class DmcMaterialImportDetailEntity {
     private Integer materialGroupId;
     private Timestamp importDate;
     private Integer createEmpId;
+    private int status;
+
+    @Basic
+    @Column(name = "status")
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     @Id
     @Column(name = "id")
@@ -124,6 +135,7 @@ public class DmcMaterialImportDetailEntity {
 
         DmcMaterialImportDetailEntity that = (DmcMaterialImportDetailEntity) o;
 
+        if (status != that.status) return false;
         if (id != that.id) return false;
         if (materialImportId != that.materialImportId) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
@@ -143,6 +155,7 @@ public class DmcMaterialImportDetailEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + materialImportId;
+        result = 31 * result + status;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);

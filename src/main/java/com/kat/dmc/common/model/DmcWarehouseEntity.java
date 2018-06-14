@@ -14,6 +14,7 @@ public class DmcWarehouseEntity {
     private String address;
     private int status;
     private String code;
+    private Integer categoryId;
 
     @Id
     @Column(name = "id")
@@ -105,6 +106,16 @@ public class DmcWarehouseEntity {
         this.code = code;
     }
 
+    @Basic
+    @Column(name = "category_id")
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,6 +133,7 @@ public class DmcWarehouseEntity {
         if (isCanDismiss != null ? !isCanDismiss.equals(that.isCanDismiss) : that.isCanDismiss != null) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
+        if (categoryId != null ? !categoryId.equals(that.categoryId) : that.categoryId != null) return false;
 
         return true;
     }
@@ -137,6 +149,7 @@ public class DmcWarehouseEntity {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + status;
         result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         return result;
     }
 }

@@ -1,6 +1,5 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.MaterialDto;
 import com.kat.dmc.common.model.MaterialEntity;
 import com.kat.dmc.common.model.MaterialEntity_;
 import com.kat.dmc.repository.interfaces.MaterialRepo;
@@ -86,5 +85,17 @@ public class MaterialRepoImpl implements MaterialRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public MaterialEntity findByCode(String code) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
+        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(MaterialEntity_.code), code));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
     }
 }

@@ -9,7 +9,24 @@
 <h:body>
     <ui:composition template="../../layouts/layout_home.xhtml">
         <ui:define name="content">
-
+            <div class="card-group">
+                <div class="card w-50">
+                    <div class="card-header">
+                        Biểu đồ so sánh sản xuất
+                    </div>
+                    <div class="card-body">
+                        <p:chart type="line" model="#{dashboard.animatedModel1}" />
+                    </div>
+                </div>
+                <div class="card w-50">
+                    <div class="card-header">
+                        Biểu đồ so sánh doanh thu
+                    </div>
+                    <div class="card-body">
+                        <p:chart type="bar" model="#{dashboard.animatedModel2}" />
+                    </div>
+                </div>
+            </div>
         </ui:define>
     </ui:composition>
 </h:body>

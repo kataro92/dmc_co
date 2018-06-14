@@ -48,6 +48,11 @@ public class MaterialServiceImpl implements MaterialService {
         return materialRepo.findBySubgroupId(id).stream().map(this::entity2Dto).collect(Collectors.toList());
     }
 
+    @Override
+    public MaterialDto findByCode(String code) {
+        return entity2Dto(materialRepo.findByCode(code));
+    }
+
     private MaterialDto entity2Dto(MaterialEntity entity){
         return modelMapper.map(entity, MaterialDto.class);
     }

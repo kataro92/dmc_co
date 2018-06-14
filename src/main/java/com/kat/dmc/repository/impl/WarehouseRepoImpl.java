@@ -71,4 +71,20 @@ public class WarehouseRepoImpl implements WarehouseRepo {
         final TypedQuery<DmcWarehouseEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
+
+    @Override
+    public List<DmcWarehouseEntity> findAllActiveByPermission(Boolean canImport, Boolean canExport, Boolean canTransfer, Boolean canDismiss) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcWarehouseEntity> criteriaQuery = builder.createQuery(DmcWarehouseEntity.class);
+        Root<DmcWarehouseEntity> root = criteriaQuery.from(DmcWarehouseEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(DmcWarehouseEntity_.status), 0));
+        if(canImport != null) predicates.add(builder.equal(root.get(DmcWarehouseEntity_.canImport), canImport));
+        if(canExport != null) predicates.add(builder.equal(root.get(DmcWarehouseEntity_.canExport), canExport));
+        if(canTransfer != null) predicates.add(builder.equal(root.get(DmcWarehouseEntity_.canTransfer), canTransfer));
+        if(canDismiss != null) predicates.add(builder.equal(root.get(DmcWarehouseEntity_.canDismiss), canDismiss));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcWarehouseEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
 }

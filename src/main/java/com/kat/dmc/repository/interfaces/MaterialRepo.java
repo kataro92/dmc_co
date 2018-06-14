@@ -12,4 +12,5 @@ public interface MaterialRepo {
     void delete(MaterialEntity userEntity);
     MaterialEntity findById(Integer id);
     List<MaterialEntity> findBySubgroupId(int id);
+    MaterialEntity findByCode(String code);
 }

@@ -1,7 +1,7 @@
 #footer{
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
 }
 footer {
     position: fixed;
@@ -31,3 +31,12 @@ footer {
 .wd-1000{
     width: 1000px;
 }
+.w-input-100 input{
+    width: 100%;
+}
+.ui-tabs .ui-tabs-panel {
+    border-width: 0;
+    padding: 0;
+    background: 0;
+}
+.ui-widget-content .ui-datatable-empty-message{ display: none;}

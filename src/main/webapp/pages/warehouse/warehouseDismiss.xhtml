@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:body>
+    <ui:composition template="../../layouts/layout_home.xhtml">
+        <ui:define name="content">
+            <p:growl keepAlive="3000" id="messages" showDetail="true" closable="true" escape="false">
+                <p:autoUpdate />
+            </p:growl>
+            <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}">
+                <div class="card-header text-center">
+                    <p:commandLink id="btnAdd" disabled="#{warehouseDismiss.disableAdd}" styleClass="btn btn-blue btn-sm" value="Thêm"
+                                   actionListener="#{warehouseDismiss.actAdd()}"
+                                   update=":main" />
+                    <p:commandLink id="btnCopy" disabled="#{warehouseDismiss.disableCopy}" styleClass="btn btn-blue btn-sm" value="Chép"
+                                   actionListener="#{warehouseDismiss.actCopy()}"
+                                   update=":main" />
+                    <p:commandLink id="btnEdit" disabled="#{warehouseDismiss.disableEdit}" styleClass="btn btn-blue btn-sm" value="Sửa"
+                                   actionListener="#{warehouseDismiss.actEdit()}"
+                                   update=":main" />
+                    <p:commandLink id="btnDelete" disabled="#{warehouseDismiss.disableDelete}" styleClass="btn btn-blue btn-sm" value="Xoá"
+                                   actionListener="#{warehouseDismiss.actDelete()}"
+                                   update=":main" />
+                </div>
+                <p:dataTable id="tblList" tableStyleClass="card-body"
+                             rowIndexVar="index"
+                             selectionMode="single"
+                             var="rows"
+                             rowKey="#{rows.id}"
+                             value="#{warehouseDismiss.lstAllWarehouseDismiss}"
+                             rows="20"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20, 50">
+                    <p:ajax event="rowSelect" listener="#{warehouseDismiss.selectWarehouseDismiss}"
+                            update=":main:pnlDetail" />
+                    <p:column headerText="STT" style="width: 60px; text-align: center;">
+                        <h:outputText value="#{index+1}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.code}" headerText="Mã" style="width: 100px">
+                        <h:outputText value="#{rows.code}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.dismissDate}" headerText="Ngày nhập">
+                        <h:outputText value="#{rows.dismissDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{rows.total}" headerText="Tổng tiền" styleClass="text-right">
+                        <h:outputText value="#{rows.total}">
+                            <f:convertNumber />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <div class="card-footer">
+                    <!--Tổng cộng #{warehouseDismiss.lstAllWarehouseDismiss.size()} bản ghi-->
+                </div>
+            </p:outputPanel>
+            <p:blockUI block="pnlList" widgetVar="blkList"/>
+            <p:outputPanel id="pnlDetail" styleClass="#{warehouseDismiss.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
+                <div class="card-header bg-primary text-white">
+                    <h:outputText value="Màn hình quản lí phiếu nhập kho" rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"/>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   rendered="#{warehouseDismiss.currentAct == enumBox.getState('ADD') || warehouseDismiss.currentAct == enumBox.getState('COPY') || warehouseDismiss.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{warehouseDismiss.actBack()}" value="Quay lại"
+                                   update=":main" />
+                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                                   rendered="#{warehouseDismiss.currentAct == enumBox.getState('ADD') || warehouseDismiss.currentAct == enumBox.getState('COPY') || warehouseDismiss.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{warehouseDismiss.actAccept()}" value="Đồng ý"
+                                   update=":main" />
+                </div>
+                <p:panelGrid rendered="#{warehouseDismiss.selectedWarehouseDismiss != null}"
+                             styleClass="ui-panelgrid-blank card-body">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="txtWarehouseDismissID" value="Mã phiếu"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="txtWarehouseDismissID" readonly="true" styleClass="form-control"
+                                         value="#{warehouseDismiss.selectedWarehouseDismiss.code}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtWarehouseDismissname" value="Ngày nhập"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="txtWarehouseDismissname" styleClass="form-control" pattern="dd/MM/yyyy"
+                                        style="width: 190px"
+                                        readonly="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"
+                                        value="#{warehouseDismiss.selectedWarehouseDismiss.dismissDate}"
+                                        showOn="button"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="cbxCategory" value="Loại hàng hóa"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cbxCategory" styleClass="form-control"
+                                             disabled="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.categoryId}">
+                                <f:selectItem itemLabel="Vật tư" itemValue="0" />
+                                <f:selectItem itemLabel="Thành phẩm" itemValue="1" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="cbxDismissFrom" value="Nhập từ"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cbxDismissFrom" styleClass="form-control"
+                                             disabled="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom}"
+                                             filter="true" filterMatchMode="contains">
+                                <p:ajax update="main:pnlDetail"/>
+                                <f:selectItem itemLabel="Nhà cung cấp" itemValue="0" />
+                                <f:selectItem itemLabel="Nội bộ" itemValue="1" />
+                                <f:selectItem itemLabel="Nhập bù" itemValue="2" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="cbxWarehouseTo" value="Kho nhận"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cbxWarehouseTo" styleClass="form-control"
+                                             rendered="#{warehouseDismiss.currentAct != enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.warehouseId}"
+                                             filter="true" filterMatchMode="contains">
+                                <f:selectItems value="#{warehouseDismiss.lstAllWarehouse}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}" />
+                            </p:selectOneMenu>
+                            <h:outputText rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}" value="#{warehouseDismiss.getWarehouseById(warehouseDismiss.selectedWarehouseDismiss.warehouseId).name}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="txtStatus" value="Trạng thái"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                                             disabled="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.status}">
+                                <f:selectItem itemLabel="Hiệu lực" itemValue="0" />
+                                <f:selectItem itemLabel="Khoá" itemValue="1" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 0}">
+                            <p:outputLabel for="cbxSupplier" value="Nhà cung cấp"/>
+                        </p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 0}">
+                            <p:selectOneMenu id="cbxSupplier" styleClass="form-control"
+                                             rendered="#{warehouseDismiss.currentAct != enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.supplierId}"
+                                             filter="true" filterMatchMode="contains">
+                                <f:selectItems value="#{warehouseDismiss.lstAllSuppliers}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}" />
+                            </p:selectOneMenu>
+                            <h:outputText rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}" value="#{warehouseDismiss.getSupplierById(warehouseDismiss.selectedWarehouseDismiss.supplierId).name}"/>
+                        </p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 1}" colspan="2"></p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 1}">
+                            <p:outputLabel for="cbxWarehouseFrom" value="Kho xuất"/>
+                        </p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 1}">
+                            <p:selectOneMenu id="cbxWarehouseFrom" styleClass="form-control"
+                                             rendered="#{warehouseDismiss.currentAct != enumBox.getState('VIEW')}"
+                                             value="#{warehouseDismiss.selectedWarehouseDismiss.dismissFromId}"
+                                             filter="true" filterMatchMode="contains">
+                                <f:selectItems value="#{warehouseDismiss.lstAllWarehouse}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}" />
+                            </p:selectOneMenu>
+                            <h:outputText rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}" value="#{warehouseDismiss.getWarehouseById(warehouseDismiss.selectedWarehouseDismiss.dismissFromId).name}"/>
+                        </p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 2}">
+                            <p:outputLabel for="txtReson" value="Lý do"/>
+                        </p:column>
+                        <p:column rendered="#{warehouseDismiss.selectedWarehouseDismiss.dismissFrom == 2}" colspan="5">
+                            <p:inputText id="txtReson" readonly="true" styleClass="form-control"
+                                         value="#{warehouseDismiss.selectedWarehouseDismiss.reson}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4"></p:column>
+                        <p:column>
+                            <p:outputLabel value="Tổng tiền"/>
+                        </p:column>
+                        <p:column styleClass="text-right">
+                            <h:outputText value="#{warehouseDismiss.selectedWarehouseDismiss.total}">
+                                <f:convertNumber />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <div class="card-header bg-primary text-white">
+                    <h:outputText value="Danh sách hàng hóa" rendered="#{warehouseDismiss.currentAct == enumBox.getState('VIEW')}"/>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   actionListener="#{warehouseDismiss.actPrint()}"
+                                   update=":main:tblDetail" title="In phiếu nhập kho">
+                        <img height="16" alt="In phiếu nhập kho" src="#{request.contextPath}/img/icon/ico-print.png"/>
+                    </p:commandLink>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   rendered="#{warehouseDismiss.currentAct == enumBox.getState('ADD') || warehouseDismiss.currentAct == enumBox.getState('COPY') || warehouseDismiss.currentAct == enumBox.getState('EDIT')}"
+                                   onclick="$('#main\\:uldDismissExcel_input').click()"
+                                   title="Nhập bằng file excel">
+                        <img height="16" alt="Nhập bằng file excel" src="#{request.contextPath}/img/icon/ico-excel.png"/>
+                    </p:commandLink>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   rendered="#{warehouseDismiss.currentAct == enumBox.getState('ADD') || warehouseDismiss.currentAct == enumBox.getState('COPY') || warehouseDismiss.currentAct == enumBox.getState('EDIT')}"
+                                   actionListener="#{warehouseDismiss.actAddMaterial()}" value="Thêm"
+                                   update=":main:tblDetail" />
+                </div>
+
+                <p:fileUpload fileUploadListener="#{warehouseDismiss.handleExcelDismissUpload}"
+                              mode="advanced" auto="true" styleClass="hidden-all"
+                              dragDropSupport="false" id="uldDismissExcel"
+                              allowTypes="/(\.|\/)(xls|xlsx)$/"
+                              multiple="true" update="messages" sizeLimit="20000000" />
+                <div class="tbl-scroll-y">
+                    <p:dataTable rowIndexVar="index" id="tblDetail"
+                                 styleClass="#{warehouseDismiss.currentAct == enumBox.getState('VIEW') ? 'wd-1000' : ''}"
+                                 editable="#{warehouseDismiss.currentAct == enumBox.getState('ADD') || warehouseDismiss.currentAct == enumBox.getState('COPY') || warehouseDismiss.currentAct == enumBox.getState('EDIT')}" editMode="cell"
+                                 var="rows"
+                                 rows="20"
+                                 value="#{warehouseDismiss.selectedWarehouseDismiss.lstDetails}"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,20, 50">
+                        <p:column headerText="STT" style="width: 60px; text-align: center;">
+                            <h:outputText value="#{index+1}"/>
+                        </p:column>
+                        <p:column sortBy="#{rows.code}" headerText="Mã" style="width: 120px">
+                            <h:outputText value="#{rows.code}" />
+                        </p:column>
+                        <p:column sortBy="#{warehouseDismiss.getMaterialById(rows.materialId).name}" headerText="Tên hàng hóa">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{warehouseDismiss.getMaterialById(rows.materialId).name}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu value="#{rows.materialId}" style="width:100%"
+                                                     filter="true" filterMatchMode="contains">
+                                        <p:ajax listener="#{warehouseDismiss.updateMaterial(index)}" update=":main:tblDetail"/>
+                                        <f:selectItems value="#{warehouseDismiss.lstAllMaterial}" var="material"
+                                                       itemLabel="#{material.code} -- #{material.name}"
+                                                       itemValue="#{material.id}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column sortBy="#{rows.price}" headerText="Giá" style="width: 120px" styleClass="text-right">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{rows.price}">
+                                        <f:convertNumber />
+                                    </h:outputText>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber value="#{rows.price}" styleClass="w-input-100">
+                                        <p:ajax listener="#{warehouseDismiss.updatePrice(index)}" update=":main:pnlDetail"/>
+                                    </p:inputNumber>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column sortBy="#{rows.quantity}" headerText="Số lượng" style="width: 110px" styleClass="text-right">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{rows.quantity}">
+                                        <f:convertNumber />
+                                    </h:outputText>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber value="#{rows.quantity}" styleClass="w-input-100">
+                                        <p:ajax listener="#{warehouseDismiss.updatePrice(index)}" update=":main:pnlDetail"/>
+                                    </p:inputNumber>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column sortBy="#{warehouseDismiss.getMaterialById(rows.materialId).unit}" headerText="Đơn vị" width="90">
+                            <h:outputText value="#{warehouseDismiss.getMaterialById(rows.materialId).unit}" />
+                        </p:column>
+                        <p:column sortBy="#{rows.total}" headerText="Tổng tiền" style="width: 140px" styleClass="text-right">
+                            <h:outputText value="#{rows.total}">
+                                <f:convertNumber />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="card-footer bg-white">
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   actionListener="#{warehouseDismiss.actPrint('barcode')}"
+                                   update=":main:tblDetail" title="In phiếu dán Barcode">
+                        <img height="16" alt="In phiếu nhập kho" src="#{request.contextPath}/img/icon/ico-print.png"/>
+                    </p:commandLink>
+                    <p:barcode styleClass="float-right" style="height: 64px" value="20180607b811ba04bb31899f24fd0b97" type="qr"/>
+                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                                   actionListener="#{warehouseDismiss.actPrint('qr')}"
+                                   update=":main:tblDetail" title="In phiếu dán QR">
+                        <img height="16" alt="In phiếu nhập kho" src="#{request.contextPath}/img/icon/ico-print.png"/>
+                    </p:commandLink>
+                    <p:barcode styleClass="float-right" style="height: 64px" value="20180607b811ba04bb31899f24fd0b97" type="code128"/>
+                </div>
+            </p:outputPanel>
+            <p:blockUI block="pnlDetail" widgetVar="blkDetail"/>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

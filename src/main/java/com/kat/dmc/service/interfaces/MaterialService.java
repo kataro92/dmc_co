@@ -10,4 +10,5 @@ public interface MaterialService {
     void save(MaterialDto userDto);
     void delete(Integer id);
     List<MaterialDto> findBySubgroupId(int id);
+    MaterialDto findByCode(String code);
 }

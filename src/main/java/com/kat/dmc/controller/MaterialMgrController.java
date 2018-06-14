@@ -100,6 +100,7 @@ public class MaterialMgrController implements Serializable {
     }
     public void actEdit(){
         setCurrentAct(ControllerAction.State.EDIT);
+        selectedMaterial.setCode("VT" + String.format("%06d", selectedMaterial.getId()));
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actDelete(){

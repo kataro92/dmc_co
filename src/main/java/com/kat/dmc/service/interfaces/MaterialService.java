@@ -11,4 +11,5 @@ public interface MaterialService {
     void delete(Integer id);
     List<MaterialDto> findBySubgroupId(int id);
     MaterialDto findByCode(String code);
+    List<MaterialDto> findAllByImport();
 }

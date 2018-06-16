@@ -16,6 +16,9 @@ public class MaterialDto implements Serializable {
     private String unit;
     private int id;
     private String fullCode;
+    private Integer currentPrice;
+    private Integer currentImportId;
+    private String currentImportCode;
 
     public MaterialDto() {
     }
@@ -23,7 +26,8 @@ public class MaterialDto implements Serializable {
     public MaterialDto(String code, Boolean isCodeFixed, String materialGroupCode,
                        String materialSubgroupCode, String name, String producer,
                        String shortDescription, String sortName, Integer status,
-                       String unit, int id, String fullCode) {
+                       String unit, int id, String fullCode, Integer currentPrice,
+                       Integer currentImportId, String currentImportCode) {
         this.code = code;
         this.isCodeFixed = isCodeFixed;
         this.materialGroupCode = materialGroupCode;
@@ -36,11 +40,16 @@ public class MaterialDto implements Serializable {
         this.unit = unit;
         this.id = id;
         this.fullCode = fullCode;
+        this.currentPrice = currentPrice;
+        this.currentImportId = currentImportId;
+        this.currentImportCode = currentImportCode;
     }
 
     @Override
     public MaterialDto clone(){
-        return new MaterialDto(code, isCodeFixed, materialGroupCode, materialSubgroupCode, name, producer, shortDescription, sortName, status, unit, id, fullCode);
+        return new MaterialDto(code, isCodeFixed, materialGroupCode, materialSubgroupCode,
+                name, producer, shortDescription, sortName, status, unit, id,
+                fullCode, currentPrice, currentImportId, currentImportCode);
     }
 
     public String getFullCode() {
@@ -137,5 +146,29 @@ public class MaterialDto implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Integer currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public Integer getCurrentImportId() {
+        return currentImportId;
+    }
+
+    public void setCurrentImportId(Integer currentImportId) {
+        this.currentImportId = currentImportId;
+    }
+
+    public String getCurrentImportCode() {
+        return currentImportCode;
+    }
+
+    public void setCurrentImportCode(String currentImportCode) {
+        this.currentImportCode = currentImportCode;
     }
 }

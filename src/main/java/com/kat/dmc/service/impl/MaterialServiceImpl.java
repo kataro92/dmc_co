@@ -53,6 +53,11 @@ public class MaterialServiceImpl implements MaterialService {
         return entity2Dto(materialRepo.findByCode(code));
     }
 
+    @Override
+    public List<MaterialDto> findAllByImport() {
+        return materialRepo.findAllByImport();
+    }
+
     private MaterialDto entity2Dto(MaterialEntity entity){
         return modelMapper.map(entity, MaterialDto.class);
     }

@@ -13,4 +13,5 @@ public interface MaterialRepo {
     MaterialEntity findById(Integer id);
     List<MaterialEntity> findBySubgroupId(int id);
     MaterialEntity findByCode(String code);
+    List<MaterialDto> findAllByImport();
 }

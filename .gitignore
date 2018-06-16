@@ -28,3 +28,5 @@ hs_err_pid*
 /.idea/
 /dmc.iml
 /Java_dmc.iml
+!/src/main/resources/kat.jar
+src/test/

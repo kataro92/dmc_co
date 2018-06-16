@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "material_barcode", schema = "public", catalog = "dmco_sys")
+@Table(name = "material_barcode", schema = "public")
 public class MaterialBarcodeEntity {
     private String barcode;
     private Timestamp createdDate;

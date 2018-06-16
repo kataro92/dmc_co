@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "material", schema = "public", catalog = "dmco_sys")
+@Table(name = "material", schema = "public")
 public class MaterialEntity {
     private String code;
     private Boolean isCodeFixed;

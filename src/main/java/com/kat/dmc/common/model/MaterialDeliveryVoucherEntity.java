@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "material_delivery_voucher", schema = "public", catalog = "dmco_sys")
+@Table(name = "material_delivery_voucher", schema = "public")
 public class MaterialDeliveryVoucherEntity {
     private String code;
     private String createdBy;

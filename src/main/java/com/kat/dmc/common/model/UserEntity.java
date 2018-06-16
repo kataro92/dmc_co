@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "user", schema = "public", catalog = "dmco_sys")
+@Table(name = "user", schema = "public")
 public class UserEntity {
     private String code;
     private Timestamp createdDate;

@@ -3,7 +3,7 @@ package com.kat.dmc.common.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "company", schema = "public", catalog = "dmco_sys")
+@Table(name = "company", schema = "public")
 public class CompanyEntity {
     private String address;
     private String code;

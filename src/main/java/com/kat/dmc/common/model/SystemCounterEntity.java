@@ -3,7 +3,7 @@ package com.kat.dmc.common.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "system_counter", schema = "public", catalog = "dmco_sys")
+@Table(name = "system_counter", schema = "public")
 public class SystemCounterEntity {
     private String key;
     private Long value;

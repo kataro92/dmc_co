@@ -1,6 +1,6 @@
 jsf:
   primefaces:
-    theme: kat
+    theme: cupertino
 server:
   port: 9090
 system:

@@ -1,1 +1,1 @@
-web: java -jar target/dmc-0.0.1-SNAPSHOT.war
+web: java -jar target/dmc-0.0.1-SNAPSHOT.war --port=$PORT

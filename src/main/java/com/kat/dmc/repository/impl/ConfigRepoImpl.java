@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -58,5 +59,32 @@ public class ConfigRepoImpl implements ConfigRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcConfigEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
+    }
+
+    @Override
+    public DmcConfigEntity findByKey(String key) throws NoResultException {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcConfigEntity> criteriaQuery = builder.createQuery(DmcConfigEntity.class);
+        Root<DmcConfigEntity> root = criteriaQuery.from(DmcConfigEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(DmcConfigEntity_.key), key));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcConfigEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public void saveConfig(String key, String value) {
+        DmcConfigEntity configEntity;
+        try {
+            configEntity = findByKey(key);
+        }catch (NoResultException ex){
+            configEntity = new DmcConfigEntity();
+            configEntity.setId(utilRepo.findSequenceNextval("dmc_config_id_seq"));
+            configEntity.setKey(key);
+            configEntity.setValue(value);
+        }
+        configEntity.setValue(value);
+        save(configEntity);
     }
 }

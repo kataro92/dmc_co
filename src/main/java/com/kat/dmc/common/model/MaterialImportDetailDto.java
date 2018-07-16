@@ -15,11 +15,14 @@ public class MaterialImportDetailDto implements Serializable {
     private Date importDate;
     private Integer createEmpId;
     private int status;
+    private String unit;
 
     public MaterialImportDetailDto() {
     }
 
-    public MaterialImportDetailDto(int id, int materialImportId, String code, Integer price, Integer quantity, Long total, Integer materialId, Integer materialGroupId, Date importDate, Integer createEmpId, int status) {
+    public MaterialImportDetailDto(int id, int materialImportId, String code, Integer price,
+                                   Integer quantity, Long total, Integer materialId, Integer materialGroupId,
+                                   Date importDate, Integer createEmpId, int status, String unit) {
         this.id = id;
         this.materialImportId = materialImportId;
         this.code = code;
@@ -31,11 +34,13 @@ public class MaterialImportDetailDto implements Serializable {
         this.importDate = importDate;
         this.createEmpId = createEmpId;
         this.status = status;
+        this.unit = unit;
     }
 
     @Override
     public MaterialImportDetailDto clone(){
-        return new MaterialImportDetailDto(id, materialImportId, code, price, quantity, total, materialId, materialGroupId, importDate, createEmpId, status);
+        return new MaterialImportDetailDto(id, materialImportId, code, price, quantity, total, materialId,
+                materialGroupId, importDate, createEmpId, status, unit);
     }
 
     public int getId() {
@@ -124,5 +129,13 @@ public class MaterialImportDetailDto implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

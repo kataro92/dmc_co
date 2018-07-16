@@ -2,6 +2,7 @@ package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.model.DmcMaterialExportDetailEntity;
 import com.kat.dmc.common.model.DmcMaterialExportDetailEntity_;
+import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
 import com.kat.dmc.repository.interfaces.MaterialExportDetailRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,18 @@ public class MaterialExportDetailRepoImpl implements MaterialExportDetailRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialExportDetailEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
+    }
+
+    @Override
+    public List<DmcMaterialExportDetailEntity> findByIdMaterialId(int id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcMaterialExportDetailEntity> criteriaQuery = builder.createQuery(DmcMaterialExportDetailEntity.class);
+        Root<DmcMaterialExportDetailEntity> root = criteriaQuery.from(DmcMaterialExportDetailEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(DmcMaterialExportDetailEntity_.status), 0));
+        predicates.add(builder.equal(root.get(DmcMaterialExportDetailEntity_.materialId), id));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcMaterialExportDetailEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }

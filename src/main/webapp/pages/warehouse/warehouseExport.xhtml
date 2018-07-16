@@ -108,7 +108,7 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="cbxExportFrom" value="Nhập từ"/>
+                            <p:outputLabel for="cbxExportFrom" value="Xuất đi"/>
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="cbxExportFrom" styleClass="form-control"
@@ -117,12 +117,11 @@
                                              filter="true" filterMatchMode="contains">
                                 <p:ajax update="main:pnlDetail"/>
                                 <f:selectItem itemLabel="Nhà cung cấp" itemValue="0" />
-                                <f:selectItem itemLabel="Nội bộ" itemValue="1" />
-                                <f:selectItem itemLabel="Nhập bù" itemValue="2" />
+                                <f:selectItem itemLabel="Tạm xuất" itemValue="2" />
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:outputLabel for="cbxWarehouseTo" value="Kho nhận"/>
+                            <p:outputLabel for="cbxWarehouseTo" value="Kho xuất"/>
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="cbxWarehouseTo" styleClass="form-control"

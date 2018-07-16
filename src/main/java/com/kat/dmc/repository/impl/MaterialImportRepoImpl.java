@@ -1,9 +1,6 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
-import com.kat.dmc.common.model.DmcMaterialImportDetailEntity_;
-import com.kat.dmc.common.model.DmcMaterialImportEntity;
-import com.kat.dmc.common.model.DmcMaterialImportEntity_;
+import com.kat.dmc.common.model.*;
 import com.kat.dmc.repository.interfaces.MaterialImportRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +51,29 @@ public class MaterialImportRepoImpl implements MaterialImportRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialImportEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public List<MaterialImportDto> findAllActiveQuantity() {
+        String strSQL = "SELECT DM.id, DM.code, DM.category_id, DM.import_date, DM.supplier_id" +
+                ", DM.status, DM.import_from_id" +
+                ", DM.warehouse_id, DM.reson, DM.total, DM.import_from, DTL.quantity child_quantity" +
+                " FROM dmc_material_import DM, dmc_material_import_detail DTL " +
+                " WHERE DM.id = DTL.material_import_id " +
+                " UNION ALL" +
+                " SELECT DM.id, DM.code, DM.category_id, DM.import_date, DM.supplier_id" +
+                ", DM.status, DM.import_from_id" +
+                ", DM.warehouse_id, DM.reson, DM.total, DM.import_from, DTL.quantity child_quantity" +
+                " FROM dmc_material_export DM, dmc_material_import_detail DTL " +
+                " WHERE DM.id = DTL.material_import_id " +
+                " ORDER BY DM.import_date";
+        Query query = entityManager.createNativeQuery(strSQL);
+        List<Object[]> lstResult = query.getResultList();
+        List<MaterialImportDto> lstReturn = new ArrayList<>();
+        for(Object[] objects : lstResult){
+            lstReturn.add(object2Dto(objects));
+        }
+        return lstReturn;
     }
 
     @Override
@@ -98,5 +120,40 @@ public class MaterialImportRepoImpl implements MaterialImportRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialImportEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public List<MaterialImportDto> findAllActiveByMaterialId(Integer materialId) {
+        String strSQL = "SELECT DM.id, DM.code, DM.category_id, DM.import_date, DM.supplier_id" +
+                ", DM.status, DM.import_from_id" +
+                ", DM.warehouse_id, DM.reson, DM.total, DM.import_from, sum(DTL.quantity) child_quantity" +
+                " FROM dmc_material_import DM, dmc_material_import_detail DTL " +
+                " WHERE DTL.material_id = ?1 AND DM.id = DTL.material_import_id" +
+                " ORDER BY DM.import_date";
+        Query query = entityManager.createNativeQuery(strSQL);
+        query.setParameter("1", materialId);
+        List<Object[]> lstResult = query.getResultList();
+        List<MaterialImportDto> lstReturn = new ArrayList<>();
+        for(Object[] objects : lstResult){
+            lstReturn.add(object2Dto(objects));
+        }
+        return lstReturn;
+    }
+
+    private MaterialImportDto object2Dto(Object[] objects) {
+        MaterialImportDto importDto = new MaterialImportDto();
+        importDto.setId((Integer) objects[0]);
+        importDto.setCode((String) objects[1]);
+        importDto.setCategoryId((Integer) objects[2]);
+        importDto.setImportDate((Timestamp) objects[3]);
+        importDto.setSupplierId((Integer) objects[4]);
+        importDto.setStatus((Integer) objects[5]);
+        importDto.setImportFromId((Integer) objects[6]);
+        importDto.setWarehouseId((Integer) objects[7]);
+        importDto.setReson((String) objects[8]);
+        importDto.setTotal((Long) objects[9]);
+        importDto.setImportFrom((Integer) objects[10]);
+        importDto.setChildQuantity((Integer) objects[11]);
+        return importDto;
     }
 }

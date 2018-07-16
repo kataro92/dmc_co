@@ -18,17 +18,18 @@ public class MaterialImportDto implements Serializable {
     private Integer importFrom;
     private String reson;
     private Long total;
+    private Integer childQuantity;
 
     @Override
     public MaterialImportDto clone(){
         return new MaterialImportDto(id, code, categoryId, importDate, supplierId, status, lstDetails,
-                importFromId, warehouseId, importFrom, reson, total);
+                importFromId, warehouseId, importFrom, reson, total, childQuantity);
     }
 
     public MaterialImportDto(int id, String code, int categoryId, Date importDate,
                              int supplierId, int status,
                              List<MaterialImportDetailDto> lstDetails, Integer importFromId,
-                             Integer warehouseId, Integer importFrom, String reson, Long total) {
+                             Integer warehouseId, Integer importFrom, String reson, Long total, Integer childQuantity) {
         this.id = id;
         this.code = code;
         this.categoryId = categoryId;
@@ -41,6 +42,15 @@ public class MaterialImportDto implements Serializable {
         this.importFrom = importFrom;
         this.reson = reson;
         this.total = total;
+        this.childQuantity = childQuantity;
+    }
+
+    public Integer getChildQuantity() {
+        return childQuantity;
+    }
+
+    public void setChildQuantity(Integer childQuantity) {
+        this.childQuantity = childQuantity;
     }
 
     public String getReson() {

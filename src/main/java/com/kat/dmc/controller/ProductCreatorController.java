@@ -76,6 +76,9 @@ public class ProductCreatorController implements Serializable {
         materialDto.setMaterialName(dto.getName());
         materialDto.setMaterialId(dto.getId());
         materialDto.setMaterialCode(dto.getCode());
+        materialDto.setPrice(dto.getCurrentPrice());
+        materialDto.setQuantity(0);
+        materialDto.setMaterialUnit(dto.getUnit());
 
         lstBuildingMaterial.add(materialDto);
     }
@@ -86,7 +89,17 @@ public class ProductCreatorController implements Serializable {
     public void updatePrice(int index){
         BuildingMaterialDto materialDto = lstBuildingMaterial.get(index);
         materialDto.setTotal(materialDto.getPrice().longValue() * materialDto.getQuantity());
+        updateBuildingProductInfo();
     }
+
+    private void updateBuildingProductInfo(){
+        Long totalPrice = 0l;
+        for(BuildingMaterialDto materialDto : lstBuildingMaterial){
+            totalPrice += materialDto.getTotal();
+        }
+        buildingProductDto.setPrice(totalPrice);
+    }
+
 
 
     public ControllerAction.State getCurrentAct() {

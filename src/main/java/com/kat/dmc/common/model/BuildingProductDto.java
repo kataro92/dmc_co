@@ -9,7 +9,7 @@ public class BuildingProductDto implements Serializable {
     private Integer warehouseId;
     private Date createdDate;
     private Integer siteMoney;
-    private Integer price;
+    private Long price;
     private Integer quantity;
     private Long total;
     private Integer status;
@@ -18,7 +18,7 @@ public class BuildingProductDto implements Serializable {
     public BuildingProductDto() {
     }
 
-    public BuildingProductDto(int id, Integer productId, Integer warehouseId, Date createdDate, Integer siteMoney, Integer price, Integer quantity, Long total, Integer status, Integer code) {
+    public BuildingProductDto(int id, Integer productId, Integer warehouseId, Date createdDate, Integer siteMoney, Long price, Integer quantity, Long total, Integer status, Integer code) {
         this.id = id;
         this.productId = productId;
         this.warehouseId = warehouseId;
@@ -76,11 +76,11 @@ public class BuildingProductDto implements Serializable {
         this.siteMoney = siteMoney;
     }
 
-    public Integer getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

@@ -71,4 +71,18 @@ public class MaterialImportDetailRepoImpl implements MaterialImportDetailRepo {
         final TypedQuery<DmcMaterialImportDetailEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
+
+    @Override
+    public List<DmcMaterialImportDetailEntity> findByIdMaterialId(int id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcMaterialImportDetailEntity> criteriaQuery = builder.createQuery(DmcMaterialImportDetailEntity.class);
+        Root<DmcMaterialImportDetailEntity> root = criteriaQuery.from(DmcMaterialImportDetailEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(DmcMaterialImportDetailEntity_.status), 0));
+        predicates.add(builder.equal(root.get(DmcMaterialImportDetailEntity_.materialId), id));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new))
+                .orderBy(builder.asc(root.get(DmcMaterialImportDetailEntity_.id)));
+        final TypedQuery<DmcMaterialImportDetailEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
 }

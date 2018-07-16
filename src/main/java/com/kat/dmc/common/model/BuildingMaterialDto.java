@@ -16,11 +16,14 @@ public class BuildingMaterialDto implements Serializable {
     private Date usedDate;
     private String materialCode;
     private String materialName;
+    private String materialUnit;
 
     public BuildingMaterialDto() {
     }
 
-    public BuildingMaterialDto(int id, Integer productId, Integer materialId, Integer materialType, Integer status, Integer quantity, Integer price, Long total, Integer importId, Date usedDate, String materialCode, String materialName) {
+    public BuildingMaterialDto(int id, Integer productId, Integer materialId, Integer materialType,
+                               Integer status, Integer quantity, Integer price, Long total, Integer importId,
+                               Date usedDate, String materialCode, String materialName, String materialUnit) {
         this.id = id;
         this.productId = productId;
         this.materialId = materialId;
@@ -33,11 +36,13 @@ public class BuildingMaterialDto implements Serializable {
         this.usedDate = usedDate;
         this.materialCode = materialCode;
         this.materialName = materialName;
+        this.materialUnit = materialUnit;
     }
 
     @Override
     public BuildingMaterialDto clone(){
-        return new BuildingMaterialDto(id, productId, materialId, materialType, status, quantity, price, total, importId, usedDate, materialCode, materialName);
+        return new BuildingMaterialDto(id, productId, materialId, materialType, status, quantity,
+                price, total, importId, usedDate, materialCode, materialName, materialUnit);
     }
 
     public int getId() {
@@ -134,5 +139,13 @@ public class BuildingMaterialDto implements Serializable {
 
     public void setMaterialName(String materialName) {
         this.materialName = materialName;
+    }
+
+    public String getMaterialUnit() {
+        return materialUnit;
+    }
+
+    public void setMaterialUnit(String materialUnit) {
+        this.materialUnit = materialUnit;
     }
 }

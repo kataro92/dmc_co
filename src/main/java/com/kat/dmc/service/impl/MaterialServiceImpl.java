@@ -2,6 +2,7 @@ package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.model.MaterialDto;
 import com.kat.dmc.common.model.MaterialEntity;
+import com.kat.dmc.common.model.MaterialImportDetailDto;
 import com.kat.dmc.repository.interfaces.MaterialRepo;
 import com.kat.dmc.service.interfaces.MaterialService;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +57,24 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public List<MaterialDto> findAllByImport() {
-        return materialRepo.findAllByImport();
+        List<MaterialDto> dtoList = materialRepo.findAllByImport();
+        List<MaterialDto> returnList = new ArrayList<>();
+        for(MaterialDto detailDto : dtoList){
+            //Get import_id fit with price
+            List<MaterialImportDetailDto> importIds = materialRepo.findImpIdsByMaterialId(detailDto.getId());
+            for(MaterialImportDetailDto materialImportDetailDto : importIds){
+                MaterialDto newImp = detailDto.clone();
+                newImp.setCurrentPrice(materialImportDetailDto.getPrice());
+                newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
+                newImp.setCurrentImportCode(materialImportDetailDto.getCode());
+                newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
+                newImp.setUnit(materialImportDetailDto.getUnit());
+
+                returnList.add(newImp);
+            }
+
+        }
+        return returnList;
     }
 
     private MaterialDto entity2Dto(MaterialEntity entity){

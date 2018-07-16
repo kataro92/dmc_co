@@ -29,7 +29,9 @@
                             Tổng giá vật tư:
                         </div>
                         <div class="ui-g-7 text-right">
-                                1,000,000 vnđ
+                                <h:outputText value="#{productCreator.buildingProductDto.price}">
+                                    <f:convertNumber />
+                                </h:outputText>
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -37,9 +39,7 @@
                             Ngày sản xuất:
                         </div>
                         <div class="ui-g-7 text-right">
-                            <p:commandLink>
-                                01 tháng 01 năm 2018
-                            </p:commandLink>
+                            <p:calendar id="mask" value="#{productCreator.buildingProductDto.createdDate}" pattern="dd/MM/yyyy" mask="true" />
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -58,7 +58,7 @@
                             Số loại vật tư:
                         </div>
                         <div class="ui-g-7 text-right">
-                            10 loại
+                            #{productCreator.lstBuildingMaterial.size()} loại
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -129,7 +129,7 @@
                     </p:column>
                     <p:column sortBy="#{rows.quantity}" headerText="SL" style="width: 80px">
                         <p:inputNumber value="#{rows.quantity}" styleClass="w-input-100" decimalPlaces="0">
-                            <p:ajax listener="#{productCreator.updatePrice(index)}" update=":main:pnlDetail"/>
+                            <p:ajax listener="#{productCreator.updatePrice(index)}" update=":main:pnlDetail :main:pnlSummary"/>
                         </p:inputNumber>
                     </p:column>
                     <p:column sortBy="#{rows.total}" headerText="Tổng" style="width: 120px">
@@ -200,6 +200,9 @@
                     </p:column>
                     <p:column sortBy="#{rows.name}" headerText="Tên vật tư">
                         <h:outputText value="#{rows.name}"/>
+                    </p:column>
+                    <p:column sortBy="#{rows.currentImportCode}" headerText="Mã nhập">
+                        <h:outputText value="#{rows.currentImportCode}"/>
                     </p:column>
                 </p:dataTable>
             </p:outputPanel>

@@ -11,4 +11,5 @@ public interface MaterialImportDetailRepo {
     void save(DmcMaterialImportDetailEntity userEntity);
     void delete(DmcMaterialImportDetailEntity userEntity);
     DmcMaterialImportDetailEntity findById(Integer id);
+    List<DmcMaterialImportDetailEntity> findByIdMaterialId(int id);
 }

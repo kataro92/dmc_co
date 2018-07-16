@@ -1,8 +1,8 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.MaterialDto;
-import com.kat.dmc.common.model.MaterialEntity;
-import com.kat.dmc.common.model.MaterialEntity_;
+import com.kat.dmc.common.model.*;
+import com.kat.dmc.repository.interfaces.MaterialExportDetailRepo;
+import com.kat.dmc.repository.interfaces.MaterialImportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,12 @@ public class MaterialRepoImpl implements MaterialRepo {
 
     @Autowired
     UtilRepo utilRepo;
+
+    @Autowired
+    MaterialImportDetailRepo importDetailRepo;
+
+    @Autowired
+    MaterialExportDetailRepo exportDetailRepo;
     
     @Override
     public List<MaterialEntity> findAll() {
@@ -104,13 +110,29 @@ public class MaterialRepoImpl implements MaterialRepo {
     @Override
     public List<MaterialDto> findAllByImport() {
         String strSQL = "SELECT MS._id, " +
-                "MS.code, " +
-                "MS.material_group_code, " +
-                "MS.material_subgroup_code, " +
-                "MS.name, " +
-                "MS.status " +
-                "FROM material MS " +
-                "WHERE MS.status=0";
+                " MS.code, " +
+                " MS.material_group_code, " +
+                " MS.material_subgroup_code, " +
+                " MS.name, " +
+                " MS.status " +
+                " FROM material MS " +
+                " WHERE MS.status=0 " +
+                " AND MS._id IN (SELECT SUMMARY.material_id " +
+                "FROM ( " +
+                "  SELECT " +
+                "    MID.material_id, " +
+                "    MID.quantity " +
+                "  FROM dmc_material_import_detail MID " +
+                "  WHERE MID.status = 0 " +
+                "  UNION ALL " +
+                "  SELECT " +
+                "    MED.material_id, " +
+                "    -MED.quantity " +
+                "  FROM dmc_material_export_detail MED " +
+                "  WHERE MED.status = 0 " +
+                ") AS SUMMARY " +
+                "GROUP BY SUMMARY.material_id " +
+                "HAVING sum(SUMMARY.quantity) > 0)";
         Query query = entityManager.createNativeQuery(strSQL);
         List<Object[]> lstResult = query.getResultList();
         List<MaterialDto> lstReturn = new ArrayList<>();
@@ -118,6 +140,65 @@ public class MaterialRepoImpl implements MaterialRepo {
             lstReturn.add(object2Dto(objects));
         }
         return lstReturn;
+    }
+
+    @Override
+    public List<MaterialImportDetailDto> findImpIdsByMaterialId(int id) {
+        List<MaterialImportDetailDto> detailDtoList = new ArrayList<>();
+        //Get all import
+        List<DmcMaterialImportDetailEntity> importDetailEntities = importDetailRepo.findByIdMaterialId(id);
+        //Get all export
+        List<DmcMaterialExportDetailEntity> exportDetailEntities = exportDetailRepo.findByIdMaterialId(id);
+        //TO-DO check date already OK for import
+        for(DmcMaterialImportDetailEntity detailEntity : importDetailEntities){
+            detailDtoList.addAll(exactImportByExport(detailEntity, exportDetailEntities));
+        }
+
+        for(MaterialImportDetailDto importDetailDto : detailDtoList){
+            MaterialEntity materialEntity = findById(importDetailDto.getMaterialId());
+            importDetailDto.setUnit(materialEntity.getUnit());
+        }
+
+        return detailDtoList;
+    }
+
+    private List<MaterialImportDetailDto> exactImportByExport(DmcMaterialImportDetailEntity detailEntity,
+                                     List<DmcMaterialExportDetailEntity> exportDetailEntities){
+        List<MaterialImportDetailDto> detailDtos = new ArrayList<>();
+        if(exportDetailEntities == null || exportDetailEntities.isEmpty()){
+
+            MaterialImportDetailDto detailDto = new MaterialImportDetailDto();
+            detailDto.setQuantity(detailEntity.getQuantity());
+            detailDto.setPrice(detailEntity.getPrice());
+            detailDto.setCode(detailEntity.getCode());
+            detailDtos.add(detailDto);
+
+        }
+        for(DmcMaterialExportDetailEntity exportDetailEntity : exportDetailEntities){
+            if(exportDetailEntity.getQuantity() >= detailEntity.getQuantity()){
+                exportDetailEntity.setQuantity(exportDetailEntity.getQuantity() - detailEntity.getQuantity());
+
+                MaterialImportDetailDto detailDto = new MaterialImportDetailDto();
+                detailDto.setQuantity(detailEntity.getQuantity());
+                detailDto.setPrice(detailEntity.getPrice());
+                detailDto.setCode(detailEntity.getCode());
+                detailDtos.add(detailDto);
+
+                detailEntity.setQuantity(0);
+                return detailDtos;
+            }else if(detailEntity.getQuantity() != 0){
+
+                MaterialImportDetailDto detailDto = new MaterialImportDetailDto();
+                detailDto.setQuantity(detailEntity.getQuantity());
+                detailDto.setPrice(detailEntity.getPrice());
+                detailDto.setCode(detailEntity.getCode());
+                detailDtos.add(detailDto);
+
+                exportDetailEntity.setQuantity(0);
+                detailEntity.setQuantity(detailEntity.getQuantity() - exportDetailEntity.getQuantity());
+            }
+        }
+        return detailDtos;
     }
 
     private MaterialDto object2Dto(Object[] objects) {
@@ -131,7 +212,6 @@ public class MaterialRepoImpl implements MaterialRepo {
 //        materialDto.setCurrentImportId((Integer) objects[6]);
 //        materialDto.setCurrentImportCode((String) objects[7]);
 //        materialDto.setCurrentPrice((Integer) objects[8]);
-        materialDto.setCurrentPrice((Integer) 100);
         return materialDto;
     }
 }

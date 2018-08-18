@@ -46,7 +46,7 @@ public class MaterialGroupRepoImpl implements MaterialGroupRepo {
         CriteriaQuery<MaterialGroupEntity> criteriaQuery = builder.createQuery(MaterialGroupEntity.class);
         Root<MaterialGroupEntity> root = criteriaQuery.from(MaterialGroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialGroupEntity_.status), 0));
+        predicates.add(builder.equal(root.get(MaterialGroupEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<MaterialGroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

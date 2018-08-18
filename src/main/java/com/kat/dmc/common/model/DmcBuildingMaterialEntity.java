@@ -1,11 +1,12 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "dmc_builiding_material", schema = "public")
-public class DmcBuilidingMaterialEntity {
+@Table(name = "dmc_building_material", schema = "public")
+public class DmcBuildingMaterialEntity implements Serializable {
     private int id;
     private Integer productId;
     private Integer materialId;
@@ -16,17 +17,29 @@ public class DmcBuilidingMaterialEntity {
     private Long total;
     private Integer importId;
     private Timestamp usedDate;
-    private Integer materialCode;
-    private Integer materialName;
+    private String materialCode;
+    private String materialName;
+    private Integer buildingProductId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "building_product_id")
+    public Integer getBuildingProductId() {
+        return buildingProductId;
+    }
+
+    public void setBuildingProductId(int buildingProductId) {
+        this.buildingProductId = buildingProductId;
     }
 
     @Basic
@@ -121,21 +134,21 @@ public class DmcBuilidingMaterialEntity {
 
     @Basic
     @Column(name = "material_code")
-    public Integer getMaterialCode() {
+    public String getMaterialCode() {
         return materialCode;
     }
 
-    public void setMaterialCode(Integer materialCode) {
+    public void setMaterialCode(String materialCode) {
         this.materialCode = materialCode;
     }
 
     @Basic
     @Column(name = "material_name")
-    public Integer getMaterialName() {
+    public String getMaterialName() {
         return materialName;
     }
 
-    public void setMaterialName(Integer materialName) {
+    public void setMaterialName(String materialName) {
         this.materialName = materialName;
     }
 
@@ -144,7 +157,7 @@ public class DmcBuilidingMaterialEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DmcBuilidingMaterialEntity that = (DmcBuilidingMaterialEntity) o;
+        DmcBuildingMaterialEntity that = (DmcBuildingMaterialEntity) o;
 
         if (id != that.id) return false;
         if (productId != null ? !productId.equals(that.productId) : that.productId != null) return false;

@@ -1,7 +1,9 @@
 package com.kat.dmc.common.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BuildingMaterialDto implements Serializable {
     private int id;
@@ -12,17 +14,19 @@ public class BuildingMaterialDto implements Serializable {
     private Integer quantity;
     private Integer price;
     private Long total;
-    private Integer importId;
+    private List<Integer> importId;
     private Date usedDate;
     private String materialCode;
     private String materialName;
     private String materialUnit;
 
     public BuildingMaterialDto() {
+        importId = new ArrayList<>();
+        importId.add(0);
     }
 
     public BuildingMaterialDto(int id, Integer productId, Integer materialId, Integer materialType,
-                               Integer status, Integer quantity, Integer price, Long total, Integer importId,
+                               Integer status, Integer quantity, Integer price, Long total, List<Integer> importId,
                                Date usedDate, String materialCode, String materialName, String materialUnit) {
         this.id = id;
         this.productId = productId;
@@ -109,11 +113,11 @@ public class BuildingMaterialDto implements Serializable {
         this.total = total;
     }
 
-    public Integer getImportId() {
+    public List<Integer> getImportId() {
         return importId;
     }
 
-    public void setImportId(Integer importId) {
+    public void setImportId(List<Integer> importId) {
         this.importId = importId;
     }
 

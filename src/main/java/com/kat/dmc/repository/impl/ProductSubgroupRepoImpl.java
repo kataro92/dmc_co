@@ -46,7 +46,7 @@ public class ProductSubgroupRepoImpl implements ProductSubgroupRepo {
         CriteriaQuery<ProductSubgroupEntity> criteriaQuery = builder.createQuery(ProductSubgroupEntity.class);
         Root<ProductSubgroupEntity> root = criteriaQuery.from(ProductSubgroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductSubgroupEntity_.status), 0));
+        predicates.add(builder.equal(root.get(ProductSubgroupEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<ProductSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

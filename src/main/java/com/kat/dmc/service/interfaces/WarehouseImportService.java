@@ -15,4 +15,5 @@ public interface WarehouseImportService {
     List<MaterialImportDto> findMaterialAvaliabeByIdAndQuantity(Integer materialId, Integer quantity);
     void save(MaterialImportDto userDto);
     void delete(Integer id);
+    List<Integer> findAllActiveByMaterialId(int id);
 }

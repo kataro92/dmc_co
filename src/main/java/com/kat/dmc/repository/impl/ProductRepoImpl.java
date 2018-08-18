@@ -46,7 +46,7 @@ public class ProductRepoImpl implements ProductRepo {
         CriteriaQuery<ProductEntity> criteriaQuery = builder.createQuery(ProductEntity.class);
         Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductEntity_.status), 0));
+        predicates.add(builder.equal(root.get(ProductEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<ProductEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

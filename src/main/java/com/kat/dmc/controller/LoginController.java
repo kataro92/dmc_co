@@ -46,7 +46,7 @@ public class LoginController implements Serializable {
             loggedUser.setLstPermission(lstPermission);
             authorityController.setLoggedUser(loggedUser);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/");
-            FacesContext.getCurrentInstance().getExternalContext().dispatch("/main");
+//            FacesContext.getCurrentInstance().getExternalContext().dispatch("/main");
         }
     }
 

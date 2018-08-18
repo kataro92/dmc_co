@@ -46,7 +46,7 @@ public class ProductGroupRepoImpl implements ProductGroupRepo {
         CriteriaQuery<ProductGroupEntity> criteriaQuery = builder.createQuery(ProductGroupEntity.class);
         Root<ProductGroupEntity> root = criteriaQuery.from(ProductGroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductGroupEntity_.status), 0));
+        predicates.add(builder.equal(root.get(ProductGroupEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<ProductGroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

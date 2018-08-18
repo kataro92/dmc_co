@@ -46,7 +46,7 @@ public class SupplierRepoImpl implements SupplierRepo {
         CriteriaQuery<SupplierEntity> criteriaQuery = builder.createQuery(SupplierEntity.class);
         Root<SupplierEntity> root = criteriaQuery.from(SupplierEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(SupplierEntity_.status), 0));
+        predicates.add(builder.equal(root.get(SupplierEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<SupplierEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

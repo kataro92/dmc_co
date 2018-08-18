@@ -87,6 +87,15 @@ public class WarehouseImportServiceImpl implements WarehouseImportService {
         materialImportRepo.delete(materialImportRepo.findById(id));
     }
 
+    @Override
+    public List<Integer> findAllActiveByMaterialId(int id) {
+        return materialImportRepo.findAllActiveByMaterialId(id).stream().map(this::getImportId).collect(Collectors.toList());
+    }
+
+    private Integer getImportId(MaterialImportDto materialImportDto){
+        return materialImportDto.getId();
+    }
+
     private MaterialIETDDto entity2IETDDto(DmcMaterialImportEntity entity){
         MaterialIETDDto map = modelMapper.map(entity, MaterialIETDDto.class);
         map.setCreateDate(entity.getImportDate());

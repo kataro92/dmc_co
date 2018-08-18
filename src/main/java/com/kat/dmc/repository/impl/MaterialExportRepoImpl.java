@@ -11,11 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,5 +98,19 @@ public class MaterialExportRepoImpl implements MaterialExportRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialExportEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+
+    @Override
+    public Long countQuantityByWarehouseId(Integer warehouseId) {
+        String strSQL = "select COUNT(COALESCE(1, 0)) SSA FROM dmc_material_export dmi "+
+                " WHERE dmi.status=0 AND dmi.warehouse_id=?1";
+        Query query = entityManager.createNativeQuery(strSQL);
+        query.setParameter("1", warehouseId);
+        BigInteger totalQuantity = (BigInteger) query.getSingleResult();
+        if(totalQuantity == null){
+            return 0l;
+        }
+        return totalQuantity.longValue();
     }
 }

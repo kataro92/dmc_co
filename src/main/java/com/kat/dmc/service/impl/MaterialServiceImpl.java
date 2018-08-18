@@ -67,15 +67,33 @@ public class MaterialServiceImpl implements MaterialService {
                 newImp.setCurrentPrice(materialImportDetailDto.getPrice());
                 newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
                 newImp.setCurrentImportCode(materialImportDetailDto.getCode());
-                newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
                 newImp.setUnit(materialImportDetailDto.getUnit());
-
                 returnList.add(newImp);
             }
 
         }
         return returnList;
     }
+
+    @Override
+    public MaterialDto findByImport(int materialId, int importId) {
+        MaterialEntity materialEntity = materialRepo.findById(materialId);
+        MaterialDto detailDto = modelMapper.map(materialEntity, MaterialDto.class);
+        List<MaterialImportDetailDto> importIds = materialRepo.findImpIdsByMaterialId(detailDto.getId());
+        for(MaterialImportDetailDto materialImportDetailDto : importIds){
+            if(materialImportDetailDto.getId() == importId) {
+                MaterialDto newImp = detailDto.clone();
+                newImp.setCurrentPrice(materialImportDetailDto.getPrice());
+                newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
+                newImp.setCurrentImportCode(materialImportDetailDto.getCode());
+                newImp.setCurrentImportId(materialImportDetailDto.getMaterialImportId());
+                newImp.setUnit(materialImportDetailDto.getUnit());
+                return newImp;
+            }
+        }
+        return null;
+    }
+
 
     private MaterialDto entity2Dto(MaterialEntity entity){
         return modelMapper.map(entity, MaterialDto.class);

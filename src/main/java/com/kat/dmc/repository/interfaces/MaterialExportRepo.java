@@ -13,4 +13,5 @@ public interface MaterialExportRepo {
     DmcMaterialExportEntity findById(Integer id);
     List<DmcMaterialExportDetailEntity> findAllActiveByMaterialImpId(int materialExport);
     List<DmcMaterialExportEntity> findAllActiveByWarehouseId(Integer id);
+    Long countQuantityByWarehouseId(Integer warehouseId);
 }

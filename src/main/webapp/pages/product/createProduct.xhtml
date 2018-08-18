@@ -16,13 +16,18 @@
             <p:outputPanel id="pnlSummary" styleClass="ui-ng card ui-g-3">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Thông tin sản phẩm"/>
+                    <p:commandLink styleClass="btn btn-sm btn-white position-absolute" style="right: 5px; top:5px"
+                    actionListener="#{productCreator.actSaveProduct()}">
+                        <img alt="Duyệt" height="16" src="#{request.contextPath}/img/icon/ico-save.png"/>
+                        Lưu
+                    </p:commandLink>
                 </div>
                 <div class="card-body">
                     <h6 class="card-title">
-                        <p:commandLink>
+                        <a onclick="PF('dlgChooseProduct').show()">
                             <img height="16" alt="In phiếu nhập kho" src="#{request.contextPath}/img/icon/ico-refresh.png"/>
-                        </p:commandLink>
-                        MÁY BIẾN ÁP 3 PHA _ 250 KVA
+                        </a>
+                        #{productCreator.buildingProductDto.productName}
                     </h6>
                     <div class="ui-g-12">
                         <div class="ui-g-5">
@@ -47,9 +52,7 @@
                             Lưu kho:
                         </div>
                         <div class="ui-g-7 text-right">
-                            <p:commandLink>
-                                Kho chính
-                            </p:commandLink>
+                            <a onclick="$('.dlgChooseWarehouse').modal('show')">#{productCreator.buildingProductDto.warehouseName}</a>
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -206,6 +209,111 @@
                     </p:column>
                 </p:dataTable>
             </p:outputPanel>
+            <!-- Modal -->
+            <p:outputPanel styleClass="modal fade dlgChooseWarehouse" id="dlgChooseWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Lựa chọn kho muốn nhập</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-group">
+                            <c:forEach items="#{productCreator.lstAllWarehouse}" var="warehouse" varStatus="status">
+                                <p:commandLink style="width: 18rem;" styleClass="card" actionListener="#{productCreator.selectWarehouse(status.index)}">
+                                    <div class="card-header text-lg-left">
+                                        <h5>#{warehouse.name}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Số lượng vật tư: #{warehouse.currentMaterial}</h6>
+                                        <p class="card-text">
+                                            Số lượng vật tư đã nhập: #{warehouse.totalImportedMaterial}<br/>
+                                            Số lượng vật tư đã xuất: #{warehouse.totalExportedMaterial}<br/>
+                                            Số lượng phiếu nhập: #{warehouse.totalImportedPaper}<br/>
+                                            Số lượng phiếu xuất: #{warehouse.totalExportedPaper}<br/>
+                                        </p>
+                                    </div>
+                                </p:commandLink>
+                            </c:forEach>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-blue-grey" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </p:outputPanel>
+
+            <p:dialog styleClass="dlgChooseProduct" id="dlgChooseProduct" style="min-height: 651px; max-width: 800px;"
+                      widgetVar="dlgChooseProduct" draggable="false" resizable="false" modal="true">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Lựa chọn sản phẩm</h5>
+                            <button type="button" class="close" onclick="PF('dlgChooseProduct').hide();">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <p:panelGrid styleClass="ui-panelgrid-blank">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="txtProductID" value="Mã sản phẩm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtProductID" readonly="true" styleClass="form-control-sm"
+                                                 value="#{productCreator.searchProduct.code}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel for="txtProductGroup" value="Nhóm thành phẩm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="txtProductGroup" styleClass="form-control-sm"
+                                                     value="#{productCreator.searchProduct.productGroupCode}">
+                                        <p:ajax listener="#{productCreator.selectProductGroup}" update="main:txtProductSubgroup"/>
+                                        <f:selectItems value="#{productCreator.lstProductGroup}" var="group" itemLabel="#{group.name}" itemValue="#{group.id}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel for="txtProductSubgroup" value="Phân loại nhóm thành phẩm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="txtProductSubgroup" styleClass="form-control-sm"
+                                                     value="#{productCreator.searchProduct.productSubgroupCode}">
+                                        <p:ajax listener="#{productCreator.selectProductSubgroup}" update="main:tblProductList"/>
+                                        <f:selectItems value="#{productCreator.lstProductSubgroup}" var="subGroup" itemLabel="#{subGroup.name}" itemValue="#{subGroup.id}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <div class="modal-body">
+                            <p:dataTable id="tblProductList" tableStyleClass="modal-body"
+                                         rowIndexVar="index"
+                                         selectionMode="single"
+                                         var="rows"
+                                         rowKey="#{rows.id}"
+                                         value="#{productCreator.lstProduct}"
+                                         selection="#{productCreator.selectedProduct}"
+                                         rows="20"
+                                         paginator="true"
+                                         paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,20, 50">
+                                <p:column headerText="STT" style="width: 60px; text-align: center;">
+                                    <h:outputText value="#{index+1}"/>
+                                </p:column>
+                                <p:column sortBy="#{rows.code}" headerText="Mã" style="width: 100px">
+                                    <h:outputText value="#{rows.fullCode}"/>
+                                </p:column>
+                                <p:column sortBy="#{rows.name}" headerText="Tên thành phẩm">
+                                    <h:outputText value="#{rows.name}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="modal-footer">
+                            <p:commandLink class="btn btn-blue" actionListener="#{productCreator.selectProduct()}">Chọn</p:commandLink>
+                            <button onclick="PF('dlgChooseProduct').hide();" type="button" class="btn btn-blue-grey" >Close</button>
+                        </div>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </h:body>

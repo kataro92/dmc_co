@@ -19,6 +19,12 @@ public class WarehouseDto implements Serializable {
     private List<MaterialIETDDto> lstTransfer;
     private List<MaterialIETDDto> lstDismiss;
 
+    private Long totalImportedMaterial;
+    private Long totalExportedMaterial;
+    private Long totalImportedPaper;
+    private Long totalExportedPaper;
+    private Long currentMaterial;
+
     public WarehouseDto() {
     }
 
@@ -28,7 +34,12 @@ public class WarehouseDto implements Serializable {
                         List<MaterialIETDDto> lstImport,
                         List<MaterialIETDDto> lstExport,
                         List<MaterialIETDDto> lstTransfer,
-                        List<MaterialIETDDto> lstDismiss) {
+                        List<MaterialIETDDto> lstDismiss,
+                        Long totalImportedMaterial,
+                        Long totalExportedMaterial,
+                        Long totalImportedPaper,
+                        Long totalExportedPaper,
+                        Long currentMaterial) {
         this.id = id;
         this.name = name;
         this.isCanImport = isCanImport;
@@ -43,12 +54,18 @@ public class WarehouseDto implements Serializable {
         this.lstExport = lstExport;
         this.lstTransfer = lstTransfer;
         this.lstDismiss = lstDismiss;
+        this.totalImportedMaterial = totalImportedMaterial;
+        this.totalExportedMaterial = totalExportedMaterial;
+        this.totalImportedPaper = totalImportedPaper;
+        this.totalExportedPaper = totalExportedPaper;
+        this.currentMaterial = currentMaterial;
     }
 
     @Override
     public WarehouseDto clone(){
         return new WarehouseDto(id, name, isCanImport, isCanExport, isCanTransfer, isCanDismiss,
-                address, status, code, categoryId, lstImport, lstExport, lstTransfer, lstDismiss);
+                address, status, code, categoryId, lstImport, lstExport, lstTransfer, lstDismiss,
+                totalImportedMaterial,totalExportedMaterial,totalImportedPaper,totalExportedPaper,currentMaterial);
     }
 
     public int getCategoryId() {
@@ -161,5 +178,45 @@ public class WarehouseDto implements Serializable {
 
     public void setLstDismiss(List<MaterialIETDDto> lstDismiss) {
         this.lstDismiss = lstDismiss;
+    }
+
+    public Long getTotalImportedMaterial() {
+        return totalImportedMaterial;
+    }
+
+    public void setTotalImportedMaterial(Long totalImportedMaterial) {
+        this.totalImportedMaterial = totalImportedMaterial;
+    }
+
+    public Long getTotalExportedMaterial() {
+        return totalExportedMaterial;
+    }
+
+    public void setTotalExportedMaterial(Long totalExportedMaterial) {
+        this.totalExportedMaterial = totalExportedMaterial;
+    }
+
+    public Long getTotalImportedPaper() {
+        return totalImportedPaper;
+    }
+
+    public void setTotalImportedPaper(Long totalImportedPaper) {
+        this.totalImportedPaper = totalImportedPaper;
+    }
+
+    public Long getTotalExportedPaper() {
+        return totalExportedPaper;
+    }
+
+    public void setTotalExportedPaper(Long totalExportedPaper) {
+        this.totalExportedPaper = totalExportedPaper;
+    }
+
+    public Long getCurrentMaterial() {
+        return currentMaterial;
+    }
+
+    public void setCurrentMaterial(Long currentMaterial) {
+        this.currentMaterial = currentMaterial;
     }
 }

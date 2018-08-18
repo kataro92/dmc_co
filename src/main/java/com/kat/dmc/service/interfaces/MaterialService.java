@@ -12,4 +12,5 @@ public interface MaterialService {
     List<MaterialDto> findBySubgroupId(int id);
     MaterialDto findByCode(String code);
     List<MaterialDto> findAllByImport();
+    MaterialDto findByImport(int materialId, int importId);
 }

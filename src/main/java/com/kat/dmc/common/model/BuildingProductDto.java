@@ -2,6 +2,7 @@ package com.kat.dmc.common.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class BuildingProductDto implements Serializable {
     private int id;
@@ -14,11 +15,15 @@ public class BuildingProductDto implements Serializable {
     private Long total;
     private Integer status;
     private Integer code;
-
+    private String warehouseName;
+    private String productName;
+    private List<BuildingMaterialDto> buildingMaterialDtos;
     public BuildingProductDto() {
     }
 
-    public BuildingProductDto(int id, Integer productId, Integer warehouseId, Date createdDate, Integer siteMoney, Long price, Integer quantity, Long total, Integer status, Integer code) {
+    public BuildingProductDto(int id, Integer productId, Integer warehouseId, Date createdDate,
+                              Integer siteMoney, Long price, Integer quantity, Long total,
+                              Integer status, Integer code, String warehouseName, String productName, List<BuildingMaterialDto> buildingMaterialDtos) {
         this.id = id;
         this.productId = productId;
         this.warehouseId = warehouseId;
@@ -29,11 +34,15 @@ public class BuildingProductDto implements Serializable {
         this.total = total;
         this.status = status;
         this.code = code;
+        this.warehouseName = warehouseName;
+        this.productName = productName;
+        this.setBuildingMaterialDtos(buildingMaterialDtos);
     }
 
     @Override
     public BuildingProductDto clone(){
-        return new BuildingProductDto(id, productId, warehouseId, createdDate, siteMoney, price, quantity, total, status, code);
+        return new BuildingProductDto(id, productId, warehouseId, createdDate, siteMoney, price,
+                quantity, total, status, code, warehouseName, productName, getBuildingMaterialDtos());
     }
 
     public int getId() {
@@ -114,5 +123,29 @@ public class BuildingProductDto implements Serializable {
 
     public void setCode(Integer code) {
         this.code = code;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public List<BuildingMaterialDto> getBuildingMaterialDtos() {
+        return buildingMaterialDtos;
+    }
+
+    public void setBuildingMaterialDtos(List<BuildingMaterialDto> buildingMaterialDtos) {
+        this.buildingMaterialDtos = buildingMaterialDtos;
     }
 }

@@ -8,12 +8,14 @@ import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.primefaces.PrimeFaces;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("productCreator")
-@ConversationScoped
+@ViewScoped
 public class ProductCreatorController implements Serializable {
 
     @Autowired
@@ -45,6 +47,21 @@ public class ProductCreatorController implements Serializable {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    ProductGroupService productGroupService;
+
+    @Autowired
+    ProductSubgroupService productSubgroupService;
+
+    @Autowired
+    BuildingService buildingService;
+
+    @Autowired
+    WarehouseImportService warehouseImportService;
+
     private ControllerAction.State currentAct;
     private List<MaterialDto> lstAllMaterial;
     private List<MaterialDto> lstFilteredMaterial;
@@ -54,15 +71,127 @@ public class ProductCreatorController implements Serializable {
     private List<BuildingMaterialDto> lstBuildingMaterial;
     private BuildingProductDto buildingProductDto;
 
+
+    private List<ProductGroupDto> lstProductGroup;
+    private List<ProductSubgroupDto> lstAllProductSubgroup;
+    private List<ProductSubgroupDto> lstProductSubgroup;
+    private List<ProductDto> lstAllProduct;
+    private List<ProductDto> lstProduct;
+    private ProductDto selectedProduct;
+    private ProductDto searchProduct;
+
     @PostConstruct
     public void init(){
         setCurrentAct(ControllerAction.State.VIEW);
         lstAllMaterial = materialService.findAllByImport();
         lstAllEmployees = employeeService.findAllActive();
         lstMaterialGroup = materialGroupService.findAllActive();
-        lstAllWarehouse = warehouseService.findAllActive();
+        lstAllWarehouse = warehouseService.findAllActiveWithStatus();
         lstBuildingMaterial = new ArrayList<>();
         buildingProductDto = new BuildingProductDto();
+        buildingProductDto.setWarehouseName("<< Lựa chọn >>");
+        lstProductGroup = productGroupService.findAllActive();
+        lstAllProductSubgroup = productSubgroupService.findAllActive();
+        if(lstProductGroup != null && !lstProductGroup.isEmpty()
+                && lstAllProductSubgroup != null && !lstAllProductSubgroup.isEmpty()){
+            lstProductSubgroup = new ArrayList<>();
+            for(ProductSubgroupDto productSubgroupDto : lstAllProductSubgroup){
+                if(productSubgroupDto.getProductGroupCode().equals(String.valueOf(lstProductGroup.get(0).getId()))){
+                    lstProductSubgroup.add(productSubgroupDto);
+                }
+            }
+        }
+        lstAllProduct = productService.findAll();
+        if(lstProductSubgroup != null && !lstProductSubgroup.isEmpty()
+                && lstAllProduct != null && !lstAllProduct.isEmpty()){
+            lstProduct = new ArrayList<>();
+            for(ProductDto productDto : lstAllProduct){
+                if(productDto.getProductSubgroupCode().equals(String.valueOf(lstProductSubgroup.get(0).getId()))){
+                    lstProduct.add(productDto);
+                }
+            }
+        }
+        if(lstProduct != null && !lstProduct.isEmpty()){
+            selectedProduct = lstProduct.get(0);
+        }else {
+            selectedProduct = new ProductDto();
+        }
+        searchProduct = new ProductDto();
+    }
+
+    public void selectProductGroup(){
+        lstProductSubgroup = new ArrayList<>();
+        for(ProductSubgroupDto productSubgroupDto : lstAllProductSubgroup){
+            if(productSubgroupDto.getProductGroupCode().equals(String.valueOf(searchProduct.getProductGroupCode()))){
+                lstProductSubgroup.add(productSubgroupDto);
+            }
+        }
+        if(lstProductSubgroup != null && !lstProductSubgroup.isEmpty()){
+            searchProduct.setProductSubgroupCode(lstProductSubgroup.get(0).getProductGroupCode());
+            selectProductSubgroup();
+        }
+        PrimeFaces.current().ajax().update("main:txtProductSubgroup");
+    }
+
+    public void selectProductSubgroup(){
+        lstProduct = new ArrayList<>();
+        for(ProductDto productDto : lstAllProduct){
+            if(productDto.getProductSubgroupCode().equals(String.valueOf(searchProduct.getProductSubgroupCode()))){
+                lstProduct.add(productDto);
+            }
+        }
+        if(lstProduct != null && !lstProduct.isEmpty()){
+            searchProduct.setId(lstProduct.get(0).getId());
+//            selectProduct();
+        }
+        PrimeFaces.current().ajax().update("main:tblProductList");
+    }
+
+    public void selectProduct(){
+        if(selectedProduct != null) {
+            saveProduct2Building();
+            PrimeFaces.current().ajax().update("main:pnlSummary");
+            PrimeFaces.current().executeScript("$('.dlgChooseWarehouse').modal('hide')");
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
+                    , "Chưa lựa chọn thành phẩm !", "Có lỗi xảy ra"));
+        }
+    }
+
+    public void selectWarehouse(int idx){
+        buildingProductDto.setWarehouseId(lstAllWarehouse.get(idx).getId());
+        buildingProductDto.setWarehouseName(lstAllWarehouse.get(idx).getName());
+        PrimeFaces.current().executeScript("PF('dlgChooseProduct').hide()");
+        PrimeFaces.current().ajax().update("main:pnlSummary");
+    }
+
+    private void saveProduct2Building(){
+        buildingProductDto.setProductId(selectedProduct.getId());
+        buildingProductDto.setProductName(selectedProduct.getName());
+        if(buildingProductDto.getBuildingMaterialDtos() != null) {
+            for (BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()) {
+                buildingMaterialDto.setProductId(selectedProduct.getId());
+            }
+        }
+    }
+
+    public void actSaveProduct(){
+        if(selectedProduct == null || selectedProduct.getId() == null || selectedProduct.getId() == 0){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Có lỗi!"
+                    , "Chưa chọn sản phẩm sẽ sản xuất"));
+            return;
+        }
+        try {
+            buildingProductDto.setBuildingMaterialDtos(lstBuildingMaterial);
+            saveProduct2Building();
+            buildingService.save(buildingProductDto);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Thêm thành công!"
+                    , null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Có lỗi!"
+                    , e.getMessage()));
+        }
     }
 
     public void actAddMaterial(int index){
@@ -79,7 +208,10 @@ public class ProductCreatorController implements Serializable {
         materialDto.setPrice(dto.getCurrentPrice());
         materialDto.setQuantity(0);
         materialDto.setMaterialUnit(dto.getUnit());
-
+        materialDto.setPrice(dto.getCurrentPrice());
+        //Find relate import
+        List<Integer> importIds = warehouseImportService.findAllActiveByMaterialId(dto.getId());
+        materialDto.setImportId(importIds);
         lstBuildingMaterial.add(materialDto);
     }
     public void actDeleteMaterial(int index){
@@ -95,12 +227,12 @@ public class ProductCreatorController implements Serializable {
     private void updateBuildingProductInfo(){
         Long totalPrice = 0l;
         for(BuildingMaterialDto materialDto : lstBuildingMaterial){
-            totalPrice += materialDto.getTotal();
+            if(materialDto.getTotal() != null) {
+                totalPrice += materialDto.getTotal();
+            }
         }
         buildingProductDto.setPrice(totalPrice);
     }
-
-
 
     public ControllerAction.State getCurrentAct() {
         return currentAct;
@@ -164,5 +296,45 @@ public class ProductCreatorController implements Serializable {
 
     public void setBuildingProductDto(BuildingProductDto buildingProductDto) {
         this.buildingProductDto = buildingProductDto;
+    }
+
+    public List<ProductDto> getLstProduct() {
+        return lstProduct;
+    }
+
+    public void setLstProduct(List<ProductDto> lstProduct) {
+        this.lstProduct = lstProduct;
+    }
+
+    public ProductDto getSelectedProduct() {
+        return selectedProduct;
+    }
+
+    public void setSelectedProduct(ProductDto selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public List<ProductSubgroupDto> getLstProductSubgroup() {
+        return lstProductSubgroup;
+    }
+
+    public void setLstProductSubgroup(List<ProductSubgroupDto> lstProductSubgroup) {
+        this.lstProductSubgroup = lstProductSubgroup;
+    }
+
+    public ProductDto getSearchProduct() {
+        return searchProduct;
+    }
+
+    public void setSearchProduct(ProductDto searchProduct) {
+        this.searchProduct = searchProduct;
+    }
+
+    public List<ProductGroupDto> getLstProductGroup() {
+        return lstProductGroup;
+    }
+
+    public void setLstProductGroup(List<ProductGroupDto> lstProductGroup) {
+        this.lstProductGroup = lstProductGroup;
     }
 }

@@ -46,7 +46,7 @@ public class JobPositionRepoImpl implements JobPositionRepo {
         CriteriaQuery<JobPositionEntity> criteriaQuery = builder.createQuery(JobPositionEntity.class);
         Root<JobPositionEntity> root = criteriaQuery.from(JobPositionEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(JobPositionEntity_.status), 0));
+        predicates.add(builder.equal(root.get(JobPositionEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<JobPositionEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();

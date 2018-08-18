@@ -11,7 +11,7 @@ public class ProductDto implements Serializable {
     private String shortDescription;
     private String sortName;
     private Integer status;
-    private int id;
+    private Integer id;
     private String unit;
     private String fullCode;
     private Boolean isCodeFixed;
@@ -130,11 +130,11 @@ public class ProductDto implements Serializable {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

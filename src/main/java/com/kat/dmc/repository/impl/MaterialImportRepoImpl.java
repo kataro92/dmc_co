@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -109,6 +110,30 @@ public class MaterialImportRepoImpl implements MaterialImportRepo {
         final TypedQuery<DmcMaterialImportDetailEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
+    @Override
+    public List<DmcMaterialImportDetailEntity> findAllActiveByMaterialIdImpId(int materialImportId, int materialId) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcMaterialImportDetailEntity> criteriaQuery = builder.createQuery(DmcMaterialImportDetailEntity.class);
+        Root<DmcMaterialImportDetailEntity> root = criteriaQuery.from(DmcMaterialImportDetailEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(DmcMaterialImportDetailEntity_.materialImportId), materialImportId));
+        predicates.add(builder.equal(root.get(DmcMaterialImportDetailEntity_.materialId), materialId));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcMaterialImportDetailEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
+    @Override
+    public List<DmcMaterialImportDetailEntity> findAllActiveByMaterialIdImpIds(List<Integer> materialImportIds, int materialId) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcMaterialImportDetailEntity> criteriaQuery = builder.createQuery(DmcMaterialImportDetailEntity.class);
+        Root<DmcMaterialImportDetailEntity> root = criteriaQuery.from(DmcMaterialImportDetailEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(root.get(DmcMaterialImportDetailEntity_.materialImportId).in(materialImportIds));
+        predicates.add(builder.equal(root.get(DmcMaterialImportDetailEntity_.materialId), materialId));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcMaterialImportDetailEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
 
     @Override
     public List<DmcMaterialImportEntity> findAllActiveByWarehouseId(Integer warehouseId) {
@@ -129,6 +154,9 @@ public class MaterialImportRepoImpl implements MaterialImportRepo {
                 ", DM.warehouse_id, DM.reson, DM.total, DM.import_from, sum(DTL.quantity) child_quantity" +
                 " FROM dmc_material_import DM, dmc_material_import_detail DTL " +
                 " WHERE DTL.material_id = ?1 AND DM.id = DTL.material_import_id" +
+                " GROUP BY DM.id, DM.code, DM.category_id, DM.import_date, DM.supplier_id" +
+                ", DM.status, DM.import_from_id" +
+                ", DM.warehouse_id, DM.reson, DM.total, DM.import_from " +
                 " ORDER BY DM.import_date";
         Query query = entityManager.createNativeQuery(strSQL);
         query.setParameter("1", materialId);
@@ -151,9 +179,22 @@ public class MaterialImportRepoImpl implements MaterialImportRepo {
         importDto.setImportFromId((Integer) objects[6]);
         importDto.setWarehouseId((Integer) objects[7]);
         importDto.setReson((String) objects[8]);
-        importDto.setTotal((Long) objects[9]);
+        importDto.setTotal(((BigInteger) objects[9]).longValue());
         importDto.setImportFrom((Integer) objects[10]);
-        importDto.setChildQuantity((Integer) objects[11]);
+        importDto.setChildQuantity(((BigInteger) objects[11]).intValue());
         return importDto;
+    }
+
+    @Override
+    public Long countQuantityByWarehouseId(Integer warehouseId) {
+        String strSQL = "select COUNT(COALESCE(1, 0)) SSA FROM dmc_material_import dmi "+
+                " WHERE dmi.status=0 AND dmi.warehouse_id=?1";
+        Query query = entityManager.createNativeQuery(strSQL);
+        query.setParameter("1", warehouseId);
+        BigInteger totalQuantity = (BigInteger) query.getSingleResult();
+        if(totalQuantity == null){
+            return 0l;
+        }
+        return totalQuantity.longValue();
     }
 }

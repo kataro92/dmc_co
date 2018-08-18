@@ -8,10 +8,7 @@ import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -54,7 +51,7 @@ public class MaterialRepoImpl implements MaterialRepo {
         CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
         Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialEntity_.status), 0));
+        predicates.add(builder.equal(root.get(MaterialEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
@@ -145,20 +142,23 @@ public class MaterialRepoImpl implements MaterialRepo {
     @Override
     public List<MaterialImportDetailDto> findImpIdsByMaterialId(int id) {
         List<MaterialImportDetailDto> detailDtoList = new ArrayList<>();
-        //Get all import
-        List<DmcMaterialImportDetailEntity> importDetailEntities = importDetailRepo.findByIdMaterialId(id);
-        //Get all export
-        List<DmcMaterialExportDetailEntity> exportDetailEntities = exportDetailRepo.findByIdMaterialId(id);
-        //TO-DO check date already OK for import
-        for(DmcMaterialImportDetailEntity detailEntity : importDetailEntities){
-            detailDtoList.addAll(exactImportByExport(detailEntity, exportDetailEntities));
-        }
+        try {
+            //Get all import
+            List<DmcMaterialImportDetailEntity> importDetailEntities = importDetailRepo.findByIdMaterialId(id);
+            //Get all export
+            List<DmcMaterialExportDetailEntity> exportDetailEntities = exportDetailRepo.findByIdMaterialId(id);
+            //TO-DO check date already OK for import
+            for (DmcMaterialImportDetailEntity detailEntity : importDetailEntities) {
+                detailDtoList.addAll(exactImportByExport(detailEntity, exportDetailEntities));
+            }
 
-        for(MaterialImportDetailDto importDetailDto : detailDtoList){
-            MaterialEntity materialEntity = findById(importDetailDto.getMaterialId());
-            importDetailDto.setUnit(materialEntity.getUnit());
+            for (MaterialImportDetailDto importDetailDto : detailDtoList) {
+                MaterialEntity materialEntity = findById(importDetailDto.getMaterialId());
+                importDetailDto.setUnit(materialEntity.getUnit());
+            }
+        }catch (NoResultException ex){
+            System.out.println(ex.getMessage());
         }
-
         return detailDtoList;
     }
 

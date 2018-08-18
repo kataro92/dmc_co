@@ -12,4 +12,5 @@ public interface MaterialImportDetailRepo {
     void delete(DmcMaterialImportDetailEntity userEntity);
     DmcMaterialImportDetailEntity findById(Integer id);
     List<DmcMaterialImportDetailEntity> findByIdMaterialId(int id);
+    Long countQuantityByWarehouseId(Integer warehouseId);
 }

@@ -237,7 +237,7 @@
                                     <destFileName>jetty-runner.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
-                        </configuration>cd
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

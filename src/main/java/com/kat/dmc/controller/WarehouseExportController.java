@@ -251,6 +251,11 @@ public class WarehouseExportController implements Serializable {
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){
+        if(selectedWarehouseExport.getExportFrom() == 3){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Không được sao chép phiếu xuất sản xuất"));
+            return;
+        }
         setCurrentAct(ControllerAction.State.COPY);
         selectedWarehouseExport = selectedWarehouseExport.clone();
         selectedWarehouseExport.setId(utilRepo.findSequenceNextval("dmc_material_export_id_seq"));
@@ -259,10 +264,20 @@ public class WarehouseExportController implements Serializable {
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actEdit(){
+        if(selectedWarehouseExport.getExportFrom() == 3){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Không được sửa phiếu xuất sản xuất"));
+            return;
+        }
         setCurrentAct(ControllerAction.State.EDIT);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actDelete(){
+        if(selectedWarehouseExport.getExportFrom() == 3){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Không được xóa phiếu xuất sản xuất"));
+            return;
+        }
         try{
             warehouseExportService.delete(selectedWarehouseExport.getId());
             lstAllWarehouseExport.removeIf(s -> s.getId() == selectedWarehouseExport.getId());

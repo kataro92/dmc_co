@@ -9,4 +9,5 @@ public interface BuildingMaterialRepo {
     void save(DmcBuildingMaterialEntity userEntity);
     void delete(DmcBuildingMaterialEntity userEntity);
     DmcBuildingMaterialEntity findById(Integer userId);
+    List<DmcBuildingMaterialEntity> findByImportId(Integer importId);
 }

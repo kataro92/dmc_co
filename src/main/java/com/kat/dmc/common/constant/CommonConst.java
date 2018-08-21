@@ -3,6 +3,8 @@ package com.kat.dmc.common.constant;
 public class CommonConst {
 
     public enum Code {
+        IMPORT_CATEGORY_ID_0("IMPORT_CATEGORY_ID","0", "Vật tư"),
+        IMPORT_CATEGORY_ID_1("IMPORT_CATEGORY_ID","1", "Thành phẩm"),
         EMP_GENDER_0("EMP_GENDER","0", "--"),
         EMP_GENDER_1("EMP_GENDER","1", "Nam"),
         EMP_GENDER_2("EMP_GENDER","2", "Nữ"),

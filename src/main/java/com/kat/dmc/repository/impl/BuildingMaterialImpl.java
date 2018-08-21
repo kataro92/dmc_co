@@ -49,7 +49,28 @@ public class BuildingMaterialImpl implements BuildingMaterialRepo {
     }
 
     @Override
-    public DmcBuildingMaterialEntity findById(Integer userId) {
-        return null;
+    public DmcBuildingMaterialEntity findById(Integer id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcBuildingMaterialEntity> criteriaQuery = builder.createQuery(DmcBuildingMaterialEntity.class);
+        Root<DmcBuildingMaterialEntity> root = criteriaQuery.from(DmcBuildingMaterialEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.isNotNull(root.get(DmcBuildingMaterialEntity_.id)));
+        predicates.add(builder.equal(root.get(DmcBuildingMaterialEntity_.id), id));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcBuildingMaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<DmcBuildingMaterialEntity> findByImportId(Integer importId) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcBuildingMaterialEntity> criteriaQuery = builder.createQuery(DmcBuildingMaterialEntity.class);
+        Root<DmcBuildingMaterialEntity> root = criteriaQuery.from(DmcBuildingMaterialEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.isNotNull(root.get(DmcBuildingMaterialEntity_.id)));
+        predicates.add(builder.equal(root.get(DmcBuildingMaterialEntity_.importId), importId));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcBuildingMaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }

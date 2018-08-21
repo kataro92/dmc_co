@@ -1,16 +1,14 @@
 package com.kat.dmc.controller;
 
 
+import com.kat.dmc.common.constant.CommonConst;
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.common.util.StringUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
-import com.kat.dmc.service.interfaces.MaterialService;
-import com.kat.dmc.service.interfaces.SupplierService;
-import com.kat.dmc.service.interfaces.WarehouseImportService;
-import com.kat.dmc.service.interfaces.WarehouseService;
+import com.kat.dmc.service.interfaces.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -57,6 +55,9 @@ public class WarehouseImportController implements Serializable {
 
     @Autowired
     SessionController sessionController;
+
+    @Autowired
+    BuildingService buildingService;
 
     private ControllerAction.State currentAct;
     private boolean disableAdd;
@@ -243,7 +244,13 @@ public class WarehouseImportController implements Serializable {
     public void selectWarehouseImport(SelectEvent selectEvent){
         tempWarehouseImport = (MaterialImportDto) selectEvent.getObject();
         selectedWarehouseImport = tempWarehouseImport.clone();
-        selectedWarehouseImport.setLstDetails(warehouseImportService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
+        if(String.valueOf(selectedWarehouseImport.getCategoryId()).equals(CommonConst.Code.IMPORT_CATEGORY_ID_0.code())) {
+            //Vật tư
+            selectedWarehouseImport.setLstDetails(warehouseImportService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
+        }else if(String.valueOf(selectedWarehouseImport.getCategoryId()).equals(CommonConst.Code.IMPORT_CATEGORY_ID_1.code())) {
+            //Thành phẩm
+            selectedWarehouseImport.setLstDetails(buildingService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
+        }
     }
 
     public void actAdd(){
@@ -256,6 +263,11 @@ public class WarehouseImportController implements Serializable {
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){
+        if(selectedWarehouseImport.getImportFrom() != 0){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Không được sao chép phiếu nhập sản phẩm "));
+            return;
+        }
         setCurrentAct(ControllerAction.State.COPY);
         selectedWarehouseImport = selectedWarehouseImport.clone();
         selectedWarehouseImport.setId(utilRepo.findSequenceNextval("dmc_material_import_id_seq"));
@@ -264,11 +276,21 @@ public class WarehouseImportController implements Serializable {
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actEdit(){
+        if(selectedWarehouseImport.getImportFrom() != 0){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Không được sửa phiếu nhập sản phẩm "));
+            return;
+        }
         setCurrentAct(ControllerAction.State.EDIT);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actDelete(){
         try{
+            if(selectedWarehouseImport.getImportFrom() != 0){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                        , "Warn", "Không được xóa phiếu nhập sản phẩm "));
+                return;
+            }
             warehouseImportService.delete(selectedWarehouseImport.getId());
             lstAllWarehouseImport.removeIf(s -> s.getId() == selectedWarehouseImport.getId());
             selectedWarehouseImport = null;

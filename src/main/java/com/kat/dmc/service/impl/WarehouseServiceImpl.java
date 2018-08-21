@@ -1,14 +1,15 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.DmcWarehouseEntity;
-import com.kat.dmc.common.model.WarehouseDto;
+import com.kat.dmc.common.model.*;
 import com.kat.dmc.repository.interfaces.*;
+import com.kat.dmc.service.interfaces.WarehouseImportService;
 import com.kat.dmc.service.interfaces.WarehouseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,6 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Autowired
     WarehouseRepo warehouseRepo;
-
     @Autowired
     MaterialImportDetailRepo importDetailRepo;
     @Autowired
@@ -30,6 +30,39 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Override
+    public List<MaterialOnStockDto> findAllMaterialOnStock() {
+        //Get all import material
+        List<DmcMaterialImportDetailEntity> importEntities = importDetailRepo.findAllActive();
+        List<DmcMaterialImportEntity> importEntityList = importRepo.findAllActive();
+        List<MaterialOnStockDto> materialOnStockDtoList = new ArrayList<>();
+        for(DmcMaterialImportDetailEntity importDetailEntity : importEntities){
+            boolean isMeet = false;
+            for(MaterialOnStockDto materialOnStockDto : materialOnStockDtoList){
+                if(materialOnStockDto.getMaterialId() == importDetailEntity.getMaterialId()
+                        && materialOnStockDto.getImportId() == importDetailEntity.getMaterialImportId()){
+                    isMeet = true;
+                    materialOnStockDto.setMaterialQuantity(materialOnStockDto.getMaterialQuantity() + importDetailEntity.getQuantity());
+                }
+            }
+            if(!isMeet){
+                MaterialOnStockDto materialOnStockDto = new MaterialOnStockDto();
+                materialOnStockDto.setImportId(importDetailEntity.getMaterialImportId());
+                materialOnStockDto.setMaterialId(importDetailEntity.getMaterialId());
+                materialOnStockDto.setMaterialPrice(importDetailEntity.getPrice());
+                materialOnStockDto.setMaterialQuantity(importDetailEntity.getQuantity());
+                materialOnStockDto.setMaterialGroupId(importDetailEntity.getMaterialGroupId());
+                for(DmcMaterialImportEntity importEntity : importEntityList){
+                    if(importEntity.getId() == importDetailEntity.getMaterialImportId()){
+                        materialOnStockDto.setWarehouseId(importEntity.getWarehouseId());
+                    }
+                }
+                materialOnStockDtoList.add(materialOnStockDto);
+            }
+        }
+        return materialOnStockDtoList;
+    }
 
     @Override
     public List<WarehouseDto> findAll() {

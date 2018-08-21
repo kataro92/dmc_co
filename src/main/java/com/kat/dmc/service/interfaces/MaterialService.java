@@ -1,6 +1,7 @@
 package com.kat.dmc.service.interfaces;
 
 import com.kat.dmc.common.model.MaterialDto;
+import com.kat.dmc.common.model.MaterialOnStockDto;
 
 import java.util.List;
 

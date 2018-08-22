@@ -1,1 +1,1 @@
-web: java -jar target/dmc-0.0.1-SNAPSHOT.war --port=$PORT
+web: java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes/:target/dependency -jar target/dmc-0.0.1-SNAPSHOT.war --port=$PORT

@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@EnableScheduling
+//@EnableScheduling
 @Component
 @Transactional
 public class WarehouseDayCheck {

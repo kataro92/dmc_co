@@ -50,7 +50,7 @@ public class WebConfig {
 
             @Override
             public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setInitParameter("primefaces.THEME", "kat");
+                servletContext.setInitParameter("primefaces.THEME", "omega");
                 servletContext.setInitParameter("primefaces.UPLOADER", "commons");
             }
         };

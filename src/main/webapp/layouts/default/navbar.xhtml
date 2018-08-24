@@ -3,7 +3,6 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
@@ -17,9 +16,6 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-#{menu.objectId}"
                                data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
-                                <c:if test="#{menu.objectIcon != null}">
-                                    <img style="float: left;" height="25" alt="#{menu.objectIcon}" src="#{request.contextPath}/img/icon/#{menu.objectIcon}.png"/>
-                                </c:if>
                                 #{menu.objectTitle}</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-#{menu.objectId}">
                                 <c:if test="#{menu.lstChildObject != null}">
@@ -37,9 +33,6 @@
                         <li class="nav-item">
                             <p:commandLink styleClass="nav-link"
                                            actionListener="#{home.selectPage(menu.objectValue)}" >
-                                <c:if test="#{menu.objectIcon != null}">
-                                    <img style="float: left;" height="25" alt="#{menu.objectIcon}" src="#{request.contextPath}/img/icon/#{menu.objectIcon}.png"/>
-                                </c:if>
                                 #{menu.objectTitle}
                             </p:commandLink>
                         </li>

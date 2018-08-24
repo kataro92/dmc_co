@@ -3,6 +3,7 @@ package com.kat.dmc.controller;
 
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.*;
@@ -89,6 +90,7 @@ public class ProductCreatorController implements Serializable {
         lstAllWarehouse = warehouseService.findAllActiveWithStatus();
         lstBuildingMaterial = new ArrayList<>();
         buildingProductDto = new BuildingProductDto();
+        buildingProductDto.setCreatedDate(DateUtil.getCurrentDayTS());
         buildingProductDto.setWarehouseName("<< Lựa chọn >>");
         lstProductGroup = productGroupService.findAllActive();
         lstAllProductSubgroup = productSubgroupService.findAllActive();
@@ -151,7 +153,7 @@ public class ProductCreatorController implements Serializable {
         if(selectedProduct != null) {
             saveProduct2Building();
             PrimeFaces.current().ajax().update("main:pnlSummary");
-            PrimeFaces.current().executeScript("$('.dlgChooseWarehouse').modal('hide')");
+            PrimeFaces.current().executeScript("PF('dlgChooseProduct').hide()");
         }else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , "Chưa lựa chọn thành phẩm !", "Có lỗi xảy ra"));
@@ -161,7 +163,7 @@ public class ProductCreatorController implements Serializable {
     public void selectWarehouse(int idx){
         buildingProductDto.setWarehouseId(lstAllWarehouse.get(idx).getId());
         buildingProductDto.setWarehouseName(lstAllWarehouse.get(idx).getName());
-        PrimeFaces.current().executeScript("PF('dlgChooseProduct').hide()");
+        PrimeFaces.current().executeScript("$('.dlgChooseWarehouse').modal('hide')");
         PrimeFaces.current().ajax().update("main:pnlSummary");
     }
 

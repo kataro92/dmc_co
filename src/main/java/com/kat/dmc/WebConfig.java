@@ -41,18 +41,8 @@ public class WebConfig {
             servletContext.setInitParameter("javax.faces.PROJECT_STAGE", "Production");
             servletContext.setInitParameter("com.ocpsoft.pretty.DISABLE_SERVLET_3.0_SUPPORT", "true");
             servletContext.setInitParameter("javax.faces.STATE_SAVING_METHOD", "server");
-        };
-    }
-
-    @Bean
-    public ServletContextInitializer initializer() {
-        return new ServletContextInitializer() {
-
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setInitParameter("primefaces.THEME", "omega");
-                servletContext.setInitParameter("primefaces.UPLOADER", "commons");
-            }
+            servletContext.setInitParameter("primefaces.THEME", "omega");
+            servletContext.setInitParameter("primefaces.UPLOADER", "commons");
         };
     }
 

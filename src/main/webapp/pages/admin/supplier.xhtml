@@ -15,16 +15,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{supplierMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{supplierMgr.disableAdd}" styleClass="btn btn-blue btn-sm" value="Thêm"
+                    <p:commandLink id="btnAdd" disabled="#{supplierMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
                                    actionListener="#{supplierMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{supplierMgr.disableCopy}" styleClass="btn btn-blue btn-sm" value="Chép"
+                    <p:commandLink id="btnCopy" disabled="#{supplierMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
                                    actionListener="#{supplierMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{supplierMgr.disableEdit}" styleClass="btn btn-blue btn-sm" value="Sửa"
+                    <p:commandLink id="btnEdit" disabled="#{supplierMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
                                    actionListener="#{supplierMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{supplierMgr.disableDelete}" styleClass="btn btn-blue btn-sm" value="Xoá"
+                    <p:commandLink id="btnDelete" disabled="#{supplierMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
                                    actionListener="#{supplierMgr.actDelete()}"
                                    update=":main" />
                 </div>

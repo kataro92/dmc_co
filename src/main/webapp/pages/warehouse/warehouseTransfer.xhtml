@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{warehouseTransfer.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{warehouseTransfer.disableAdd}" styleClass="btn btn-blue btn-sm" value="Thêm"
+                    <p:commandLink id="btnAdd" disabled="#{warehouseTransfer.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
                                    actionListener="#{warehouseTransfer.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{warehouseTransfer.disableCopy}" styleClass="btn btn-blue btn-sm" value="Chép"
+                    <p:commandLink id="btnCopy" disabled="#{warehouseTransfer.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
                                    actionListener="#{warehouseTransfer.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{warehouseTransfer.disableEdit}" styleClass="btn btn-blue btn-sm" value="Sửa"
+                    <p:commandLink id="btnEdit" disabled="#{warehouseTransfer.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
                                    actionListener="#{warehouseTransfer.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{warehouseTransfer.disableDelete}" styleClass="btn btn-blue btn-sm" value="Xoá"
+                    <p:commandLink id="btnDelete" disabled="#{warehouseTransfer.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
                                    actionListener="#{warehouseTransfer.actDelete()}"
                                    update=":main" />
                 </div>

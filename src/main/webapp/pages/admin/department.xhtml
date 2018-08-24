@@ -18,19 +18,19 @@
                 <div class="card-header text-center">
                     <p:commandLink id="btnAdd" disabled="#{deptMgr.disableAdd}"
                                    actionListener="#{deptMgr.actAdd}"
-                                   styleClass="btn btn-blue btn-sm" value="Thêm"
+                                   styleClass="btn btn-blue btn-md" value="Thêm"
                                    update=":main" />
                     <p:commandLink id="btnCopy" disabled="#{deptMgr.disableCopy}"
                                    actionListener="#{deptMgr.actCopy}"
-                                   styleClass="btn btn-blue btn-sm" value="Chép"
+                                   styleClass="btn btn-blue btn-md" value="Chép"
                                    update=":main" />
                     <p:commandLink id="btnEdit" disabled="#{deptMgr.disableEdit}"
                                    actionListener="#{deptMgr.actEdit}"
-                                   styleClass="btn btn-blue btn-sm" value="Sửa"
+                                   styleClass="btn btn-blue btn-md" value="Sửa"
                                    update=":main" />
                     <p:commandLink id="btnDelete" disabled="#{deptMgr.disableDelete}"
                                    actionListener="#{deptMgr.actDelete}"
-                                   styleClass="btn btn-blue btn-sm" value="Xoá"
+                                   styleClass="btn btn-blue btn-md" value="Xoá"
                                    update=":main" />
                 </div>
                 <p:treeTable value="#{deptMgr.root}" tableStyleClass="card-body" var="dept" selectionMode="single">

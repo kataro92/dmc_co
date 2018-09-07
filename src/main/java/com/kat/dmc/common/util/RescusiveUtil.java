@@ -1,6 +1,6 @@
 package com.kat.dmc.common.util;
 
-import com.kat.dmc.common.model.ObjectDto;
+import com.kat.dmc.common.dto.ObjectDto;
 
 import java.util.List;
 

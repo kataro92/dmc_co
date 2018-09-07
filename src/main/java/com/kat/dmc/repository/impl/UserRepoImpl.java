@@ -56,7 +56,6 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public void save(UserEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

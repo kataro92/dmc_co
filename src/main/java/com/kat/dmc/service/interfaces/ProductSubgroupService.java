@@ -1,6 +1,6 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.ProductSubgroupDto;
+import com.kat.dmc.common.dto.ProductSubgroupDto;
 
 import java.util.List;
 

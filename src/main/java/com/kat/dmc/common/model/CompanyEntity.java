@@ -13,7 +13,6 @@ public class CompanyEntity {
     private String fax;
     private String name;
     private String phone;
-    private Boolean isPublished;
     private String representative;
     private Integer status;
     private String taxCode;
@@ -100,16 +99,6 @@ public class CompanyEntity {
     }
 
     @Basic
-    @Column(name = "is_published")
-    public Boolean getPublished() {
-        return isPublished;
-    }
-
-    public void setPublished(Boolean published) {
-        isPublished = published;
-    }
-
-    @Basic
     @Column(name = "representative")
     public String getRepresentative() {
         return representative;
@@ -165,7 +154,6 @@ public class CompanyEntity {
         if (fax != null ? !fax.equals(that.fax) : that.fax != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        if (isPublished != null ? !isPublished.equals(that.isPublished) : that.isPublished != null) return false;
         if (representative != null ? !representative.equals(that.representative) : that.representative != null)
             return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
@@ -184,7 +172,6 @@ public class CompanyEntity {
         result = 31 * result + (fax != null ? fax.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (isPublished != null ? isPublished.hashCode() : 0);
         result = 31 * result + (representative != null ? representative.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (taxCode != null ? taxCode.hashCode() : 0);

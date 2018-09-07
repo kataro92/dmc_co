@@ -54,7 +54,6 @@ public class SupplierRepoImpl implements SupplierRepo {
 
     @Override
     public void save(SupplierEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

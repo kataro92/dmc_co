@@ -1,6 +1,6 @@
 package com.kat.dmc.repository.interfaces;
 
-import com.kat.dmc.common.model.EmployeeDto;
+import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.model.EmployeeEntity;
 
 import java.util.List;

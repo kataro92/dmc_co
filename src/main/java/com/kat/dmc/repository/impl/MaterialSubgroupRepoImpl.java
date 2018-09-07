@@ -54,7 +54,6 @@ public class MaterialSubgroupRepoImpl implements MaterialSubgroupRepo {
 
     @Override
     public void save(MaterialSubgroupEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

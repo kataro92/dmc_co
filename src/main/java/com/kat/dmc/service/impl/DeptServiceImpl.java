@@ -1,5 +1,8 @@
 package com.kat.dmc.service.impl;
 
+import com.kat.dmc.common.dto.DepartmentDto;
+import com.kat.dmc.common.dto.DocumentDto;
+import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.repository.interfaces.DeptRepo;
@@ -67,7 +70,6 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public void save(DepartmentDto selectedDept) {
         DepartmentEntity savingObj = modelMapper.map(selectedDept, DepartmentEntity.class);
-        savingObj.setCreatedDate(new Timestamp(new Date().getTime()));
         deptRepo.save(savingObj);
         List<EmployeeDto> lstEmployees = selectedDept.getLstEmployees();
         List<Integer> lstEmpIds = new ArrayList<>();

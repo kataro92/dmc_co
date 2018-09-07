@@ -1,6 +1,6 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.ClientDto;
+import com.kat.dmc.common.dto.ClientDto;
 import com.kat.dmc.common.model.ClientEntity;
 import com.kat.dmc.common.model.ClientEntity_;
 import com.kat.dmc.repository.interfaces.ClientRepo;
@@ -65,7 +65,6 @@ public class ClientRepoImpl implements ClientRepo {
 
     @Override
     public void save(ClientEntity clientEntity) {
-        clientEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(clientEntity);
     }
 

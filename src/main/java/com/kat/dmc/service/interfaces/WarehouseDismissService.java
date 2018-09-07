@@ -1,8 +1,8 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.MaterialDismissDetailDto;
-import com.kat.dmc.common.model.MaterialDismissDto;
-import com.kat.dmc.common.model.MaterialIETDDto;
+import com.kat.dmc.common.dto.MaterialDismissDetailDto;
+import com.kat.dmc.common.dto.MaterialDismissDto;
+import com.kat.dmc.common.dto.MaterialIETDDto;
 
 import java.util.List;
 

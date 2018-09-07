@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.ConfigDto;
+import com.kat.dmc.common.dto.ConfigDto;
 import com.kat.dmc.common.model.DmcConfigEntity;
 import com.kat.dmc.repository.interfaces.ConfigRepo;
 import com.kat.dmc.service.interfaces.ConfigService;

@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.EmployeeDto;
+import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.model.EmployeeEntity;
 import com.kat.dmc.repository.interfaces.EmployeeRepo;
 import com.kat.dmc.service.interfaces.DocumentService;

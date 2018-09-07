@@ -1,6 +1,6 @@
 package com.kat.dmc.controller;
 
-import com.kat.dmc.common.model.LoggedUser;
+import com.kat.dmc.common.dto.LoggedUser;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;

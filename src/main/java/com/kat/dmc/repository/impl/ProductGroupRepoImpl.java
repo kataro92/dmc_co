@@ -54,7 +54,6 @@ public class ProductGroupRepoImpl implements ProductGroupRepo {
 
     @Override
     public void save(ProductGroupEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

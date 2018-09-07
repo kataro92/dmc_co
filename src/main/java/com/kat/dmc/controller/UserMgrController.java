@@ -2,8 +2,8 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
-import com.kat.dmc.common.model.ObjectDto;
-import com.kat.dmc.common.model.UserDto;
+import com.kat.dmc.common.dto.ObjectDto;
+import com.kat.dmc.common.dto.UserDto;
 import com.kat.dmc.common.util.RescusiveUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;

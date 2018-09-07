@@ -1,5 +1,6 @@
 package com.kat.dmc.repository.impl;
 
+import com.kat.dmc.common.dto.MaterialImportDto;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.repository.interfaces.MaterialImportRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
@@ -15,10 +16,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigInteger;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository

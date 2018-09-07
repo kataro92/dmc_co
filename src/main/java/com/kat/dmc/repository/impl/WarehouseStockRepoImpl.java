@@ -6,7 +6,7 @@ import com.kat.dmc.common.model.DmcWarehouseStockEntity_;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.repository.interfaces.WarehouseStockRepo;
-import com.kat.dmc.common.model.WarehouseStockDto;
+import com.kat.dmc.common.dto.WarehouseStockDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

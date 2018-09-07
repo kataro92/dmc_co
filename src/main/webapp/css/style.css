@@ -88,3 +88,25 @@ footer {
     padding-left: 1rem;
     background-color: rgba(0,0,0,.03);
 }
+.text-lg-50{
+    font-size: larger;
+}
+.card{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+.spinner-month{
+    width: 50px;
+}
+.spinner-month input{
+    width: 50px;
+}
+.spinner-year{
+    width: 70px;
+}
+.spinner-year input{
+    width: 70px;
+}
+.col-tbl-idx{
+    width: 70px;
+}

@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.JobPositionDto;
+import com.kat.dmc.common.dto.JobPositionDto;
 import com.kat.dmc.common.model.JobPositionEntity;
 import com.kat.dmc.repository.interfaces.JobPositionRepo;
 import com.kat.dmc.service.interfaces.JobPositionService;

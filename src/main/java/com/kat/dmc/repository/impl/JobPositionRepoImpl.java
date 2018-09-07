@@ -54,7 +54,6 @@ public class JobPositionRepoImpl implements JobPositionRepo {
 
     @Override
     public void save(JobPositionEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

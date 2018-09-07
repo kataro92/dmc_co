@@ -1,9 +1,7 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.ClientDto;
+import com.kat.dmc.common.dto.ClientDto;
 import com.kat.dmc.common.model.ClientEntity;
-import com.kat.dmc.common.util.CommonUtil;
-import com.kat.dmc.common.util.PasswordUtil;
 import com.kat.dmc.repository.interfaces.ClientRepo;
 import com.kat.dmc.service.interfaces.ClientService;
 import org.modelmapper.ModelMapper;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

@@ -1,6 +1,6 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.DocumentDto;
+import com.kat.dmc.common.dto.DocumentDto;
 
 import javax.persistence.NoResultException;
 import java.util.List;

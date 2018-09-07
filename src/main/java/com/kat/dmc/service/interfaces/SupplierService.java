@@ -1,6 +1,6 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.SupplierDto;
+import com.kat.dmc.common.dto.SupplierDto;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.dto.*;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;

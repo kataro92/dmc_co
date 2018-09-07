@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.constant.UserTypeConst;
-import com.kat.dmc.common.model.LoggedUser;
+import com.kat.dmc.common.dto.LoggedUser;
 import com.kat.dmc.common.model.UserEntity;
 import com.kat.dmc.common.util.PasswordUtil;
 import com.kat.dmc.repository.interfaces.UserRepo;

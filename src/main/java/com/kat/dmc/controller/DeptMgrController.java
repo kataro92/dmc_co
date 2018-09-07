@@ -2,10 +2,10 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
-import com.kat.dmc.common.model.DepartmentDto;
-import com.kat.dmc.common.model.DocumentDto;
-import com.kat.dmc.common.model.EmployeeDto;
-import com.kat.dmc.common.model.JobPositionDto;
+import com.kat.dmc.common.dto.DepartmentDto;
+import com.kat.dmc.common.dto.DocumentDto;
+import com.kat.dmc.common.dto.EmployeeDto;
+import com.kat.dmc.common.dto.JobPositionDto;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.FileUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;

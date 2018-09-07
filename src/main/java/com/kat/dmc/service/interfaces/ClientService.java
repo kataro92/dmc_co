@@ -1,6 +1,6 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.ClientDto;
+import com.kat.dmc.common.dto.ClientDto;
 
 import java.util.List;
 

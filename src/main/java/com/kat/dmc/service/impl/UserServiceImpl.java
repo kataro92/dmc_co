@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.UserDto;
+import com.kat.dmc.common.dto.UserDto;
 import com.kat.dmc.common.model.UserEntity;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.PasswordUtil;

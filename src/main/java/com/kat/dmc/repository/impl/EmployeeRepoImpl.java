@@ -1,7 +1,6 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.constant.CommonConst;
-import com.kat.dmc.common.model.EmployeeDto;
+import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.model.EmployeeEntity;
 import com.kat.dmc.common.model.EmployeeEntity_;
 import com.kat.dmc.repository.interfaces.EmployeeRepo;
@@ -17,7 +16,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +56,6 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 
     @Override
     public void save(EmployeeEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

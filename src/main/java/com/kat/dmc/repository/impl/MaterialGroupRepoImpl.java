@@ -54,7 +54,6 @@ public class MaterialGroupRepoImpl implements MaterialGroupRepo {
 
     @Override
     public void save(MaterialGroupEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

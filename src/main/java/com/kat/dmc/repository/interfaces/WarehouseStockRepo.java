@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.interfaces;
 
 import com.kat.dmc.common.model.DmcWarehouseStockEntity;
-import com.kat.dmc.common.model.WarehouseStockDto;
+import com.kat.dmc.common.dto.WarehouseStockDto;
 
 import java.util.Date;
 import java.util.List;

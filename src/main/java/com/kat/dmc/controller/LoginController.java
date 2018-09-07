@@ -1,8 +1,8 @@
 package com.kat.dmc.controller;
 
 
-import com.kat.dmc.common.model.LoggedUser;
-import com.kat.dmc.common.model.ObjectDto;
+import com.kat.dmc.common.dto.LoggedUser;
+import com.kat.dmc.common.dto.ObjectDto;
 import com.kat.dmc.common.util.RescusiveUtil;
 import com.kat.dmc.service.interfaces.AuthorityService;
 import com.kat.dmc.service.interfaces.ObjectService;

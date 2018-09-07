@@ -1,20 +1,17 @@
 package com.kat.dmc.service.impl;
 
+import com.kat.dmc.common.dto.*;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.common.util.DateUtil;
-import com.kat.dmc.common.util.StringUtil;
 import com.kat.dmc.repository.interfaces.*;
 import com.kat.dmc.service.interfaces.*;
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

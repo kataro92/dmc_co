@@ -1,8 +1,11 @@
 package com.kat.dmc.service.impl;
 
+import com.kat.dmc.common.dto.MaterialIETDDto;
+import com.kat.dmc.common.dto.MaterialOnStockDto;
+import com.kat.dmc.common.dto.WarehouseDto;
 import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.req.WarehouseSearchReq;
 import com.kat.dmc.repository.interfaces.*;
-import com.kat.dmc.service.interfaces.WarehouseImportService;
 import com.kat.dmc.service.interfaces.WarehouseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +96,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public void delete(Integer id) {
         warehouseRepo.delete(warehouseRepo.findById(id));
+    }
+
+    @Override
+    public List<MaterialIETDDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        //SELECT
+        return null;
     }
 
     private WarehouseDto getWarehouseStatus(DmcWarehouseEntity warehouseEntity) {

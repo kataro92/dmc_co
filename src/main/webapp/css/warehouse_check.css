@@ -1,0 +1,30 @@
+/* The sidenav */
+.sidenav {
+    height: 100%;
+    width: 210px;
+    z-index: 1;
+    float: right;
+    background-color: #111;
+    overflow-x: hidden;
+}
+.sidenav a{
+    padding-left: 20px;
+    width: 210px;
+    line-height: 35px;
+    color: #ffffff;
+    display: block;
+    vertical-align: middle;
+    border-bottom: 1px solid #3b3b3b;
+}
+.sidenav a:hover{
+    padding-left: 30px;
+    background-color: #3b3b3b;
+}
+/* Page content */
+.main {
+    /*margin-left: 200px; !* Same as the width of the sidenav *!*/
+    float: left;
+}
+#main-detail-1 .card-title{
+    padding: 20px;
+}

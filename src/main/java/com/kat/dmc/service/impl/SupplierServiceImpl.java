@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.SupplierDto;
+import com.kat.dmc.common.dto.SupplierDto;
 import com.kat.dmc.common.model.SupplierEntity;
 import com.kat.dmc.repository.interfaces.SupplierRepo;
 import com.kat.dmc.service.interfaces.SupplierService;

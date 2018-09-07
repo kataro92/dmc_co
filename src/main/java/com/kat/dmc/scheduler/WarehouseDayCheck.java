@@ -4,7 +4,7 @@ import com.kat.dmc.common.constant.ConfigConst;
 import com.kat.dmc.common.constant.DateConst;
 import com.kat.dmc.common.model.DmcConfigEntity;
 import com.kat.dmc.common.model.DmcWarehouseStockEntity;
-import com.kat.dmc.common.model.WarehouseStockDto;
+import com.kat.dmc.common.dto.WarehouseStockDto;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.common.util.StringUtil;
 import com.kat.dmc.repository.interfaces.ConfigRepo;
@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

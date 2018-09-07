@@ -7,17 +7,13 @@ import java.sql.Timestamp;
 @Table(name = "user", schema = "public")
 public class UserEntity {
     private String code;
-    private Timestamp createdDate;
     private String extraProps;
-    private Timestamp lastModified;
     private String name;
     private String password;
     private Integer permission;
     private String permissions;
-    private Boolean isPublished;
     private Integer status;
     private String username;
-    private String valueToSearch;
     private int id;
 
     @Basic
@@ -31,16 +27,6 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "created_date")
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Basic
     @Column(name = "extra_props")
     public String getExtraProps() {
         return extraProps;
@@ -48,16 +34,6 @@ public class UserEntity {
 
     public void setExtraProps(String extraProps) {
         this.extraProps = extraProps;
-    }
-
-    @Basic
-    @Column(name = "last_modified")
-    public Timestamp getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Timestamp lastModified) {
-        this.lastModified = lastModified;
     }
 
     @Basic
@@ -101,16 +77,6 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "is_published")
-    public Boolean getPublished() {
-        return isPublished;
-    }
-
-    public void setPublished(Boolean published) {
-        isPublished = published;
-    }
-
-    @Basic
     @Column(name = "status")
     public Integer getStatus() {
         return status;
@@ -128,16 +94,6 @@ public class UserEntity {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Basic
-    @Column(name = "value_to_search")
-    public String getValueToSearch() {
-        return valueToSearch;
-    }
-
-    public void setValueToSearch(String valueToSearch) {
-        this.valueToSearch = valueToSearch;
     }
 
     @Id
@@ -159,18 +115,13 @@ public class UserEntity {
 
         if (id != that.id) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
         if (extraProps != null ? !extraProps.equals(that.extraProps) : that.extraProps != null) return false;
-        if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (permission != null ? !permission.equals(that.permission) : that.permission != null) return false;
         if (permissions != null ? !permissions.equals(that.permissions) : that.permissions != null) return false;
-        if (isPublished != null ? !isPublished.equals(that.isPublished) : that.isPublished != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (valueToSearch != null ? !valueToSearch.equals(that.valueToSearch) : that.valueToSearch != null)
-            return false;
 
         return true;
     }
@@ -178,17 +129,13 @@ public class UserEntity {
     @Override
     public int hashCode() {
         int result = code != null ? code.hashCode() : 0;
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (extraProps != null ? extraProps.hashCode() : 0);
-        result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (permission != null ? permission.hashCode() : 0);
         result = 31 * result + (permissions != null ? permissions.hashCode() : 0);
-        result = 31 * result + (isPublished != null ? isPublished.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (valueToSearch != null ? valueToSearch.hashCode() : 0);
         result = 31 * result + id;
         return result;
     }

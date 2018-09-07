@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.ProductDto;
+import com.kat.dmc.common.dto.ProductDto;
 import com.kat.dmc.common.model.ProductEntity;
 import com.kat.dmc.repository.interfaces.ProductRepo;
 import com.kat.dmc.service.interfaces.ProductService;

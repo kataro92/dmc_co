@@ -7,8 +7,6 @@ import java.sql.Timestamp;
 @Table(name = "material_barcode", schema = "public")
 public class MaterialBarcodeEntity {
     private String barcode;
-    private Timestamp createdDate;
-    private Timestamp lastModified;
     private String materialCode;
     private Boolean isPublished;
     private String receiptCode;
@@ -23,26 +21,6 @@ public class MaterialBarcodeEntity {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
-    }
-
-    @Basic
-    @Column(name = "created_date")
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Basic
-    @Column(name = "last_modified")
-    public Timestamp getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Timestamp lastModified) {
-        this.lastModified = lastModified;
     }
 
     @Basic
@@ -104,8 +82,6 @@ public class MaterialBarcodeEntity {
 
         if (id != that.id) return false;
         if (barcode != null ? !barcode.equals(that.barcode) : that.barcode != null) return false;
-        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
-        if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null) return false;
         if (materialCode != null ? !materialCode.equals(that.materialCode) : that.materialCode != null) return false;
         if (isPublished != null ? !isPublished.equals(that.isPublished) : that.isPublished != null) return false;
         if (receiptCode != null ? !receiptCode.equals(that.receiptCode) : that.receiptCode != null) return false;
@@ -117,8 +93,6 @@ public class MaterialBarcodeEntity {
     @Override
     public int hashCode() {
         int result = barcode != null ? barcode.hashCode() : 0;
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (materialCode != null ? materialCode.hashCode() : 0);
         result = 31 * result + (isPublished != null ? isPublished.hashCode() : 0);
         result = 31 * result + (receiptCode != null ? receiptCode.hashCode() : 0);

@@ -1,7 +1,7 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.model.DepartmentDto;
-import com.kat.dmc.common.model.EmployeeDto;
+import com.kat.dmc.common.dto.DepartmentDto;
+import com.kat.dmc.common.dto.EmployeeDto;
 
 import java.util.List;
 

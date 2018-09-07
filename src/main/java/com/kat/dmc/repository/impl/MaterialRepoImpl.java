@@ -1,5 +1,7 @@
 package com.kat.dmc.repository.impl;
 
+import com.kat.dmc.common.dto.MaterialDto;
+import com.kat.dmc.common.dto.MaterialImportDetailDto;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.repository.interfaces.MaterialExportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialImportDetailRepo;
@@ -59,7 +61,6 @@ public class MaterialRepoImpl implements MaterialRepo {
 
     @Override
     public void save(MaterialEntity userEntity) {
-        userEntity.setLastModified(new Timestamp(new Date().getTime()));
         entityManager.merge(userEntity);
     }
 

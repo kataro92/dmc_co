@@ -1,6 +1,6 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.model.MaterialGroupDto;
+import com.kat.dmc.common.dto.MaterialGroupDto;
 import com.kat.dmc.common.model.MaterialGroupEntity;
 import com.kat.dmc.repository.interfaces.MaterialGroupRepo;
 import com.kat.dmc.service.interfaces.MaterialGroupService;

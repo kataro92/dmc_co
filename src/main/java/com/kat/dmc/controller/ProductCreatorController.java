@@ -2,19 +2,15 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.dto.*;
 import com.kat.dmc.common.util.DateUtil;
-import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -183,10 +179,17 @@ public class ProductCreatorController implements Serializable {
                     , "Chưa chọn sản phẩm sẽ sản xuất"));
             return;
         }
+        if(buildingProductDto.getBuildingMaterialDtos() == null
+                || buildingProductDto.getBuildingMaterialDtos().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Có lỗi!"
+                    , "Bạn chưa chọn nguyên liệu sản xuất"));
+            return;
+        }
         try {
             buildingProductDto.setBuildingMaterialDtos(lstBuildingMaterial);
             saveProduct2Building();
             buildingService.save(buildingProductDto);
+            init();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Thêm thành công!"
                     , null));
         } catch (Exception e) {

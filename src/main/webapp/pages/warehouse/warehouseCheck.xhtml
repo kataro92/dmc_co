@@ -18,27 +18,35 @@
             <p:tabView dynamic="true" id="checkTab">
                 <p:tab title="Tổng hợp">
                     <div class="tbl-scroll-y" id="master-panel-1">
+
+                    <ui:repeat value="#{warehouseCheck.warehouseDtos}" var="items">
                         <div class="card w-50 float-left">
                             <div class="card-header text-lg-50">
-                                Kho chính
-                                <a href="#" class="btn btn-md btn-primary float-right"
-                                onclick="detailShow('1');">Chi tiết</a>
+                                #{items.name}
+                                <h:commandLink styleClass="btn btn-md btn-primary float-right"
+                                               actionListener="#{warehouseCheck.selectSumWarehouse(items.id)}">
+                                    Chi tiết
+                                </h:commandLink>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">165 Lạc Long Quân</h5>
+                                <h5 class="card-title">#{items.address}</h5>
                                 <p:panelGrid>
                                     <p:row>
                                         <p:column>
                                             Số lượng Hàng trong kho
                                         </p:column>
                                         <p:column>
-                                            165
+                                            <h:outputText value="#{items.warehouseStatusDto.quantityOnStock}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                         <p:column>
                                             Giá trị Hàng trong kho
                                         </p:column>
                                         <p:column>
-                                            165,000,000
+                                            <h:outputText value="#{items.warehouseStatusDto.priceOnStock}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -46,13 +54,17 @@
                                             Số lượng Hàng nhập trong ngày
                                         </p:column>
                                         <p:column>
-                                            165
+                                            <h:outputText value="#{items.warehouseStatusDto.quantityImportDay}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                         <p:column>
                                             Giá trị Hàng nhập trong ngày
                                         </p:column>
                                         <p:column>
-                                            165,000,000
+                                            <h:outputText value="#{items.warehouseStatusDto.priceImportDay}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -60,18 +72,23 @@
                                             Số lượng Hàng xuất trong ngày
                                         </p:column>
                                         <p:column>
-                                            165
+                                            <h:outputText value="#{items.warehouseStatusDto.quantityExportDay}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                         <p:column>
                                             Giá trị Hàng xuất trong ngày
                                         </p:column>
                                         <p:column>
-                                            165,000,000
+                                            <h:outputText value="#{items.warehouseStatusDto.priceExportDay}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
                             </div>
                         </div>
+                    </ui:repeat>
                     </div>
                     <div id="detail-panel-1" class="hidden-all">
                         <div class="card">
@@ -131,26 +148,45 @@
                                         <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 3}" id="txtFromYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.fromYear}"/>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 3}" for="txtToYear" value="Đến Năm:" />
                                         <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 3}" id="txtToYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.toYear}"/>
-                                        <p:commandLink actionListener="#{warehouseCheck.searchSumOnStock()}" styleClass="btn btn-primary btn-md" style="position: absolute; right: 220px; top: 135px" value="Tìm kiếm"/>
+                                        <p:commandLink actionListener="#{warehouseCheck.searchSumOnStock()}" styleClass="btn btn-primary btn-md"
+                                                       style="position: absolute; right: 220px; top: 135px" value="Tìm kiếm"
+                                        update="main:checkTab:tblDetail1Sum"/>
                                     </h:panelGrid>
-                                    <p:dataTable id="tblDetail1Sum">
+                                    <p:dataTable id="tblDetail1Sum" value="#{warehouseCheck.sumOnStockRes}"
+                                                 tableStyleClass="card-body"
+                                                 rowIndexVar="index"
+                                                 selectionMode="single"
+                                                 var="rows"
+                                                 rowKey="#{rows.idx}"
+                                                 rows="20"
+                                                 paginator="true"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,20, 50">
                                         <p:column headerText="STT" styleClass="col-tbl-idx">
-
+                                            <h:outputText value="#{index+1}"/>
                                         </p:column>
-                                        <p:column headerText="Nhóm vật tư">
-
+                                        <p:column headerText="Phân loại" styleClass="col-tbl-mini-category">
+                                            <h:outputText value="#{common.getCommon('IMPORT_CATEGORY_ID', rows.categoryId)}"/>
                                         </p:column>
-                                        <p:column headerText="Loại nhóm vật tư">
-
+                                        <p:column headerText="Nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.groupName}"/>
                                         </p:column>
-                                        <p:column headerText="Vật tư">
-
+                                        <p:column headerText="Loại nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.subgroupName}"/>
                                         </p:column>
-                                        <p:column headerText="Số lượng">
-
+                                        <p:column headerText="Hàng">
+                                            <h:outputText value="#{rows.name}"/>
                                         </p:column>
-                                        <p:column headerText="Giá trị">
-
+                                        <p:column headerText="Số lượng" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.quantity}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Giá trị" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.price}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
                                         </p:column>
                                         <p:summaryRow>
                                             <p:column>

@@ -24,6 +24,7 @@ public class WarehouseDto implements Serializable {
     private Long totalImportedPaper;
     private Long totalExportedPaper;
     private Long currentMaterial;
+    private WarehouseDailyStatusDto warehouseStatusDto;
 
     public WarehouseDto() {
     }
@@ -218,5 +219,13 @@ public class WarehouseDto implements Serializable {
 
     public void setCurrentMaterial(Long currentMaterial) {
         this.currentMaterial = currentMaterial;
+    }
+
+    public WarehouseDailyStatusDto getWarehouseStatusDto() {
+        return warehouseStatusDto;
+    }
+
+    public void setWarehouseStatusDto(WarehouseDailyStatusDto warehouseStatusDto) {
+        this.warehouseStatusDto = warehouseStatusDto;
     }
 }

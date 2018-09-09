@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class WarehouseSearchReq implements Serializable {
+    private Integer warehouseId;
     private Integer type;//Kì
     private Integer searchType;//Kiểu tìm kiếm
     private Date day;//Tìm theo ngày
@@ -20,6 +21,7 @@ public class WarehouseSearchReq implements Serializable {
     private Integer toYear;
 
     public WarehouseSearchReq() {
+        warehouseId = 0;
         type = 0;
         searchType = 0;
         month = 1;
@@ -33,7 +35,10 @@ public class WarehouseSearchReq implements Serializable {
         toYear = 2018;
     }
 
-    public WarehouseSearchReq(Integer type, Integer searchType, Date day, Date fromDay, Date toDay, Integer month, Integer fromMonth, Integer toMonth, Integer quater, Integer fromQuater, Integer toQuater, Integer year, Integer fromYear, Integer toYear) {
+    public WarehouseSearchReq(Integer type, Integer searchType, Date day, Date fromDay,
+                              Date toDay, Integer month, Integer fromMonth, Integer toMonth,
+                              Integer quater, Integer fromQuater, Integer toQuater, Integer year,
+                              Integer fromYear, Integer toYear, Integer warehouseId) {
         this.type = type;
         this.searchType = searchType;
         this.day = day;
@@ -48,11 +53,13 @@ public class WarehouseSearchReq implements Serializable {
         this.year = year;
         this.fromYear = fromYear;
         this.toYear = toYear;
+        this.warehouseId = warehouseId;
     }
 
     @Override
     public WarehouseSearchReq clone(){
-        return new WarehouseSearchReq(type, searchType, day, fromDay, toDay, month, fromMonth, toMonth, quater, fromQuater, toQuater, year, fromYear, toYear);
+        return new WarehouseSearchReq(type, searchType, day, fromDay, toDay, month, fromMonth,
+                toMonth, quater, fromQuater, toQuater, year, fromYear, toYear, warehouseId);
     }
 
     public Integer getType() {
@@ -165,5 +172,13 @@ public class WarehouseSearchReq implements Serializable {
 
     public void setToYear(Integer toYear) {
         this.toYear = toYear;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 }

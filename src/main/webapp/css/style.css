@@ -108,5 +108,16 @@ footer {
     width: 70px;
 }
 .col-tbl-idx{
-    width: 70px;
+    width: 50px;
+    text-align: center;
+}
+.col-tbl-number{
+    width: 80px;
+    text-align: right;
+}
+.col-tbl-category{
+    width: 150px;
+}
+.col-tbl-mini-category{
+    width: 90px;
 }

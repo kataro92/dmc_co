@@ -1,7 +1,11 @@
 package com.kat.dmc.repository.impl;
 
+import com.kat.dmc.common.constant.DateConst;
 import com.kat.dmc.common.model.DmcWarehouseEntity;
 import com.kat.dmc.common.model.DmcWarehouseEntity_;
+import com.kat.dmc.common.model.DmcWarehouseStatus;
+import com.kat.dmc.common.req.WarehouseSearchReq;
+import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.repository.interfaces.WarehouseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +90,19 @@ public class WarehouseRepoImpl implements WarehouseRepo {
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcWarehouseEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public List<DmcWarehouseStatus> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        return entityManager.createNamedQuery("DmcWarehouseStatus.findAllBySearchReq", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId())
+                .getResultList();
+    }
+    @Override
+    public List<DmcWarehouseStatus> findDailyStatus(Integer warehouseId) {
+        return entityManager.createNamedQuery("DmcWarehouseStatus.findDailyStatus", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", warehouseId)
+                .setParameter("process_date", DateUtil.toString(DateUtil.getCurrentDayTS(), DateConst.FORMAT_YYYYMMDD))
+                .getResultList();
     }
 }

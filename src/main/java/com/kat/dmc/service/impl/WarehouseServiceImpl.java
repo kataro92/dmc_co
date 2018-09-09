@@ -1,8 +1,8 @@
 package com.kat.dmc.service.impl;
 
-import com.kat.dmc.common.dto.MaterialIETDDto;
 import com.kat.dmc.common.dto.MaterialOnStockDto;
 import com.kat.dmc.common.dto.WarehouseDto;
+import com.kat.dmc.common.dto.WarehouseStatusDto;
 import com.kat.dmc.common.model.*;
 import com.kat.dmc.common.req.WarehouseSearchReq;
 import com.kat.dmc.repository.interfaces.*;
@@ -99,9 +99,15 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public List<MaterialIETDDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
-        //SELECT
-        return null;
+    public List<WarehouseStatusDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        Integer idx = 0;
+        return warehouseRepo.findAllBySearchReq(sumOnStockReq).stream().map(e -> statusEntity2Dto(e, idx)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WarehouseStatusDto> findStatusByWarehouseId(Integer warehouseId) {
+        Integer idx = 0;
+        return warehouseRepo.findDailyStatus(warehouseId).stream().map(e -> statusEntity2Dto(e, idx)).collect(Collectors.toList());
     }
 
     private WarehouseDto getWarehouseStatus(DmcWarehouseEntity warehouseEntity) {
@@ -116,5 +122,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private WarehouseDto entity2Dto(DmcWarehouseEntity entity){
         return modelMapper.map(entity, WarehouseDto.class);
+    }
+
+    private WarehouseStatusDto statusEntity2Dto(DmcWarehouseStatus entity, int idx){
+        WarehouseStatusDto warehouseStatusDto = modelMapper.map(entity, WarehouseStatusDto.class);
+        warehouseStatusDto.setIdx(idx++);
+        return warehouseStatusDto;
     }
 }

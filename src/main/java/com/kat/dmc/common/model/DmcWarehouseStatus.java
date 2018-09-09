@@ -8,7 +8,54 @@ import java.io.Serializable;
 @Entity
 @Immutable
 //@Table(name = "dmc_warehouse_status", schema = "public", catalog = "dmco_sys")
-public class DmcWarehouseStatusEntity implements Serializable {
+@NamedNativeQueries(value = {
+        @NamedNativeQuery(
+                name = "DmcWarehouseStatus.findAllBySearchReq",
+                query = "SELECT * FROM dmc_warehouse_status " +
+                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0)" +
+                        "ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
+                resultClass = DmcWarehouseStatus.class),
+            @NamedNativeQuery(
+                name = "DmcWarehouseStatus.findDailyStatus",
+                query = "SELECT :warehouse_id AS warehouse_id, :process_date AS process_date, 'A' \"type\"" +
+                        ", 0 material_id" +
+                        ", 0 category_id" +
+                        ", '' \"name\"" +
+                        ", 0 group_id" +
+                        ", '' group_name" +
+                        ", 0 subgroup_id" +
+                        ", '' subgroup_name" +
+                        ", sum(quantity) quantity, sum(price) price FROM dmc_warehouse_status " +
+                        "WHERE warehouse_id = :warehouse_id " +
+                        "UNION ALL " +
+                        "SELECT :warehouse_id AS warehouse_id, :process_date AS process_date, 'B' \"type\"" +
+                        ", 0 material_id" +
+                        ", 0 category_id" +
+                        ", '' \"name\"" +
+                        ", 0 group_id" +
+                        ", '' group_name" +
+                        ", 0 subgroup_id" +
+                        ", '' subgroup_name" +
+                        ", sum(quantity) quantity, sum(price) price FROM dmc_warehouse_status  " +
+                        "WHERE quantity > 0 " +
+                        "AND warehouse_id = :warehouse_id " +
+                        "AND process_date = :process_date " +
+                        "UNION ALL " +
+                        "SELECT :warehouse_id AS warehouse_id, :process_date AS process_date, 'C' \"type\"" +
+                        ", 0 material_id" +
+                        ", 0 category_id" +
+                        ", '' \"name\"" +
+                        ", 0 group_id" +
+                        ", '' group_name" +
+                        ", 0 subgroup_id" +
+                        ", '' subgroup_name" +
+                        ", sum(quantity) quantity, sum(price) price FROM dmc_warehouse_status  " +
+                        "WHERE quantity < 0 " +
+                        "AND warehouse_id = :warehouse_id " +
+                        "AND process_date = :process_date ORDER BY warehouse_id",
+                resultClass = DmcWarehouseStatus.class)}
+        )
+public class DmcWarehouseStatus implements Serializable {
     private Integer warehouseId;
     private String processDate;
     private Integer categoryId;
@@ -151,7 +198,7 @@ public class DmcWarehouseStatusEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DmcWarehouseStatusEntity that = (DmcWarehouseStatusEntity) o;
+        DmcWarehouseStatus that = (DmcWarehouseStatus) o;
 
         if (warehouseId != null ? !warehouseId.equals(that.warehouseId) : that.warehouseId != null) return false;
         if (processDate != null ? !processDate.equals(that.processDate) : that.processDate != null) return false;

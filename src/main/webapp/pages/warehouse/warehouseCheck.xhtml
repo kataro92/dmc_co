@@ -16,9 +16,8 @@
                 <p:autoUpdate />
             </p:growl>
             <p:tabView dynamic="true" id="checkTab">
-                <p:tab title="Tổng hợp">
-                    <div class="tbl-scroll-y" id="master-panel-1">
-
+                <p:tab title="Tổng hợp" id="summarize">
+                    <div class="tbl-scroll-y master-panel-1">
                     <ui:repeat value="#{warehouseCheck.warehouseDtos}" var="items">
                         <div class="card w-50 float-left">
                             <div class="card-header text-lg-50">
@@ -90,22 +89,33 @@
                         </div>
                     </ui:repeat>
                     </div>
-                    <div id="detail-panel-1" class="hidden-all">
+                    <p:outputPanel id="pnlDetail2" styleClass="hidden-all detail-panel-1">
                         <div class="card">
                             <div class="card-header text-lg-50">
-                                Kho chính
+                                #{warehouseCheck.selectedWarehouse.name}
+                                <div class="mini-desc">#{warehouseCheck.selectedWarehouse.address}</div>
                                 <a href="#" class="btn btn-md btn-primary float-right"
                                    onclick="detailHide('1');">Quay lại</a>
                             </div>
                             <div>
                                 <div id="mySidenav" class="sidenav">
-                                    <a href="#">Hàng trong kho</a>
-                                    <a href="#">Hàng nhập trong ngày</a>
-                                    <a href="#">Hàng xuất trong ngày</a>
-                                    <a href="#">Hàng tạm nhập / tái xuất</a>
+                                    <p:commandLink styleClass="#{warehouseCheck.sumSelectCategory == 0 ? 'active' : 'inactive'}" 
+                                                   actionListener="#{warehouseCheck.changeSumPage(0)}" 
+                                                   update="main:checkTab:pnlDetail2">Hàng trong kho</p:commandLink>
+                                    <p:commandLink styleClass="#{warehouseCheck.sumSelectCategory == 1 ? 'active' : 'inactive'}"
+                                                   actionListener="#{warehouseCheck.changeSumPage(1)}"
+                                                   update="main:checkTab:pnlDetail2">Hàng nhập</p:commandLink>
+                                    <p:commandLink styleClass="#{warehouseCheck.sumSelectCategory == 2 ? 'active' : 'inactive'}"
+                                                   actionListener="#{warehouseCheck.changeSumPage(2)}"
+                                                   update="main:checkTab:pnlDetail2">Hàng xuất</p:commandLink>
+                                    <p:commandLink styleClass="#{warehouseCheck.sumSelectCategory == 3 ? 'active' : 'inactive'}"
+                                                   actionListener="#{warehouseCheck.changeSumPage(3)}"
+                                                   update="main:checkTab:pnlDetail2">Hàng tạm nhập / tái xuất</p:commandLink>
+                                    <p:commandLink href="#">Xuất ra excel</p:commandLink>
+                                    <p:commandLink href="#">Xuất ra PDF</p:commandLink>
+                                    <p:commandLink href="#">In kết quả</p:commandLink>
                                 </div>
-                                <div id="main-detail-1" class="main">
-                                    <h5 class="card-title">165 Lạc Long Quân</h5>
+                                <p:outputPanel rendered="#{warehouseCheck.sumSelectCategory == 0}" id="pnlMainDetail1Sum" styleClass="main">
                                     <h:panelGrid id="pnlDetail1Sum" columns="9" style="margin-bottom:10px" cellpadding="5">
                                         <p:outputLabel for="cbType" value="Kì:" />
                                         <p:selectOneMenu id="cbType" value="#{warehouseCheck.sumOnStockReq.type}">
@@ -122,24 +132,30 @@
                                             <f:selectItem itemLabel="Khoảng thời gian" itemValue="1" />
                                         </p:selectOneMenu>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 0}" for="txtDay" value="Ngày:" />
-                                        <p:calendar rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 0}" id="txtDay" value="#{warehouseCheck.sumOnStockReq.day}" showOn="button"/>
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 0}" id="txtDay" value="#{warehouseCheck.sumOnStockReq.day}" showOn="button"/>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" for="txtFromDay" value="Từ ngày:" />
-                                        <p:calendar rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" id="txtFromDay" value="#{warehouseCheck.sumOnStockReq.fromDay}" showOn="button"/>
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" id="txtFromDay" value="#{warehouseCheck.sumOnStockReq.fromDay}" showOn="button"/>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" for="txtToDay" value="Đến ngày:" />
-                                        <p:calendar rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" id="txtToDay" value="#{warehouseCheck.sumOnStockReq.toDay}" showOn="button"/>
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 0}" id="txtToDay" value="#{warehouseCheck.sumOnStockReq.toDay}" showOn="button"/>
 
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 1}" for="txtMonth" value="Tháng:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 1}" id="txtMonth" min="1" max="12" value="#{warehouseCheck.sumOnStockReq.month}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 1}" for="txtMonthYear" value="Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 1}" id="txtMonthYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.year}"/>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" for="txtFromMonth" value="Từ tháng:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" id="txtFromMonth" min="1" max="12" value="#{warehouseCheck.sumOnStockReq.fromMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" for="txtFromMonthYear" value="Từ Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" id="txtFromMonthYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.fromYear}"/>
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" for="txtToMonth" value="Đến tháng:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" id="txtToMonth" min="1" max="12" value="#{warehouseCheck.sumOnStockReq.toMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" for="txtToMonthYear" value="Đến Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 1}" id="txtToMonthYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.toYear}"/>
                                         
-                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 2}" for="txtYear" value="Quý:" />
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 2}" for="txtQuater" value="Quý:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 2}" id="txtQuater" min="1" max="4" value="#{warehouseCheck.sumOnStockReq.quater}"/>
-                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" for="txtFromYear" value="Từ Quý:" />
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" for="txtFromQuater" value="Từ Quý:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" id="txtFromQuater" min="1" max="4" value="#{warehouseCheck.sumOnStockReq.fromQuater}"/>
-                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" for="txtToYear" value="Đến Quý:" />
+                                        <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" for="txtToQuater" value="Đến Quý:" />
                                         <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 2}" id="txtToQuater" min="1" max="4" value="#{warehouseCheck.sumOnStockReq.toQuater}"/>
                                         
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 0 and warehouseCheck.sumOnStockReq.type == 3}" for="txtYear" value="Năm:" />
@@ -149,7 +165,7 @@
                                         <p:outputLabel rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 3}" for="txtToYear" value="Đến Năm:" />
                                         <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumOnStockReq.searchType == 1 and warehouseCheck.sumOnStockReq.type == 3}" id="txtToYear" min="2000" max="2199" value="#{warehouseCheck.sumOnStockReq.toYear}"/>
                                         <p:commandLink actionListener="#{warehouseCheck.searchSumOnStock()}" styleClass="btn btn-primary btn-md"
-                                                       style="position: absolute; right: 220px; top: 135px" value="Tìm kiếm"
+                                                       style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
                                         update="main:checkTab:tblDetail1Sum"/>
                                     </h:panelGrid>
                                     <p:dataTable id="tblDetail1Sum" value="#{warehouseCheck.sumOnStockRes}"
@@ -159,6 +175,7 @@
                                                  var="rows"
                                                  rowKey="#{rows.idx}"
                                                  rows="20"
+                                                 sortBy="#{rows.processDate}"
                                                  paginator="true"
                                                  paginatorPosition="bottom"
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -189,31 +206,246 @@
                                             </h:outputText>
                                         </p:column>
                                         <p:summaryRow>
-                                            <p:column>
-                                                <h:outputText value="Tổng:" />
+                                            <p:column styleClass="font-weight-bold text-right">Ngày</p:column>
+                                            <p:column styleClass="text-left font-weight-bold">#{rows.strProcessDate}</p:column>
+                                            <p:column colspan="2"></p:column>
+                                            <p:column styleClass="font-weight-bold text-right">Tổng số</p:column>
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumOnStockRes != null ? warehouseCheck.sumOnStockQuantity(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
                                             </p:column>
-                                            <p:column>
-1
-                                            </p:column>
-                                            <p:column>
-2
-                                            </p:column>
-                                            <p:column>
-20
-                                            </p:column>
-                                            <p:column>
-100
-                                            </p:column>
-                                            <p:column>
-120,000,000
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumOnStockRes != null ? warehouseCheck.sumOnStockPrice(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
                                             </p:column>
                                         </p:summaryRow>
                                     </p:dataTable>
-                                </div>
+                                </p:outputPanel>
 
+
+                                <p:outputPanel rendered="#{warehouseCheck.sumSelectCategory == 1}" id="pnlMainDetail2Sum" styleClass="main">
+                                    <h:panelGrid id="pnlDetail2Sum" columns="9" style="margin-bottom:10px" cellpadding="5">
+                                        <p:outputLabel for="cbType2" value="Kì:" />
+                                        <p:selectOneMenu id="cbType2" value="#{warehouseCheck.sumImportReq.type}">
+                                            <p:ajax event="change" update="pnlDetail2Sum" process="pnlDetail1Sum"/>
+                                            <f:selectItem itemLabel="Ngày" itemValue="0" />
+                                            <f:selectItem itemLabel="Tháng" itemValue="1" />
+                                            <f:selectItem itemLabel="Quý" itemValue="2" />
+                                            <f:selectItem itemLabel="Năm" itemValue="3" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="cbSearchType2" value="Kiểu tìm kiếm:" />
+                                        <p:selectOneMenu id="cbSearchType2" value="#{warehouseCheck.sumImportReq.searchType}">
+                                            <p:ajax event="change" update="pnlDetail2Sum" process="pnlDetail1Sum"/>
+                                            <f:selectItem itemLabel="Cố định" itemValue="0" />
+                                            <f:selectItem itemLabel="Khoảng thời gian" itemValue="1" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 0}" for="txtDay2" value="Ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 0}" id="txtDay2" value="#{warehouseCheck.sumImportReq.day}" showOn="button"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 0}" for="txtFromDay2" value="Từ ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 0}" id="txtFromDay2" value="#{warehouseCheck.sumImportReq.fromDay}" showOn="button"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 0}" for="txtToDay2" value="Đến ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 0}" id="txtToDay2" value="#{warehouseCheck.sumImportReq.toDay}" showOn="button"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 1}" for="txtMonth2" value="Tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 1}" id="txtMonth2" min="1" max="12" value="#{warehouseCheck.sumImportReq.month}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 1}" for="txtMonthYear2" value="Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 1}" id="txtMonthYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.year}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" for="txtFromMonth2" value="Từ tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" id="txtFromMonth2" min="1" max="12" value="#{warehouseCheck.sumImportReq.fromMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" for="txtFromMonthYear2" value="Từ Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" id="txtFromMonthYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.fromYear}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" for="txtToMonth2" value="Đến tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" id="txtToMonth2" min="1" max="12" value="#{warehouseCheck.sumImportReq.toMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" for="txtToMonthYear2" value="Đến Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 1}" id="txtToMonthYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.toYear}"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 2}" for="txtQuater2" value="Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 2}" id="txtQuater2" min="1" max="4" value="#{warehouseCheck.sumImportReq.quater}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 2}" for="txtFromQuater2" value="Từ Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 2}" id="txtFromQuater2" min="1" max="4" value="#{warehouseCheck.sumImportReq.fromQuater}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 2}" for="txtToQuater2" value="Đến Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 2}" id="txtToQuater2" min="1" max="4" value="#{warehouseCheck.sumImportReq.toQuater}"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 3}" for="txtYear2" value="Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 0 and warehouseCheck.sumImportReq.type == 3}" id="txtYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.year}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 3}" for="txtFromYear2" value="Từ Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 3}" id="txtFromYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.fromYear}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 3}" for="txtToYear2" value="Đến Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumImportReq.searchType == 1 and warehouseCheck.sumImportReq.type == 3}" id="txtToYear2" min="2000" max="2199" value="#{warehouseCheck.sumImportReq.toYear}"/>
+                                        <p:commandLink actionListener="#{warehouseCheck.searchImport()}" styleClass="btn btn-primary btn-md"
+                                                       style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
+                                                       update="main:checkTab:tblDetail2Sum"/>
+                                    </h:panelGrid>
+                                    <p:dataTable id="tblDetail2Sum" value="#{warehouseCheck.sumImportRes}"
+                                                 tableStyleClass="card-body"
+                                                 rowIndexVar="index"
+                                                 selectionMode="single"
+                                                 var="rows"
+                                                 rowKey="#{rows.idx}"
+                                                 rows="20"
+                                                 sortBy="#{rows.processDate}"
+                                                 paginator="true"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,20, 50">
+                                        <p:column headerText="STT" styleClass="col-tbl-idx">
+                                            <h:outputText value="#{index+1}"/>
+                                        </p:column>
+                                        <p:column headerText="Phân loại" styleClass="col-tbl-mini-category">
+                                            <h:outputText value="#{common.getCommon('IMPORT_CATEGORY_ID', rows.categoryId)}"/>
+                                        </p:column>
+                                        <p:column headerText="Nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.groupName}"/>
+                                        </p:column>
+                                        <p:column headerText="Loại nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.subgroupName}"/>
+                                        </p:column>
+                                        <p:column headerText="Hàng">
+                                            <h:outputText value="#{rows.name}"/>
+                                        </p:column>
+                                        <p:column headerText="Số lượng" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.quantity}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Giá trị" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.price}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:summaryRow>
+                                            <p:column styleClass="font-weight-bold text-right">Ngày</p:column>
+                                            <p:column styleClass="text-left font-weight-bold">#{rows.strProcessDate}</p:column>
+                                            <p:column colspan="2"></p:column>
+                                            <p:column styleClass="font-weight-bold text-right">Tổng số</p:column>
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumImportRes != null ? warehouseCheck.sumImportQuantity(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumImportRes != null ? warehouseCheck.sumImportPrice(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:summaryRow>
+                                    </p:dataTable>
+                                </p:outputPanel>
+
+
+                                <p:outputPanel rendered="#{warehouseCheck.sumSelectCategory == 2}" id="pnlMainDetail3Sum" styleClass="main">
+                                    <h:panelGrid id="pnlDetail3Sum" columns="9" style="margin-bottom:10px" cellpadding="5">
+                                        <p:outputLabel for="cbType3" value="Kì:" />
+                                        <p:selectOneMenu id="cbType3" value="#{warehouseCheck.sumExportReq.type}">
+                                            <p:ajax event="change" update="pnlDetail3Sum" process="pnlDetail3Sum"/>
+                                            <f:selectItem itemLabel="Ngày" itemValue="0" />
+                                            <f:selectItem itemLabel="Tháng" itemValue="1" />
+                                            <f:selectItem itemLabel="Quý" itemValue="2" />
+                                            <f:selectItem itemLabel="Năm" itemValue="3" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="cbSearchType3" value="Kiểu tìm kiếm:" />
+                                        <p:selectOneMenu id="cbSearchType3" value="#{warehouseCheck.sumExportReq.searchType}">
+                                            <p:ajax event="change" update="pnlDetail3Sum" process="pnlDetail3Sum"/>
+                                            <f:selectItem itemLabel="Cố định" itemValue="0" />
+                                            <f:selectItem itemLabel="Khoảng thời gian" itemValue="1" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 0}" for="txtDay3" value="Ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 0}" id="txtDay3" value="#{warehouseCheck.sumExportReq.day}" showOn="button"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 0}" for="txtFromDay3" value="Từ ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 0}" id="txtFromDay3" value="#{warehouseCheck.sumExportReq.fromDay}" showOn="button"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 0}" for="txtToDay3" value="Đến ngày:" />
+                                        <p:calendar pattern="dd/MM/yyyy" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 0}" id="txtToDay3" value="#{warehouseCheck.sumExportReq.toDay}" showOn="button"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 1}" for="txtMonth3" value="Tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 1}" id="txtMonth3" min="1" max="13" value="#{warehouseCheck.sumExportReq.month}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 1}" for="txtMonthYear3" value="Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 1}" id="txtMonthYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.year}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" for="txtFromMonth3" value="Từ tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" id="txtFromMonth3" min="1" max="13" value="#{warehouseCheck.sumExportReq.fromMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" for="txtFromMonthYear3" value="Từ Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" id="txtFromMonthYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.fromYear}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" for="txtToMonth3" value="Đến tháng:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" id="txtToMonth3" min="1" max="13" value="#{warehouseCheck.sumExportReq.toMonth}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" for="txtToMonthYear3" value="Đến Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 1}" id="txtToMonthYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.toYear}"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 2}" for="txtQuater3" value="Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 2}" id="txtQuater3" min="1" max="4" value="#{warehouseCheck.sumExportReq.quater}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 2}" for="txtFromQuater3" value="Từ Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 2}" id="txtFromQuater3" min="1" max="4" value="#{warehouseCheck.sumExportReq.fromQuater}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 2}" for="txtToQuater3" value="Đến Quý:" />
+                                        <p:spinner styleClass="spinner-month" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 2}" id="txtToQuater3" min="1" max="4" value="#{warehouseCheck.sumExportReq.toQuater}"/>
+
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 3}" for="txtYear3" value="Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 0 and warehouseCheck.sumExportReq.type == 3}" id="txtYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.year}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 3}" for="txtFromYear3" value="Từ Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 3}" id="txtFromYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.fromYear}"/>
+                                        <p:outputLabel rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 3}" for="txtToYear3" value="Đến Năm:" />
+                                        <p:spinner styleClass="spinner-year" rendered="#{warehouseCheck.sumExportReq.searchType == 1 and warehouseCheck.sumExportReq.type == 3}" id="txtToYear3" min="2000" max="2199" value="#{warehouseCheck.sumExportReq.toYear}"/>
+                                        <p:commandLink actionListener="#{warehouseCheck.searchTempImport()}" styleClass="btn btn-primary btn-md"
+                                                       style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
+                                                       update="main:checkTab:tblDetail3Sum"/>
+                                    </h:panelGrid>
+                                    <p:dataTable id="tblDetail3Sum" value="#{warehouseCheck.sumExportRes}"
+                                                 tableStyleClass="card-body"
+                                                 rowIndexVar="index"
+                                                 selectionMode="single"
+                                                 var="rows"
+                                                 rowKey="#{rows.idx}"
+                                                 rows="20"
+                                                 sortBy="#{rows.processDate}"
+                                                 paginator="true"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,20, 50">
+                                        <p:column headerText="STT" styleClass="col-tbl-idx">
+                                            <h:outputText value="#{index+1}"/>
+                                        </p:column>
+                                        <p:column headerText="Phân loại" styleClass="col-tbl-mini-category">
+                                            <h:outputText value="#{common.getCommon('IMPORT_CATEGORY_ID', rows.categoryId)}"/>
+                                        </p:column>
+                                        <p:column headerText="Nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.groupName}"/>
+                                        </p:column>
+                                        <p:column headerText="Loại nhóm vật tư" styleClass="col-tbl-category">
+                                            <h:outputText value="#{rows.subgroupName}"/>
+                                        </p:column>
+                                        <p:column headerText="Hàng">
+                                            <h:outputText value="#{rows.name}"/>
+                                        </p:column>
+                                        <p:column headerText="Số lượng" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.quantity}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Giá trị" styleClass="col-tbl-number">
+                                            <h:outputText value="#{rows.price}">
+                                                <f:convertNumber/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:summaryRow>
+                                            <p:column styleClass="font-weight-bold text-right">Ngày</p:column>
+                                            <p:column styleClass="text-left font-weight-bold">#{rows.strProcessDate}</p:column>
+                                            <p:column colspan="2"></p:column>
+                                            <p:column styleClass="font-weight-bold text-right">Tổng số</p:column>
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumExportRes != null ? warehouseCheck.sumExportQuantity(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column styleClass="col-tbl-number font-weight-bold">
+                                                <h:outputText value="#{warehouseCheck.sumExportRes != null ? warehouseCheck.sumExportPrice(rows.processDate) : 0}">
+                                                    <f:convertNumber/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:summaryRow>
+                                    </p:dataTable>
+                                </p:outputPanel>
                             </div>
                         </div>
-                    </div>
+                    </p:outputPanel>
                 </p:tab>
                 <p:tab title="Vật tư">
                     <div class="tbl-scroll-y">

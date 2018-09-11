@@ -101,13 +101,58 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public List<WarehouseStatusDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
         Integer idx = 0;
-        return warehouseRepo.findAllBySearchReq(sumOnStockReq).stream().map(e -> statusEntity2Dto(e, idx)).collect(Collectors.toList());
+        List<WarehouseStatusDto> list = new ArrayList<>();
+        for (DmcWarehouseStatus e : warehouseRepo.findAllBySearchReq(sumOnStockReq)) {
+            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+            warehouseStatusDto.setIdx(idx++);
+            list.add(warehouseStatusDto);
+        }
+        return list;
+    }
+    @Override
+    public List<WarehouseStatusDto> findImportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        Integer idx = 0;
+        List<WarehouseStatusDto> list = new ArrayList<>();
+        for (DmcWarehouseStatus e : warehouseRepo.findImportBySearchReq(sumOnStockReq)) {
+            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+            warehouseStatusDto.setIdx(idx++);
+            list.add(warehouseStatusDto);
+        }
+        return list;
+    }
+    @Override
+    public List<WarehouseStatusDto> findExportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        Integer idx = 0;
+        List<WarehouseStatusDto> list = new ArrayList<>();
+        for (DmcWarehouseStatus e : warehouseRepo.findExportBySearchReq(sumOnStockReq)) {
+            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+            warehouseStatusDto.setIdx(idx++);
+            list.add(warehouseStatusDto);
+        }
+        return list;
+    }
+    @Override
+    public List<WarehouseStatusDto> findTempImportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        Integer idx = 0;
+        List<WarehouseStatusDto> list = new ArrayList<>();
+        for (DmcWarehouseStatus e : warehouseRepo.findTempImportBySearchReq(sumOnStockReq)) {
+            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+            warehouseStatusDto.setIdx(idx++);
+            list.add(warehouseStatusDto);
+        }
+        return list;
     }
 
     @Override
     public List<WarehouseStatusDto> findStatusByWarehouseId(Integer warehouseId) {
         Integer idx = 0;
-        return warehouseRepo.findDailyStatus(warehouseId).stream().map(e -> statusEntity2Dto(e, idx)).collect(Collectors.toList());
+        List<WarehouseStatusDto> list = new ArrayList<>();
+        for (DmcWarehouseStatus e : warehouseRepo.findDailyStatus(warehouseId)) {
+            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+            warehouseStatusDto.setIdx(idx++);
+            list.add(warehouseStatusDto);
+        }
+        return list;
     }
 
     private WarehouseDto getWarehouseStatus(DmcWarehouseEntity warehouseEntity) {
@@ -124,9 +169,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         return modelMapper.map(entity, WarehouseDto.class);
     }
 
-    private WarehouseStatusDto statusEntity2Dto(DmcWarehouseStatus entity, int idx){
-        WarehouseStatusDto warehouseStatusDto = modelMapper.map(entity, WarehouseStatusDto.class);
-        warehouseStatusDto.setIdx(idx++);
-        return warehouseStatusDto;
+    private WarehouseStatusDto statusEntity2Dto(DmcWarehouseStatus entity){
+        return modelMapper.map(entity, WarehouseStatusDto.class);
     }
 }

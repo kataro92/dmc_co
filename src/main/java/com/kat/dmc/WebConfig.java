@@ -10,14 +10,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
 
 import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 @EnableWebMvc
 @Configuration
@@ -70,6 +68,20 @@ public class WebConfig {
         registration.setFilter(uploadFilter);
         registration.setDispatcherTypes(DispatcherType.FORWARD);
         return registration;
+    }
+
+    @Bean
+    public BirtView birtView(){
+        return new BirtView();
+    }
+
+    @Bean public BeanNameViewResolver beanNameResolver(){
+        return new BeanNameViewResolver();
+    }
+
+    @Bean
+    protected BirtEngineFactory engine(){
+        return new BirtEngineFactory() ;
     }
 
 }

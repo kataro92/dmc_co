@@ -181,7 +181,18 @@
                         </p:column>
                     </p:row>
                     <p:row>
-                        <p:column colspan="4"></p:column>
+                        <p:column>
+                            <p:outputLabel for="txtTempImport" value="Hàng tạm nhập ?"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox id="txtTempImport"
+                                                     disabled="#{warehouseImport.currentAct == enumBox.getState('VIEW')
+                                                     || warehouseImport.currentAct == enumBox.getState('EDIT')}"/>
+                        </p:column>
+                        <p:column rendered="#{!(warehouseImport.currentAct == enumBox.getState('EDIT') and warehouseImport.selectedWarehouseImport.tempImport)}" colspan="2"></p:column>
+                        <p:column rendered="#{warehouseImport.currentAct == enumBox.getState('EDIT') and warehouseImport.selectedWarehouseImport.tempImport}" colspan="2">
+                            <p:commandButton value="Tái xuất"/>
+                        </p:column>
                         <p:column>
                             <p:outputLabel value="Tổng tiền"/>
                         </p:column>

@@ -12,8 +12,37 @@ import java.io.Serializable;
         @NamedNativeQuery(
                 name = "DmcWarehouseStatus.findAllBySearchReq",
                 query = "SELECT * FROM dmc_warehouse_status " +
-                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0)" +
-                        "ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
+                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0) " +
+                        " AND (cast(process_date as int) >= cast(:from_date as int) OR :from_date = '0')" +
+                        " AND (cast(process_date as int) <= cast(:to_date as int) OR :to_date = '0')" +
+                        " ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
+                resultClass = DmcWarehouseStatus.class),
+        @NamedNativeQuery(
+                name = "DmcWarehouseStatus.findImportBySearchReq",
+                query = "SELECT * FROM dmc_warehouse_status " +
+                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0) " +
+                        " AND (cast(process_date as int) >= cast(:from_date as int) OR :from_date = '0')" +
+                        " AND (cast(process_date as int) <= cast(:to_date as int) OR :to_date = '0')" +
+                        " AND quantity > 0" +
+                        " ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
+                resultClass = DmcWarehouseStatus.class),
+        @NamedNativeQuery(
+                name = "DmcWarehouseStatus.findExportBySearchReq",
+                query = "SELECT * FROM dmc_warehouse_status " +
+                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0) " +
+                        " AND (cast(process_date as int) >= cast(:from_date as int) OR :from_date = '0')" +
+                        " AND (cast(process_date as int) <= cast(:to_date as int) OR :to_date = '0')" +
+                        " AND quantity < 0" +
+                        " ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
+                resultClass = DmcWarehouseStatus.class),
+        @NamedNativeQuery(
+                name = "DmcWarehouseStatus.findTempImportBySearchReq",
+                query = "SELECT * FROM dmc_warehouse_status " +
+                        "WHERE (warehouse_id = :warehouse_id OR :warehouse_id = 0) " +
+                        " AND (cast(process_date as int) >= cast(:from_date as int) OR :from_date = '0')" +
+                        " AND (cast(process_date as int) <= cast(:to_date as int) OR :to_date = '0')" +
+                        " AND quantity = 0" +
+                        " ORDER BY category_id, group_id, subgroup_id, material_id, quantity",
                 resultClass = DmcWarehouseStatus.class),
             @NamedNativeQuery(
                 name = "DmcWarehouseStatus.findDailyStatus",
@@ -52,8 +81,10 @@ import java.io.Serializable;
                         ", sum(quantity) quantity, sum(price) price FROM dmc_warehouse_status  " +
                         "WHERE quantity < 0 " +
                         "AND warehouse_id = :warehouse_id " +
-                        "AND process_date = :process_date ORDER BY warehouse_id",
-                resultClass = DmcWarehouseStatus.class)}
+                        "AND process_date = :process_date " +
+                        "ORDER BY warehouse_id",
+                resultClass = DmcWarehouseStatus.class)
+}
         )
 public class DmcWarehouseStatus implements Serializable {
     private Integer warehouseId;

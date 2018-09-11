@@ -1,5 +1,7 @@
 package com.kat.dmc.common.dto;
 
+import com.kat.dmc.common.util.DateUtil;
+
 import java.io.Serializable;
 
 public class WarehouseStatusDto implements Serializable {
@@ -53,6 +55,9 @@ public class WarehouseStatusDto implements Serializable {
 
     public String getProcessDate() {
         return processDate;
+    }
+    public String getStrProcessDate() {
+        return DateUtil.YYYYMMDD2DDMMYYYY(processDate);
     }
 
     public void setProcessDate(String processDate) {

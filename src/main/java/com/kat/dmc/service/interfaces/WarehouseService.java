@@ -17,5 +17,8 @@ public interface WarehouseService {
     void save(WarehouseDto userDto);
     void delete(Integer id);
     List<WarehouseStatusDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<WarehouseStatusDto> findImportBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<WarehouseStatusDto> findExportBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<WarehouseStatusDto> findTempImportBySearchReq(WarehouseSearchReq sumOnStockReq);
     List<WarehouseStatusDto> findStatusByWarehouseId(Integer warehouseId);
 }

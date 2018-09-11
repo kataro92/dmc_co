@@ -255,6 +255,7 @@ public class WarehouseImportController implements Serializable {
         selectedWarehouseImport.setId(utilRepo.findSequenceNextval("dmc_material_import_id_seq"));
         selectedWarehouseImport.setCode("NK" + String.format("%06d", selectedWarehouseImport.getId()));
         selectedWarehouseImport.setImportFrom(0);
+        selectedWarehouseImport.setTempImport(false);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){
@@ -268,6 +269,7 @@ public class WarehouseImportController implements Serializable {
         selectedWarehouseImport.setId(utilRepo.findSequenceNextval("dmc_material_import_id_seq"));
         selectedWarehouseImport.setCode("NK" + String.format("%06d", selectedWarehouseImport.getId()));
         selectedWarehouseImport.setImportFrom(0);
+        selectedWarehouseImport.setTempImport(false);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actEdit(){

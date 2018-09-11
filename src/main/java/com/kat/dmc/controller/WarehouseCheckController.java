@@ -39,6 +39,8 @@ public class WarehouseCheckController implements Serializable {
     @Autowired
     WarehouseService warehouseService;
 
+    private int sumSelectCategory;
+
     //Tổng hợp
     private WarehouseSearchReq sumOnStockReq;//Hàng trong kho
     private WarehouseSearchReq sumImportReq;//Hàng nhập
@@ -51,9 +53,12 @@ public class WarehouseCheckController implements Serializable {
     private List<WarehouseStatusDto> sumTempImpExpRes;
     private List<WarehouseDto> warehouseDtos;
 
+    private WarehouseDto selectedWarehouse;
+
 
     @PostConstruct
     public void init(){
+        sumSelectCategory = 0;
         sumOnStockReq = new WarehouseSearchReq();
         sumImportReq = new WarehouseSearchReq();
         sumExportReq = new WarehouseSearchReq();
@@ -82,8 +87,25 @@ public class WarehouseCheckController implements Serializable {
         return warehouseDailyStatusDto;
     }
 
+    public void changeSumPage(int pageIdx){
+        sumSelectCategory = pageIdx;
+        if(pageIdx == 1 && sumImportRes == null){
+            searchImport();
+        }
+        if(pageIdx == 2 && sumExportRes == null){
+            searchExport();
+        }
+        if(pageIdx == 3 && sumTempImpExpRes == null){
+            searchTempImport();
+        }
+        PrimeFaces.current().executeScript("detailShow('1');");
+    }
+
     public void selectSumWarehouse(Integer warehouseId){
         sumOnStockReq.setWarehouseId(warehouseId);
+        for(WarehouseDto warehouseDto : warehouseDtos){
+            selectedWarehouse = warehouseDto;
+        }
         searchSumOnStock();
         PrimeFaces.current().executeScript("detailShow('1');");
     }
@@ -93,6 +115,79 @@ public class WarehouseCheckController implements Serializable {
         PrimeFaces.current().ajax().update("main:checkTab:tblDetail1Sum");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                 , "Info", "Tìm thấy " + sumOnStockRes.size() + " bản ghi"));
+    }
+
+    public void searchImport(){
+        sumImportRes = warehouseService.findImportBySearchReq(sumImportReq);
+        PrimeFaces.current().ajax().update("main:checkTab:tblDetail2Sum");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
+                , "Info", "Tìm thấy " + sumImportRes.size() + " bản ghi"));
+    }
+
+    public void searchExport(){
+        sumExportRes = warehouseService.findExportBySearchReq(sumExportReq);
+        PrimeFaces.current().ajax().update("main:checkTab:tblDetail3Sum");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
+                , "Info", "Tìm thấy " + sumImportRes.size() + " bản ghi"));
+    }
+
+    public void searchTempImport(){
+        sumTempImpExpRes = warehouseService.findTempImportBySearchReq(sumTempImpExpReq);
+        PrimeFaces.current().ajax().update("main:checkTab:tblDetail4Sum");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
+                , "Info", "Tìm thấy " + sumTempImpExpRes.size() + " bản ghi"));
+    }
+
+    public Long sumOnStockQuantity(String processDay){
+        return sumQuantity(sumOnStockRes, processDay);
+    }
+
+    public Long sumOnStockPrice(String processDay){
+        return sumPrice(sumOnStockRes, processDay);
+    }
+
+    public Long sumImportQuantity(String processDay){
+        return sumQuantity(sumImportRes, processDay);
+    }
+
+    public Long sumImportPrice(String processDay){
+        return sumPrice(sumImportRes, processDay);
+    }
+
+    public Long sumExportQuantity(String processDay){
+        return sumQuantity(sumExportRes, processDay);
+    }
+
+    public Long sumExportPrice(String processDay){
+        return sumPrice(sumExportRes, processDay);
+    }
+
+    public Long sumTempImportQuantity(String processDay){
+        return sumQuantity(sumTempImpExpRes, processDay);
+    }
+
+    public Long sumTempImportPrice(String processDay){
+        return sumPrice(sumTempImpExpRes, processDay);
+    }
+
+    private Long sumQuantity(List<WarehouseStatusDto> sumRes, String processDay){
+        Long quantity = 0L;
+        for(WarehouseStatusDto statusDto : sumRes){
+            if(statusDto.getProcessDate().equals(processDay)) {
+                quantity += statusDto.getQuantity();
+            }
+        }
+        return quantity;
+    }
+
+    private Long sumPrice(List<WarehouseStatusDto> sumRes, String processDay){
+        Long price = 0L;
+        for(WarehouseStatusDto statusDto : sumRes){
+            if(statusDto.getProcessDate().equals(processDay)) {
+                price += statusDto.getPrice();
+            }
+        }
+        return price;
     }
 
     public List<WarehouseStatusDto> getSumOnStockRes() {
@@ -165,5 +260,21 @@ public class WarehouseCheckController implements Serializable {
 
     public void setWarehouseDtos(List<WarehouseDto> warehouseDtos) {
         this.warehouseDtos = warehouseDtos;
+    }
+
+    public int getSumSelectCategory() {
+        return sumSelectCategory;
+    }
+
+    public void setSumSelectCategory(int sumSelectCategory) {
+        this.sumSelectCategory = sumSelectCategory;
+    }
+
+    public WarehouseDto getSelectedWarehouse() {
+        return selectedWarehouse;
+    }
+
+    public void setSelectedWarehouse(WarehouseDto selectedWarehouse) {
+        this.selectedWarehouse = selectedWarehouse;
     }
 }

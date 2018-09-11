@@ -1,3 +1,6 @@
+body{
+    line-height:1.2;
+}
 #footer{
     position: absolute;
     bottom: 0;
@@ -42,6 +45,9 @@ footer {
 .ui-widget-content .ui-datatable-empty-message{ display: none;}
 .navbar .nav-item .nav-link {
     border-right: 1px solid #3b3b3b;
+}
+.ui-datatable .ui-paginator, .ui-datatable .ui-paginator {
+    padding: 0px;
 }
 .nav-link, .navbar {
     padding-top: 0rem;
@@ -120,4 +126,8 @@ footer {
 }
 .col-tbl-mini-category{
     width: 90px;
+}
+.mini-desc{
+    position: absolute;
+    font-size: 12px;
 }

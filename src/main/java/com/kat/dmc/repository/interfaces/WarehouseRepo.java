@@ -14,5 +14,8 @@ public interface WarehouseRepo {
     DmcWarehouseEntity findById(Integer id);
     List<DmcWarehouseEntity> findAllActiveByPermission(Boolean canImport, Boolean canExport, Boolean canTransfer, Boolean canDismiss);
     List<DmcWarehouseStatus> findAllBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<DmcWarehouseStatus> findImportBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<DmcWarehouseStatus> findExportBySearchReq(WarehouseSearchReq sumOnStockReq);
+    List<DmcWarehouseStatus> findTempImportBySearchReq(WarehouseSearchReq sumOnStockReq);
     List<DmcWarehouseStatus> findDailyStatus(Integer warehouseId);
 }

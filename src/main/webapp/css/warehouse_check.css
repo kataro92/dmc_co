@@ -11,14 +11,21 @@
     padding-left: 20px;
     width: 210px;
     line-height: 35px;
-    color: #ffffff;
+    color: #000000;
     display: block;
     vertical-align: middle;
-    border-bottom: 1px solid #3b3b3b;
+    border-bottom: 1px solid #d5d5d5;
+    border-left: 1px solid #d5d5d5;
+    background-color: #ffffff;
 }
 .sidenav a:hover{
+    color: #ffffff;
     padding-left: 30px;
-    background-color: #3b3b3b;
+    background-color: #186ba0;
+}
+.sidenav .active{
+    color: #ffffff;
+    background-color: #186ba0;
 }
 /* Page content */
 .main {

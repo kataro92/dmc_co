@@ -17,6 +17,7 @@ public class DmcMaterialImportEntity {
     private String reson;
     private Long total;
     private Integer importFrom;
+    private Boolean tempImport;
 
     @Id
     @Column(name = "id")
@@ -128,6 +129,16 @@ public class DmcMaterialImportEntity {
         this.importFrom = importFrom;
     }
 
+    @Basic
+    @Column(name = "temp_import")
+    public Boolean getTempImport() {
+        return tempImport;
+    }
+
+    public void setTempImport(Boolean importFrom) {
+        this.tempImport = tempImport;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,6 +157,7 @@ public class DmcMaterialImportEntity {
         if (reson != null ? !reson.equals(that.reson) : that.reson != null) return false;
         if (total != null ? !total.equals(that.total) : that.total != null) return false;
         if (importFrom != null ? !importFrom.equals(that.importFrom) : that.importFrom != null) return false;
+        if (tempImport != null ? !tempImport.equals(that.tempImport) : that.tempImport != null) return false;
 
         return true;
     }
@@ -163,6 +175,7 @@ public class DmcMaterialImportEntity {
         result = 31 * result + (reson != null ? reson.hashCode() : 0);
         result = 31 * result + (total != null ? total.hashCode() : 0);
         result = 31 * result + (importFrom != null ? importFrom.hashCode() : 0);
+        result = 31 * result + (tempImport != null ? tempImport.hashCode() : 0);
         return result;
     }
 }

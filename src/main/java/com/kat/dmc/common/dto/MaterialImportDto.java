@@ -19,17 +19,19 @@ public class MaterialImportDto implements Serializable {
     private String reson;
     private Long total;
     private Integer childQuantity;
+    private Boolean tempImport;
 
     @Override
     public MaterialImportDto clone(){
         return new MaterialImportDto(id, code, categoryId, importDate, supplierId, status, lstDetails,
-                importFromId, warehouseId, importFrom, reson, total, childQuantity);
+                importFromId, warehouseId, importFrom, reson, total, childQuantity, tempImport);
     }
 
     public MaterialImportDto(int id, String code, int categoryId, Date importDate,
                              int supplierId, int status,
                              List<MaterialImportDetailDto> lstDetails, Integer importFromId,
-                             Integer warehouseId, Integer importFrom, String reson, Long total, Integer childQuantity) {
+                             Integer warehouseId, Integer importFrom, String reson, Long total,
+                             Integer childQuantity, Boolean tempImport) {
         this.id = id;
         this.code = code;
         this.categoryId = categoryId;
@@ -43,6 +45,7 @@ public class MaterialImportDto implements Serializable {
         this.reson = reson;
         this.total = total;
         this.childQuantity = childQuantity;
+        this.tempImport = tempImport;
     }
 
     public Integer getChildQuantity() {
@@ -155,5 +158,13 @@ public class MaterialImportDto implements Serializable {
 
     public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public Boolean getTempImport() {
+        return tempImport;
+    }
+
+    public void setTempImport(Boolean tempImport) {
+        this.tempImport = tempImport;
     }
 }

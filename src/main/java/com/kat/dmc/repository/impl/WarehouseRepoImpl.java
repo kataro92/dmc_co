@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -94,9 +95,84 @@ public class WarehouseRepoImpl implements WarehouseRepo {
 
     @Override
     public List<DmcWarehouseStatus> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
-        return entityManager.createNamedQuery("DmcWarehouseStatus.findAllBySearchReq", DmcWarehouseStatus.class)
-                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId())
-                .getResultList();
+        TypedQuery<DmcWarehouseStatus> statusTypedQuery = entityManager.createNamedQuery("DmcWarehouseStatus.findAllBySearchReq", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId());
+        String[] dateParams = makeFromToDate(sumOnStockReq, "0", "0");
+        statusTypedQuery.setParameter("from_date", dateParams[0]);
+        statusTypedQuery.setParameter("to_date", dateParams[1]);
+        return statusTypedQuery.getResultList();
+    }
+    @Override
+    public List<DmcWarehouseStatus> findImportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        TypedQuery<DmcWarehouseStatus> statusTypedQuery = entityManager.createNamedQuery("DmcWarehouseStatus.findImportBySearchReq", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId());
+        String[] dateParams = makeFromToDate(sumOnStockReq, "0", "0");
+        statusTypedQuery.setParameter("from_date", dateParams[0]);
+        statusTypedQuery.setParameter("to_date", dateParams[1]);
+        return statusTypedQuery.getResultList();
+    }
+    @Override
+    public List<DmcWarehouseStatus> findExportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        TypedQuery<DmcWarehouseStatus> statusTypedQuery = entityManager.createNamedQuery("DmcWarehouseStatus.findExportBySearchReq", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId());
+        String[] dateParams = makeFromToDate(sumOnStockReq, "0", "0");
+        statusTypedQuery.setParameter("from_date", dateParams[0]);
+        statusTypedQuery.setParameter("to_date", dateParams[1]);
+        return statusTypedQuery.getResultList();
+    }
+    @Override
+    public List<DmcWarehouseStatus> findTempImportBySearchReq(WarehouseSearchReq sumOnStockReq) {
+        TypedQuery<DmcWarehouseStatus> statusTypedQuery = entityManager.createNamedQuery("DmcWarehouseStatus.findTempImportBySearchReq", DmcWarehouseStatus.class)
+                .setParameter("warehouse_id", sumOnStockReq.getWarehouseId());
+        String[] dateParams = makeFromToDate(sumOnStockReq, "0", "0");
+        statusTypedQuery.setParameter("from_date", dateParams[0]);
+        statusTypedQuery.setParameter("to_date", dateParams[1]);
+        return statusTypedQuery.getResultList();
+    }
+
+    private String[] makeFromToDate(WarehouseSearchReq sumOnStockReq, String fromDate, String toDate){
+        if(sumOnStockReq.getType() == 0){//Ngày
+            if(sumOnStockReq.getSearchType() == 0){
+                fromDate = getValueFromDate(sumOnStockReq.getDay());
+                toDate = getValueFromDate(sumOnStockReq.getDay());
+            }else {
+                fromDate = getValueFromDate(sumOnStockReq.getFromDay());
+                toDate = getValueFromDate(sumOnStockReq.getToDay());
+            }
+        }else if(sumOnStockReq.getType() == 1){//Tháng
+            if(sumOnStockReq.getSearchType() == 0){
+                fromDate = getValueFromDate(DateUtil.getStartDay4MonthYear(sumOnStockReq.getMonth(), sumOnStockReq.getYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4MonthYear(sumOnStockReq.getMonth(), sumOnStockReq.getYear()));
+            }else {
+                fromDate = getValueFromDate(DateUtil.getStartDay4MonthYear(sumOnStockReq.getFromMonth(), sumOnStockReq.getFromYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4MonthYear(sumOnStockReq.getToMonth(), sumOnStockReq.getToYear()));
+            }
+        }else if(sumOnStockReq.getType() == 2){//Quý
+            if(sumOnStockReq.getSearchType() == 0){
+                fromDate = getValueFromDate(DateUtil.getStartDay4QuaterYear(sumOnStockReq.getQuater(), sumOnStockReq.getYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4QuaterYear(sumOnStockReq.getQuater(), sumOnStockReq.getYear()));
+            }else {
+                fromDate = getValueFromDate(DateUtil.getStartDay4QuaterYear(sumOnStockReq.getFromQuater(), sumOnStockReq.getFromYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4QuaterYear(sumOnStockReq.getToQuater(), sumOnStockReq.getToYear()));
+            }
+        }else if(sumOnStockReq.getType() == 3){//Năm
+            if(sumOnStockReq.getSearchType() == 0){
+                fromDate = getValueFromDate(DateUtil.getStartDay4Year(sumOnStockReq.getYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4Year(sumOnStockReq.getYear()));
+            }else {
+                fromDate = getValueFromDate(DateUtil.getStartDay4Year(sumOnStockReq.getFromYear()));
+                toDate = getValueFromDate(DateUtil.getEndDay4Year(sumOnStockReq.getToYear()));
+            }
+        }
+        return new String[] {fromDate, toDate};
+    }
+
+    private String getValueFromDate(Date day){
+        if(day == null){
+            return "0";
+        }else{
+            return DateUtil.toString(day, DateConst.FORMAT_YYYYMMDD);
+        }
     }
     @Override
     public List<DmcWarehouseStatus> findDailyStatus(Integer warehouseId) {

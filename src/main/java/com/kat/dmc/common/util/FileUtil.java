@@ -35,9 +35,9 @@ public class FileUtil {
     }
     public static String writeReport2Temp(String filePath) throws IOException{
         String tempFile = filePath+".temp";
-        String username = ResourceUtil.getProperty("application.properties", "spring.datasource.username");
-        String password = ResourceUtil.getProperty("application.properties", "spring.datasource.password");
-        String url = ResourceUtil.getProperty("application.properties", "spring.datasource.url");
+        String username = ResourcesUtil.getProperty("application.properties", "spring.datasource.username");
+        String password = ResourcesUtil.getProperty("application.properties", "spring.datasource.password");
+        String url = ResourcesUtil.getProperty("application.properties", "spring.datasource.url");
         byte[] encodedBytes = Base64.encodeBase64(password.getBytes());
         BufferedReader br;
         BufferedWriter pw;

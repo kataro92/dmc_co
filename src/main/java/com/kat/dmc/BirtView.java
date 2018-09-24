@@ -7,31 +7,37 @@ package com.kat.dmc;
 
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.FileUtil;
-import com.kat.dmc.common.util.ResourceUtil;
-import com.kat.dmc.service.impl.BIRTReportRunner;
+import com.kat.dmc.common.util.ResourcesUtil;
+import com.kat.dmc.common.util.StringUtil;
+import org.eclipse.birt.core.exception.BirtException;
+import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.*;
 import org.eclipse.birt.report.model.api.OdaDataSetHandle;
 import org.eclipse.birt.report.model.api.ParameterHandle;
 import org.eclipse.birt.report.model.api.PropertyHandle;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
+import org.eclipse.core.internal.registry.RegistryProviderFactory;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+
 import static org.mockito.Mockito.mock;
 
 /**
@@ -40,17 +46,27 @@ import static org.mockito.Mockito.mock;
  * parameter. In addition Report parameters are automatically searched for in the
  * the request object.
  */
-public class BirtView extends AbstractView {
+@RestController
+@RequestMapping("/report")
+public class BirtView {
 
-    private static IReportEngine birtEngine = BIRTReportRunner.getBirtReportEngine();
-    private String reportNameRequestParameter = "reportName";
-    private String reportFormatRequestParameter = "reportFormat";
-    private String reportFilename = "filename";
+    private static final String DEFAULT_LOGGING_DIRECTORY = "defaultBirtLoggingDirectory/";
+    private static final String SYSTEM_PROPERTIES = "system.properties";
+    private static Logger logger = LoggerFactory.getLogger(BirtView.class);
+//    private static IReportEngine birtReportEngine = null;
+    private IReportEngine birtEngine;
+//    private String reportNameRequestParameter = "reportName";
+//    private String reportFormatRequestParameter = "reportFormat";
+//    private String reportFilename = "filename";
     private String reportStartup = "startup";
     private static Logger birtViewLogger = LoggerFactory.getLogger(BirtView.class);
     @PostConstruct
     public void startUpTemplateEngine(){
         try {
+            if(birtEngine == null){
+                startUp();
+            }
+//            birtEngine = BIRTReportRunner.getBirtReportEngine();
             HttpServletRequest mockRequest = mock(HttpServletRequest.class);
             HttpServletResponse mockResponse = mock(HttpServletResponse.class);
             DateTime now = DateTime.now();
@@ -67,22 +83,49 @@ public class BirtView extends AbstractView {
         }
     }
 
-    protected void renderMergedOutputModel(
-            Map map, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        String format = request.getParameter(this.reportFormatRequestParameter);
-        String reportName = request.getParameter(this.reportNameRequestParameter);
-        String filename = request.getParameter(this.reportFilename);
-        renderMergedOutputModel(request, response, format, reportName, filename);
+    public void startUp() {
+        try {
+            String birtLoggingDirectory = ResourcesUtil.getProperty(SYSTEM_PROPERTIES, "birt_logging_directory") == null
+                    ? DEFAULT_LOGGING_DIRECTORY : ResourcesUtil.getProperty(SYSTEM_PROPERTIES, "birt_logging_directory");
+            Level birtLoggingLevel = ResourcesUtil.getProperty(SYSTEM_PROPERTIES, "birt_logging_level") == null
+                    ? Level.SEVERE : Level.parse(ResourcesUtil.getProperty(SYSTEM_PROPERTIES, "birt_logging_level"));
+            EngineConfig engineConfig = new EngineConfig();
+            logger.info("[BIRT] log directory : {}", birtLoggingDirectory);
+            logger.info("[BIRT] log level : {}", birtLoggingLevel);
+            engineConfig.setLogConfig(birtLoggingDirectory, birtLoggingLevel);
+            // Required due to a bug in BIRT that occurs in calling Startup after the Platform has already been started up
+            RegistryProviderFactory.releaseDefault();
+            Platform.startup(engineConfig);
+            IReportEngineFactory reportEngineFactory = (IReportEngineFactory) Platform.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+            birtEngine = reportEngineFactory.createReportEngine(engineConfig);
+        } catch (BirtException e) {
+            // Possibly rethrow the exception here and catch it in the aspect.
+            logger.error("[BIRT][ERROR] {}", e);
+        }
+    }
+
+    @GetMapping("/{format}/{reportName}")
+    public void downloadDocument(@PathVariable(name = "format") String format,
+                                 @PathVariable(name = "reportName") String reportName,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
+        if(StringUtil.isEmpty(reportName)){
+            return;
+        }
+        try {
+            renderMergedOutputModel(request, response, format, reportName, reportName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected void renderMergedOutputModel(HttpServletRequest request,
                                            HttpServletResponse response, String format,
-                                           String reportName, String filename) throws EngineException, IOException {
+                                           String reportName, String filename) throws Exception {
         DateTime now = DateTime.now();
         IReportRunnable runnable;
         ClassLoader classLoader = getClass().getClassLoader();
-        String templateRoot = ResourceUtil.getProperty("system.properties", "birt_report_input_dir");
+        String templateRoot = ResourcesUtil.getProperty("system.properties", "birt_report_input_dir");
         URL resource = classLoader.getResource(templateRoot + File.separator + reportName + ".rptdesign");
         String decoded = URLDecoder.decode(FileUtil.writeReport2Temp(URLDecoder.decode(resource.getPath(), "UTF-8")), "UTF-8");
         runnable = birtEngine.openReportDesign(decoded);
@@ -97,7 +140,7 @@ public class BirtView extends AbstractView {
         for(OdaDataSetHandle ds : dataSets){
             PropertyHandle propertyHandle = reportDesignHandle.findDataSet(ds.getName()).getPropertyHandle("queryText");
             String query = (String) propertyHandle.getValue();
-            logger.info("[BIRT][SQL]: " + query);
+            birtViewLogger.info("[BIRT][SQL]: " + query);
         }
         IRenderOption options = new RenderOption();
         //Set report parameter
@@ -110,10 +153,10 @@ public class BirtView extends AbstractView {
             runAndRenderTask.setParameterValue(arg.getKey(), lstValue[0]);
         }
         for(ParameterHandle parameter : allParameters){
-            logger.info("[BIRT][PARAM]: " + parameter.getName() + " : " + runAndRenderTask.getParameterValue(parameter.getName()));
+            birtViewLogger.info("[BIRT][PARAM]: " + parameter.getName() + " : " + runAndRenderTask.getParameterValue(parameter.getName()));
         }
         try {
-            if (format.equalsIgnoreCase(IRenderOption.OUTPUT_FORMAT_PDF)) {
+            if (format != null && format.equalsIgnoreCase(IRenderOption.OUTPUT_FORMAT_PDF)) {
                 PDFRenderOption pdfOptions = new PDFRenderOption(options);
                 pdfOptions.setOutputFormat(IRenderOption.OUTPUT_FORMAT_PDF);
                 pdfOptions.setOption(IPDFRenderOption.PAGE_OVERFLOW
@@ -143,13 +186,14 @@ public class BirtView extends AbstractView {
             runAndRenderTask.run();
             runAndRenderTask.close();
         } catch (Exception ex) {
-            response.setContentType(birtEngine.getMIMEType(IRenderOption.OUTPUT_FORMAT_HTML));
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.println("<h4>"+reportName+"</h4>");
-            outputStream.println("<p style='padding-left: 41px'>");
-            outputStream.println("<b style='color: red'>"+ex.getMessage()+"</b><br/>");
-            outputStream.println("<a style='color: red'>"+ex.getLocalizedMessage()+"</a>");
-            outputStream.println("</p>");
+            ex.printStackTrace();
+//            response.setContentType(birtEngine.getMIMEType(IRenderOption.OUTPUT_FORMAT_HTML));
+//            ServletOutputStream outputStream = response.getOutputStream();
+//            outputStream.println("<h4>"+reportName+"</h4>");
+//            outputStream.println("<p style='padding-left: 41px'>");
+//            outputStream.println("<b style='color: red'>"+ex.getMessage()+"</b><br/>");
+//            outputStream.println("<a style='color: red'>"+ex.getLocalizedMessage()+"</a>");
+//            outputStream.println("</p>");
         }
         DateTime dateTime = DateTime.now();
         Seconds seconds = Seconds.secondsBetween(now, dateTime);

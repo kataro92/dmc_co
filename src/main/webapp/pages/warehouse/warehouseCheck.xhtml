@@ -111,9 +111,9 @@
                                     <p:commandLink styleClass="#{warehouseCheck.sumSelectCategory == 3 ? 'active' : 'inactive'}"
                                                    actionListener="#{warehouseCheck.changeSumPage(3)}"
                                                    update="main:checkTab:pnlDetail2">Hàng tạm nhập / tái xuất</p:commandLink>
-                                    <p:commandLink href="#">Xuất ra excel</p:commandLink>
-                                    <p:commandLink href="#">Xuất ra PDF</p:commandLink>
-                                    <p:commandLink href="#">In kết quả</p:commandLink>
+                                    <p:commandLink actionListener="#{warehouseCheck.exportExcel()}" href="#">Xuất ra excel</p:commandLink>
+                                    <p:commandLink actionListener="#{warehouseCheck.exportPDF()}" href="#">Xuất ra PDF</p:commandLink>
+                                    <p:commandLink actionListener="#{warehouseCheck.printPDF()}" href="#">In kết quả</p:commandLink>
                                 </div>
                                 <p:outputPanel rendered="#{warehouseCheck.sumSelectCategory == 0}" id="pnlMainDetail1Sum" styleClass="main">
                                     <h:panelGrid id="pnlDetail1Sum" columns="9" style="margin-bottom:10px" cellpadding="5">

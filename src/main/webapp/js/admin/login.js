@@ -6,6 +6,11 @@ $( document ).ready(function() {
     }
     $('body').height($(window).height());
     $('#wrapper').height($(window).height());
+    $('#content\\:pnlLogin').keypress(function(e) {
+        if(e.which == 13) {
+            $('#content\\:btnLogin').click();
+        }
+    });
 });
 $( window ).resize(function() {
     if($(window).height() > 700) {

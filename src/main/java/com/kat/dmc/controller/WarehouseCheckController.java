@@ -1,6 +1,5 @@
 package com.kat.dmc.controller;
 
-import com.kat.dmc.common.dto.MaterialIETDDto;
 import com.kat.dmc.common.dto.WarehouseDailyStatusDto;
 import com.kat.dmc.common.dto.WarehouseDto;
 import com.kat.dmc.common.dto.WarehouseStatusDto;
@@ -188,6 +187,10 @@ public class WarehouseCheckController implements Serializable {
             }
         }
         return price;
+    }
+
+    public void exportExcel(){
+
     }
 
     public List<WarehouseStatusDto> getSumOnStockRes() {

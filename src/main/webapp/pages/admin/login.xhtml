@@ -35,12 +35,10 @@
                         </div>
                     </div>
                     <div class="ui-ng ui-g-12">
-                        <div class="ui-g-4 ui-md-4 ui-lg-3">
-
-                        </div>
-                        <div class="ui-g-8 ui-md-8 ui-lg-8">
-                            <p:commandLink update="pnlLogin" styleClass="btn btn-blue" value="Login" actionListener="#{login.actLogin()}"/>
-                            <p:commandLink update="pnlLogin" styleClass="btn btn-blue" value="Clear" actionListener="#{login.actClear()}"/>
+                        <div class="ui-g-4 ui-md-4 ui-lg-3">&nbsp;</div>
+                        <div class="ui-g-8 ui-md-8 ui-lg-8 text-center">
+                            <p:commandLink id="btnLogin" update="pnlLogin" styleClass="btn btn-md btn-blue" value="Login" actionListener="#{login.actLogin()}"/>
+                            <p:commandLink id="btnReset" update="pnlLogin" styleClass="btn btn-md btn-blue" value="Clear" actionListener="#{login.actClear()}"/>
                         </div>
                     </div>
                 </div>

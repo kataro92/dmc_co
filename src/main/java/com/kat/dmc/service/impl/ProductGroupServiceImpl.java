@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.ProductGroupDto;
-import com.kat.dmc.common.model.ProductGroupEntity;
+import com.kat.dmc.common.model.DmcProductGroupEntity;
 import com.kat.dmc.repository.interfaces.ProductGroupRepo;
 import com.kat.dmc.service.interfaces.ProductGroupService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class ProductGroupServiceImpl implements ProductGroupService {
 
     @Override
     public void save(ProductGroupDto userDto) {
-        ProductGroupEntity savingObj = modelMapper.map(userDto, ProductGroupEntity.class);
+        DmcProductGroupEntity savingObj = modelMapper.map(userDto, DmcProductGroupEntity.class);
         productGroupRepo.save(savingObj);
     }
 
@@ -43,7 +43,7 @@ public class ProductGroupServiceImpl implements ProductGroupService {
         productGroupRepo.delete(productGroupRepo.findById(id));
     }
 
-    private ProductGroupDto entity2Dto(ProductGroupEntity entity){
+    private ProductGroupDto entity2Dto(DmcProductGroupEntity entity){
         return modelMapper.map(entity, ProductGroupDto.class);
     }
 }

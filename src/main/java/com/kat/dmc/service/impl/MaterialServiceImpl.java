@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.MaterialDto;
-import com.kat.dmc.common.model.MaterialEntity;
+import com.kat.dmc.common.model.DmcMaterialEntity;
 import com.kat.dmc.common.dto.MaterialImportDetailDto;
 import com.kat.dmc.repository.interfaces.MaterialRepo;
 import com.kat.dmc.service.interfaces.MaterialService;
@@ -36,7 +36,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void save(MaterialDto userDto) {
-        MaterialEntity savingObj = modelMapper.map(userDto, MaterialEntity.class);
+        DmcMaterialEntity savingObj = modelMapper.map(userDto, DmcMaterialEntity.class);
         materialRepo.save(savingObj);
     }
 
@@ -77,8 +77,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public MaterialDto findByImport(int materialId, int importId) {
-        MaterialEntity materialEntity = materialRepo.findById(materialId);
-        MaterialDto detailDto = modelMapper.map(materialEntity, MaterialDto.class);
+        DmcMaterialEntity dmcMaterialEntity = materialRepo.findById(materialId);
+        MaterialDto detailDto = modelMapper.map(dmcMaterialEntity, MaterialDto.class);
         List<MaterialImportDetailDto> importIds = materialRepo.findImpIdsByMaterialId(detailDto.getId());
         for(MaterialImportDetailDto materialImportDetailDto : importIds){
             if(materialImportDetailDto.getId() == importId) {
@@ -95,7 +95,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
-    private MaterialDto entity2Dto(MaterialEntity entity){
+    private MaterialDto entity2Dto(DmcMaterialEntity entity){
         return modelMapper.map(entity, MaterialDto.class);
     }
 }

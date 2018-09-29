@@ -1,8 +1,8 @@
 package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.dto.EmployeeDto;
-import com.kat.dmc.common.model.EmployeeEntity;
-import com.kat.dmc.common.model.EmployeeEntity_;
+import com.kat.dmc.common.model.DmcEmployeeEntity;
+import com.kat.dmc.common.model.DmcEmployeeEntity_;
 import com.kat.dmc.repository.interfaces.EmployeeRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -31,48 +30,48 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     UtilRepo utilRepo;
 
     @Override
-    public List<EmployeeEntity> findAll() {
+    public List<DmcEmployeeEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<EmployeeEntity> criteriaQuery = builder.createQuery(EmployeeEntity.class);
-        Root<EmployeeEntity> root = criteriaQuery.from(EmployeeEntity.class);
+        CriteriaQuery<DmcEmployeeEntity> criteriaQuery = builder.createQuery(DmcEmployeeEntity.class);
+        Root<DmcEmployeeEntity> root = criteriaQuery.from(DmcEmployeeEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(EmployeeEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcEmployeeEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<EmployeeEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcEmployeeEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public List<EmployeeEntity> findByDeptId(int deptId) {
+    public List<DmcEmployeeEntity> findByDeptId(int deptId) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<EmployeeEntity> criteriaQuery = builder.createQuery(EmployeeEntity.class);
-        Root<EmployeeEntity> root = criteriaQuery.from(EmployeeEntity.class);
+        CriteriaQuery<DmcEmployeeEntity> criteriaQuery = builder.createQuery(DmcEmployeeEntity.class);
+        Root<DmcEmployeeEntity> root = criteriaQuery.from(DmcEmployeeEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(EmployeeEntity_.deptId), deptId));
+        predicates.add(builder.equal(root.get(DmcEmployeeEntity_.deptId), deptId));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<EmployeeEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcEmployeeEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(EmployeeEntity userEntity) {
+    public void save(DmcEmployeeEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(EmployeeEntity userEntity) {
+    public void delete(DmcEmployeeEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public EmployeeEntity findById(Integer id) {
+    public DmcEmployeeEntity findById(Integer id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<EmployeeEntity> criteriaQuery = builder.createQuery(EmployeeEntity.class);
-        Root<EmployeeEntity> root = criteriaQuery.from(EmployeeEntity.class);
+        CriteriaQuery<DmcEmployeeEntity> criteriaQuery = builder.createQuery(DmcEmployeeEntity.class);
+        Root<DmcEmployeeEntity> root = criteriaQuery.from(DmcEmployeeEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(EmployeeEntity_.id),id));
+        predicates.add(builder.equal(root.get(DmcEmployeeEntity_.id),id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<EmployeeEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcEmployeeEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 

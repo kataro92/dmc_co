@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "employee", schema = "public")
-public class EmployeeEntity {
+@Table(name = "dmc_employee", schema = "public")
+public class DmcEmployeeEntity {
     private String address;
     private String code;
     private String defCode;
@@ -232,7 +232,7 @@ public class EmployeeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EmployeeEntity that = (EmployeeEntity) o;
+        DmcEmployeeEntity that = (DmcEmployeeEntity) o;
 
         if (id != that.id) return false;
         if (deptId != that.deptId) return false;

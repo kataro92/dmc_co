@@ -15,9 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -36,72 +34,72 @@ public class MaterialRepoImpl implements MaterialRepo {
     MaterialExportDetailRepo exportDetailRepo;
     
     @Override
-    public List<MaterialEntity> findAll() {
+    public List<DmcMaterialEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
-        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        CriteriaQuery<DmcMaterialEntity> criteriaQuery = builder.createQuery(DmcMaterialEntity.class);
+        Root<DmcMaterialEntity> root = criteriaQuery.from(DmcMaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(MaterialEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcMaterialEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public List<MaterialEntity> findAllActive() {
+    public List<DmcMaterialEntity> findAllActive() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
-        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        CriteriaQuery<DmcMaterialEntity> criteriaQuery = builder.createQuery(DmcMaterialEntity.class);
+        Root<DmcMaterialEntity> root = criteriaQuery.from(DmcMaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialEntity_.status), 1));
+        predicates.add(builder.equal(root.get(DmcMaterialEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(MaterialEntity userEntity) {
+    public void save(DmcMaterialEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(MaterialEntity userEntity) {
+    public void delete(DmcMaterialEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public MaterialEntity findById(Integer id) {
+    public DmcMaterialEntity findById(Integer id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
-        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        CriteriaQuery<DmcMaterialEntity> criteriaQuery = builder.createQuery(DmcMaterialEntity.class);
+        Root<DmcMaterialEntity> root = criteriaQuery.from(DmcMaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialEntity_.id), id));
+        predicates.add(builder.equal(root.get(DmcMaterialEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 
     @Override
-    public List<MaterialEntity> findBySubgroupId(int id) {
+    public List<DmcMaterialEntity> findBySubgroupId(int id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
-        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        CriteriaQuery<DmcMaterialEntity> criteriaQuery = builder.createQuery(DmcMaterialEntity.class);
+        Root<DmcMaterialEntity> root = criteriaQuery.from(DmcMaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialEntity_.materialSubgroupCode), String.valueOf(id)));
+        predicates.add(builder.equal(root.get(DmcMaterialEntity_.materialSubgroupCode), String.valueOf(id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public MaterialEntity findByCode(String code) {
+    public DmcMaterialEntity findByCode(String code) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialEntity> criteriaQuery = builder.createQuery(MaterialEntity.class);
-        Root<MaterialEntity> root = criteriaQuery.from(MaterialEntity.class);
+        CriteriaQuery<DmcMaterialEntity> criteriaQuery = builder.createQuery(DmcMaterialEntity.class);
+        Root<DmcMaterialEntity> root = criteriaQuery.from(DmcMaterialEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialEntity_.code), code));
+        predicates.add(builder.equal(root.get(DmcMaterialEntity_.code), code));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 
@@ -154,8 +152,8 @@ public class MaterialRepoImpl implements MaterialRepo {
             }
 
             for (MaterialImportDetailDto importDetailDto : detailDtoList) {
-                MaterialEntity materialEntity = findById(importDetailDto.getMaterialId());
-                importDetailDto.setUnit(materialEntity.getUnit());
+                DmcMaterialEntity dmcMaterialEntity = findById(importDetailDto.getMaterialId());
+                importDetailDto.setUnit(dmcMaterialEntity.getUnit());
             }
         }catch (NoResultException ex){
             System.out.println(ex.getMessage());

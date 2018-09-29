@@ -1,13 +1,13 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "product_group", schema = "public")
-public class ProductGroupEntity {
+@Table(name = "dmc_material_subgroup", schema = "public")
+public class DmcMaterialSubgroupEntity {
     private String code;
     private String defCode;
+    private String materialGroupCode;
     private String name;
     private Integer status;
     private int id;
@@ -30,6 +30,16 @@ public class ProductGroupEntity {
 
     public void setDefCode(String defCode) {
         this.defCode = defCode;
+    }
+
+    @Basic
+    @Column(name = "material_group_code")
+    public String getMaterialGroupCode() {
+        return materialGroupCode;
+    }
+
+    public void setMaterialGroupCode(String materialGroupCode) {
+        this.materialGroupCode = materialGroupCode;
     }
 
     @Basic
@@ -67,11 +77,13 @@ public class ProductGroupEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProductGroupEntity that = (ProductGroupEntity) o;
+        DmcMaterialSubgroupEntity that = (DmcMaterialSubgroupEntity) o;
 
         if (id != that.id) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (defCode != null ? !defCode.equals(that.defCode) : that.defCode != null) return false;
+        if (materialGroupCode != null ? !materialGroupCode.equals(that.materialGroupCode) : that.materialGroupCode != null)
+            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
@@ -82,6 +94,7 @@ public class ProductGroupEntity {
     public int hashCode() {
         int result = code != null ? code.hashCode() : 0;
         result = 31 * result + (defCode != null ? defCode.hashCode() : 0);
+        result = 31 * result + (materialGroupCode != null ? materialGroupCode.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + id;

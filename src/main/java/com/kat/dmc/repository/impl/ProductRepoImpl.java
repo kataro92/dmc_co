@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.ProductEntity;
-import com.kat.dmc.common.model.ProductEntity_;
+import com.kat.dmc.common.model.DmcProductEntity;
+import com.kat.dmc.common.model.DmcProductEntity_;
 import com.kat.dmc.repository.interfaces.ProductRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,60 +27,60 @@ public class ProductRepoImpl implements ProductRepo {
     UtilRepo utilRepo;
     
     @Override
-    public List<ProductEntity> findAll() {
+    public List<DmcProductEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ProductEntity> criteriaQuery = builder.createQuery(ProductEntity.class);
-        Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<DmcProductEntity> criteriaQuery = builder.createQuery(DmcProductEntity.class);
+        Root<DmcProductEntity> root = criteriaQuery.from(DmcProductEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(ProductEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcProductEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<ProductEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcProductEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public List<ProductEntity> findAllActive() {
+    public List<DmcProductEntity> findAllActive() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ProductEntity> criteriaQuery = builder.createQuery(ProductEntity.class);
-        Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<DmcProductEntity> criteriaQuery = builder.createQuery(DmcProductEntity.class);
+        Root<DmcProductEntity> root = criteriaQuery.from(DmcProductEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductEntity_.status), 1));
+        predicates.add(builder.equal(root.get(DmcProductEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<ProductEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcProductEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(ProductEntity userEntity) {
+    public void save(DmcProductEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(ProductEntity userEntity) {
+    public void delete(DmcProductEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public ProductEntity findById(Integer id) {
+    public DmcProductEntity findById(Integer id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ProductEntity> criteriaQuery = builder.createQuery(ProductEntity.class);
-        Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<DmcProductEntity> criteriaQuery = builder.createQuery(DmcProductEntity.class);
+        Root<DmcProductEntity> root = criteriaQuery.from(DmcProductEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductEntity_.id), id));
+        predicates.add(builder.equal(root.get(DmcProductEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<ProductEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcProductEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 
     @Override
-    public List<ProductEntity> findBySubgroupId(int id) {
+    public List<DmcProductEntity> findBySubgroupId(int id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ProductEntity> criteriaQuery = builder.createQuery(ProductEntity.class);
-        Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<DmcProductEntity> criteriaQuery = builder.createQuery(DmcProductEntity.class);
+        Root<DmcProductEntity> root = criteriaQuery.from(DmcProductEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ProductEntity_.productSubgroupCode), String.valueOf(id)));
+        predicates.add(builder.equal(root.get(DmcProductEntity_.productSubgroupCode), String.valueOf(id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<ProductEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcProductEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 }

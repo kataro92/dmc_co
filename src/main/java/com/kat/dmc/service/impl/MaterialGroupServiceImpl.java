@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.MaterialGroupDto;
-import com.kat.dmc.common.model.MaterialGroupEntity;
+import com.kat.dmc.common.model.DmcMaterialGroupEntity;
 import com.kat.dmc.repository.interfaces.MaterialGroupRepo;
 import com.kat.dmc.service.interfaces.MaterialGroupService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class MaterialGroupServiceImpl implements MaterialGroupService {
 
     @Override
     public void save(MaterialGroupDto userDto) {
-        MaterialGroupEntity savingObj = modelMapper.map(userDto, MaterialGroupEntity.class);
+        DmcMaterialGroupEntity savingObj = modelMapper.map(userDto, DmcMaterialGroupEntity.class);
         materialGroupRepo.save(savingObj);
     }
 
@@ -43,7 +43,7 @@ public class MaterialGroupServiceImpl implements MaterialGroupService {
         materialGroupRepo.delete(materialGroupRepo.findById(id));
     }
 
-    private MaterialGroupDto entity2Dto(MaterialGroupEntity entity){
+    private MaterialGroupDto entity2Dto(DmcMaterialGroupEntity entity){
         return modelMapper.map(entity, MaterialGroupDto.class);
     }
 }

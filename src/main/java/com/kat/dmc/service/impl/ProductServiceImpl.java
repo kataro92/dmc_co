@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.ProductDto;
-import com.kat.dmc.common.model.ProductEntity;
+import com.kat.dmc.common.model.DmcProductEntity;
 import com.kat.dmc.repository.interfaces.ProductRepo;
 import com.kat.dmc.service.interfaces.ProductService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(ProductDto userDto) {
-        ProductEntity savingObj = modelMapper.map(userDto, ProductEntity.class);
+        DmcProductEntity savingObj = modelMapper.map(userDto, DmcProductEntity.class);
         productRepo.save(savingObj);
     }
 
@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findBySubgroupId(id).stream().map(this::entity2Dto).collect(Collectors.toList());
     }
 
-    private ProductDto entity2Dto(ProductEntity entity){
+    private ProductDto entity2Dto(DmcProductEntity entity){
         return modelMapper.map(entity, ProductDto.class);
     }
 }

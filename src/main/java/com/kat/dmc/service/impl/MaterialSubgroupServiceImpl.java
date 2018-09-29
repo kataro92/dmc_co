@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.MaterialSubgroupDto;
-import com.kat.dmc.common.model.MaterialSubgroupEntity;
+import com.kat.dmc.common.model.DmcMaterialSubgroupEntity;
 import com.kat.dmc.repository.interfaces.MaterialSubgroupRepo;
 import com.kat.dmc.service.interfaces.MaterialSubgroupService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class MaterialSubgroupServiceImpl implements MaterialSubgroupService {
 
     @Override
     public void save(MaterialSubgroupDto userDto) {
-        MaterialSubgroupEntity savingObj = modelMapper.map(userDto, MaterialSubgroupEntity.class);
+        DmcMaterialSubgroupEntity savingObj = modelMapper.map(userDto, DmcMaterialSubgroupEntity.class);
         materialSubgroupRepo.save(savingObj);
     }
 
@@ -48,7 +48,7 @@ public class MaterialSubgroupServiceImpl implements MaterialSubgroupService {
         return materialSubgroupRepo.findAllByGroupId(id).stream().map(this::entity2Dto).collect(Collectors.toList());
     }
 
-    private MaterialSubgroupDto entity2Dto(MaterialSubgroupEntity entity){
+    private MaterialSubgroupDto entity2Dto(DmcMaterialSubgroupEntity entity){
         return modelMapper.map(entity, MaterialSubgroupDto.class);
     }
 }

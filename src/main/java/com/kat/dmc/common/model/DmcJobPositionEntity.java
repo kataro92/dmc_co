@@ -1,11 +1,10 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "job_position", schema = "public")
-public class JobPositionEntity {
+@Table(name = "dmc_job_position", schema = "public")
+public class DmcJobPositionEntity {
     private String code;
     private String jobDuties;
     private String jobFunctions;
@@ -100,7 +99,7 @@ public class JobPositionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JobPositionEntity that = (JobPositionEntity) o;
+        DmcJobPositionEntity that = (DmcJobPositionEntity) o;
 
         if (id != that.id) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;

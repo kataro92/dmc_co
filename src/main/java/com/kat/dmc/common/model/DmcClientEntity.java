@@ -1,11 +1,10 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "client", schema = "public")
-public class ClientEntity {
+@Table(name = "dmc_client", schema = "public")
+public class DmcClientEntity {
     private String address;
     private String code;
     private String contactPerson;
@@ -188,7 +187,7 @@ public class ClientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ClientEntity that = (ClientEntity) o;
+        DmcClientEntity that = (DmcClientEntity) o;
 
         if (id != that.id) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;

@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.JobPositionDto;
-import com.kat.dmc.common.model.JobPositionEntity;
+import com.kat.dmc.common.model.DmcJobPositionEntity;
 import com.kat.dmc.repository.interfaces.JobPositionRepo;
 import com.kat.dmc.service.interfaces.JobPositionService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class JobPositionServiceImpl implements JobPositionService {
 
     @Override
     public void save(JobPositionDto userDto) {
-        JobPositionEntity savingObj = modelMapper.map(userDto, JobPositionEntity.class);
+        DmcJobPositionEntity savingObj = modelMapper.map(userDto, DmcJobPositionEntity.class);
         jobPositionRepo.save(savingObj);
     }
 
@@ -43,7 +43,7 @@ public class JobPositionServiceImpl implements JobPositionService {
         jobPositionRepo.delete(jobPositionRepo.findById(id));
     }
 
-    private JobPositionDto entity2Dto(JobPositionEntity entity){
+    private JobPositionDto entity2Dto(DmcJobPositionEntity entity){
         return modelMapper.map(entity, JobPositionDto.class);
     }
 }

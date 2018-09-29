@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.SupplierEntity;
-import com.kat.dmc.common.model.SupplierEntity_;
+import com.kat.dmc.common.model.DmcSupplierEntity;
+import com.kat.dmc.common.model.DmcSupplierEntity_;
 import com.kat.dmc.repository.interfaces.SupplierRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,48 +27,48 @@ public class SupplierRepoImpl implements SupplierRepo {
     UtilRepo utilRepo;
     
     @Override
-    public List<SupplierEntity> findAll() {
+    public List<DmcSupplierEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<SupplierEntity> criteriaQuery = builder.createQuery(SupplierEntity.class);
-        Root<SupplierEntity> root = criteriaQuery.from(SupplierEntity.class);
+        CriteriaQuery<DmcSupplierEntity> criteriaQuery = builder.createQuery(DmcSupplierEntity.class);
+        Root<DmcSupplierEntity> root = criteriaQuery.from(DmcSupplierEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(SupplierEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcSupplierEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<SupplierEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcSupplierEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public List<SupplierEntity> findAllActive() {
+    public List<DmcSupplierEntity> findAllActive() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<SupplierEntity> criteriaQuery = builder.createQuery(SupplierEntity.class);
-        Root<SupplierEntity> root = criteriaQuery.from(SupplierEntity.class);
+        CriteriaQuery<DmcSupplierEntity> criteriaQuery = builder.createQuery(DmcSupplierEntity.class);
+        Root<DmcSupplierEntity> root = criteriaQuery.from(DmcSupplierEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(SupplierEntity_.status), 1));
+        predicates.add(builder.equal(root.get(DmcSupplierEntity_.status), 1));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<SupplierEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcSupplierEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(SupplierEntity userEntity) {
+    public void save(DmcSupplierEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(SupplierEntity userEntity) {
+    public void delete(DmcSupplierEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public SupplierEntity findById(Integer id) {
+    public DmcSupplierEntity findById(Integer id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<SupplierEntity> criteriaQuery = builder.createQuery(SupplierEntity.class);
-        Root<SupplierEntity> root = criteriaQuery.from(SupplierEntity.class);
+        CriteriaQuery<DmcSupplierEntity> criteriaQuery = builder.createQuery(DmcSupplierEntity.class);
+        Root<DmcSupplierEntity> root = criteriaQuery.from(DmcSupplierEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(SupplierEntity_.id), id));
+        predicates.add(builder.equal(root.get(DmcSupplierEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<SupplierEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcSupplierEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 }

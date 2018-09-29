@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,9 +35,9 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<DepartmentDto> findAll() {
-        List<DepartmentEntity> entityList = deptRepo.findAll();
+        List<DmcDepartmentEntity> entityList = deptRepo.findAll();
         List<DepartmentDto> lstReturn = new ArrayList<>();
-        for(DepartmentEntity entity : entityList){
+        for(DmcDepartmentEntity entity : entityList){
             if(CommonUtil.isNull(entity.getParentCode())){
                 lstReturn.add(modelMapper.map(entity, DepartmentDto.class));
             }
@@ -50,9 +48,9 @@ public class DeptServiceImpl implements DeptService {
         return lstReturn;
     }
 
-    private void rescusiveMapDepartment(DepartmentDto departmentDto, List<DepartmentEntity> entityList) {
+    private void rescusiveMapDepartment(DepartmentDto departmentDto, List<DmcDepartmentEntity> entityList) {
         departmentDto.setLstChildDept(new ArrayList<>());
-        for(DepartmentEntity entity : entityList){
+        for(DmcDepartmentEntity entity : entityList){
             if(entity.getParentCode() != null
                     && entity.getParentCode().equals(String.valueOf(departmentDto.getId()))){
                 DepartmentDto dto = modelMapper.map(entity, DepartmentDto.class);
@@ -69,17 +67,17 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public void save(DepartmentDto selectedDept) {
-        DepartmentEntity savingObj = modelMapper.map(selectedDept, DepartmentEntity.class);
+        DmcDepartmentEntity savingObj = modelMapper.map(selectedDept, DmcDepartmentEntity.class);
         deptRepo.save(savingObj);
         List<EmployeeDto> lstEmployees = selectedDept.getLstEmployees();
         List<Integer> lstEmpIds = new ArrayList<>();
         if(lstEmployees != null && !lstEmployees.isEmpty()){
             for(EmployeeDto employeeDto : lstEmployees){
-                EmployeeEntity employeeEntity = modelMapper.map(employeeDto, EmployeeEntity.class);
-                employeeEntity.setDefCode(savingObj.getDefCode());
-                employeeEntity.setDeptId(savingObj.getId());
-                employeeRepo.save(employeeEntity);
-                lstEmpIds.add(employeeEntity.getId());
+                DmcEmployeeEntity dmcEmployeeEntity = modelMapper.map(employeeDto, DmcEmployeeEntity.class);
+                dmcEmployeeEntity.setDefCode(savingObj.getDefCode());
+                dmcEmployeeEntity.setDeptId(savingObj.getId());
+                employeeRepo.save(dmcEmployeeEntity);
+                lstEmpIds.add(dmcEmployeeEntity.getId());
                 List<DocumentDto> lstDocuments = employeeDto.getLstDocuments();
                 List<Integer> lstDocIds = new ArrayList<>();
                 if(lstDocuments != null && !lstDocuments.isEmpty()){
@@ -91,7 +89,7 @@ public class DeptServiceImpl implements DeptService {
                         lstDocIds.add(documentEntity.getId());
                     }
                 }
-                documentRepo.deleteByEmpIdNotIn(lstDocIds, employeeEntity.getId());
+                documentRepo.deleteByEmpIdNotIn(lstDocIds, dmcEmployeeEntity.getId());
             }
         }
         employeeRepo.deleteByDeptIdNotIn(lstEmpIds, savingObj.getId());
@@ -99,7 +97,7 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<EmployeeDto> findEmpByDeptId(int deptId) {
-        List<EmployeeEntity> employeeEntities = employeeRepo.findByDeptId(deptId);
+        List<DmcEmployeeEntity> employeeEntities = employeeRepo.findByDeptId(deptId);
         List<EmployeeDto> returnEmployees = new ArrayList<>();
         employeeEntities.forEach (entity -> {
             returnEmployees.add(modelMapper.map(entity, EmployeeDto.class));

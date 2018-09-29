@@ -1,17 +1,13 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "department", schema = "public")
-public class DepartmentEntity {
+@Table(name = "dmc_product_group", schema = "public")
+public class DmcProductGroupEntity {
     private String code;
     private String defCode;
-    private String description;
-    private String editedBy;
     private String name;
-    private String parentCode;
     private Integer status;
     private int id;
 
@@ -36,26 +32,6 @@ public class DepartmentEntity {
     }
 
     @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Basic
-    @Column(name = "edited_by")
-    public String getEditedBy() {
-        return editedBy;
-    }
-
-    public void setEditedBy(String editedBy) {
-        this.editedBy = editedBy;
-    }
-
-    @Basic
     @Column(name = "name")
     public String getName() {
         return name;
@@ -63,16 +39,6 @@ public class DepartmentEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "parent_code")
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
     }
 
     @Basic
@@ -100,15 +66,12 @@ public class DepartmentEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DepartmentEntity that = (DepartmentEntity) o;
+        DmcProductGroupEntity that = (DmcProductGroupEntity) o;
 
         if (id != that.id) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (defCode != null ? !defCode.equals(that.defCode) : that.defCode != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (editedBy != null ? !editedBy.equals(that.editedBy) : that.editedBy != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (parentCode != null ? !parentCode.equals(that.parentCode) : that.parentCode != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
         return true;
@@ -118,10 +81,7 @@ public class DepartmentEntity {
     public int hashCode() {
         int result = code != null ? code.hashCode() : 0;
         result = 31 * result + (defCode != null ? defCode.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (editedBy != null ? editedBy.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (parentCode != null ? parentCode.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + id;
         return result;

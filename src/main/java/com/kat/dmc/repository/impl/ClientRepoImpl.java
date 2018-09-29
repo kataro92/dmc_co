@@ -1,8 +1,8 @@
 package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.dto.ClientDto;
-import com.kat.dmc.common.model.ClientEntity;
-import com.kat.dmc.common.model.ClientEntity_;
+import com.kat.dmc.common.model.DmcClientEntity;
+import com.kat.dmc.common.model.DmcClientEntity_;
 import com.kat.dmc.repository.interfaces.ClientRepo;
 import org.springframework.stereotype.Repository;
 
@@ -11,9 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,8 +27,8 @@ public class ClientRepoImpl implements ClientRepo {
                 "client.fax, client.name, client.phone, client.status, client.tax_code, " +
                 "client.trademark, client._id, employee._id emp_id, department._id dept_id, " +
                 "employee.name emp_name, department.name deptName " +
-                " FROM client LEFT JOIN employee ON client.emp_id = employee._id  " +
-                " LEFT JOIN department ON client.dept_id = department._id";
+                " FROM dmc_client client LEFT JOIN dmc_employee employee ON client.emp_id = employee._id  " +
+                " LEFT JOIN dmc_department department ON client.dept_id = department._id";
 
         Query query = entityManager.createNativeQuery(strSQL);
         List<Object[]> resultList = query.getResultList();
@@ -64,24 +62,24 @@ public class ClientRepoImpl implements ClientRepo {
     }
 
     @Override
-    public void save(ClientEntity clientEntity) {
-        entityManager.merge(clientEntity);
+    public void save(DmcClientEntity dmcClientEntity) {
+        entityManager.merge(dmcClientEntity);
     }
 
     @Override
-    public void delete(ClientEntity clientEntity) {
-        entityManager.remove(clientEntity);
+    public void delete(DmcClientEntity dmcClientEntity) {
+        entityManager.remove(dmcClientEntity);
     }
 
     @Override
-    public ClientEntity findById(Integer clientId) {
+    public DmcClientEntity findById(Integer clientId) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ClientEntity> criteriaQuery = builder.createQuery(ClientEntity.class);
-        Root<ClientEntity> root = criteriaQuery.from(ClientEntity.class);
+        CriteriaQuery<DmcClientEntity> criteriaQuery = builder.createQuery(DmcClientEntity.class);
+        Root<DmcClientEntity> root = criteriaQuery.from(DmcClientEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(ClientEntity_.id), clientId));
+        predicates.add(builder.equal(root.get(DmcClientEntity_.id), clientId));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<ClientEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcClientEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
         } catch (NoResultException ex) {

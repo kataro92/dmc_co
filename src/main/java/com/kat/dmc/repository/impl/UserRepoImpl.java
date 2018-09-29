@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.UserEntity;
-import com.kat.dmc.common.model.UserEntity_;
+import com.kat.dmc.common.model.DmcUserEntity;
+import com.kat.dmc.common.model.DmcUserEntity_;
 import com.kat.dmc.repository.interfaces.UserRepo;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -25,16 +23,16 @@ public class UserRepoImpl implements UserRepo {
     private EntityManager entityManager;
 
     @Override
-    public UserEntity getUserByUsernameAndPassword(String username, String md5_password) {
+    public DmcUserEntity getUserByUsernameAndPassword(String username, String md5_password) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteriaQuery = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+        CriteriaQuery<DmcUserEntity> criteriaQuery = builder.createQuery(DmcUserEntity.class);
+        Root<DmcUserEntity> root = criteriaQuery.from(DmcUserEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(UserEntity_.id)));
-        predicates.add(builder.equal(root.get(UserEntity_.username), username));
-        predicates.add(builder.equal(root.get(UserEntity_.password), md5_password));
+        predicates.add(builder.isNotNull(root.get(DmcUserEntity_.id)));
+        predicates.add(builder.equal(root.get(DmcUserEntity_.username), username));
+        predicates.add(builder.equal(root.get(DmcUserEntity_.password), md5_password));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<UserEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcUserEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
         } catch (NoResultException ex) {
@@ -43,36 +41,36 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public List<UserEntity> findAll(){
+    public List<DmcUserEntity> findAll(){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteriaQuery = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+        CriteriaQuery<DmcUserEntity> criteriaQuery = builder.createQuery(DmcUserEntity.class);
+        Root<DmcUserEntity> root = criteriaQuery.from(DmcUserEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(UserEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcUserEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<UserEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcUserEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(UserEntity userEntity) {
-        entityManager.merge(userEntity);
+    public void save(DmcUserEntity dmcUserEntity) {
+        entityManager.merge(dmcUserEntity);
     }
 
     @Override
-    public void delete(UserEntity userEntity) {
-        entityManager.remove(userEntity);
+    public void delete(DmcUserEntity dmcUserEntity) {
+        entityManager.remove(dmcUserEntity);
     }
 
     @Override
-    public UserEntity findById(Integer userId) {
+    public DmcUserEntity findById(Integer userId) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteriaQuery = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+        CriteriaQuery<DmcUserEntity> criteriaQuery = builder.createQuery(DmcUserEntity.class);
+        Root<DmcUserEntity> root = criteriaQuery.from(DmcUserEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(UserEntity_.id), userId));
+        predicates.add(builder.equal(root.get(DmcUserEntity_.id), userId));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<UserEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcUserEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
         } catch (NoResultException ex) {

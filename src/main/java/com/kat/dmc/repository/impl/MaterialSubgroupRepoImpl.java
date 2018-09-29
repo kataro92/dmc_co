@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.MaterialSubgroupEntity;
-import com.kat.dmc.common.model.MaterialSubgroupEntity_;
+import com.kat.dmc.common.model.DmcMaterialSubgroupEntity;
+import com.kat.dmc.common.model.DmcMaterialSubgroupEntity_;
 import com.kat.dmc.repository.interfaces.MaterialSubgroupRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,60 +27,60 @@ public class MaterialSubgroupRepoImpl implements MaterialSubgroupRepo {
     UtilRepo utilRepo;
     
     @Override
-    public List<MaterialSubgroupEntity> findAll() {
+    public List<DmcMaterialSubgroupEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialSubgroupEntity> criteriaQuery = builder.createQuery(MaterialSubgroupEntity.class);
-        Root<MaterialSubgroupEntity> root = criteriaQuery.from(MaterialSubgroupEntity.class);
+        CriteriaQuery<DmcMaterialSubgroupEntity> criteriaQuery = builder.createQuery(DmcMaterialSubgroupEntity.class);
+        Root<DmcMaterialSubgroupEntity> root = criteriaQuery.from(DmcMaterialSubgroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(MaterialSubgroupEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcMaterialSubgroupEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public List<MaterialSubgroupEntity> findAllActive() {
+    public List<DmcMaterialSubgroupEntity> findAllActive() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialSubgroupEntity> criteriaQuery = builder.createQuery(MaterialSubgroupEntity.class);
-        Root<MaterialSubgroupEntity> root = criteriaQuery.from(MaterialSubgroupEntity.class);
+        CriteriaQuery<DmcMaterialSubgroupEntity> criteriaQuery = builder.createQuery(DmcMaterialSubgroupEntity.class);
+        Root<DmcMaterialSubgroupEntity> root = criteriaQuery.from(DmcMaterialSubgroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialSubgroupEntity_.status), 0));
+        predicates.add(builder.equal(root.get(DmcMaterialSubgroupEntity_.status), 0));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(MaterialSubgroupEntity userEntity) {
+    public void save(DmcMaterialSubgroupEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(MaterialSubgroupEntity userEntity) {
+    public void delete(DmcMaterialSubgroupEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public MaterialSubgroupEntity findById(Integer id) {
+    public DmcMaterialSubgroupEntity findById(Integer id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialSubgroupEntity> criteriaQuery = builder.createQuery(MaterialSubgroupEntity.class);
-        Root<MaterialSubgroupEntity> root = criteriaQuery.from(MaterialSubgroupEntity.class);
+        CriteriaQuery<DmcMaterialSubgroupEntity> criteriaQuery = builder.createQuery(DmcMaterialSubgroupEntity.class);
+        Root<DmcMaterialSubgroupEntity> root = criteriaQuery.from(DmcMaterialSubgroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialSubgroupEntity_.id), id));
+        predicates.add(builder.equal(root.get(DmcMaterialSubgroupEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 
     @Override
-    public List<MaterialSubgroupEntity> findAllByGroupId(int id) {
+    public List<DmcMaterialSubgroupEntity> findAllByGroupId(int id) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MaterialSubgroupEntity> criteriaQuery = builder.createQuery(MaterialSubgroupEntity.class);
-        Root<MaterialSubgroupEntity> root = criteriaQuery.from(MaterialSubgroupEntity.class);
+        CriteriaQuery<DmcMaterialSubgroupEntity> criteriaQuery = builder.createQuery(DmcMaterialSubgroupEntity.class);
+        Root<DmcMaterialSubgroupEntity> root = criteriaQuery.from(DmcMaterialSubgroupEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(MaterialSubgroupEntity_.materialGroupCode), String.valueOf(id)));
+        predicates.add(builder.equal(root.get(DmcMaterialSubgroupEntity_.materialGroupCode), String.valueOf(id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<MaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcMaterialSubgroupEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 }

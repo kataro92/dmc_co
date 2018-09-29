@@ -2,7 +2,7 @@ package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.constant.UserTypeConst;
 import com.kat.dmc.common.dto.LoggedUser;
-import com.kat.dmc.common.model.UserEntity;
+import com.kat.dmc.common.model.DmcUserEntity;
 import com.kat.dmc.common.util.PasswordUtil;
 import com.kat.dmc.repository.interfaces.UserRepo;
 import com.kat.dmc.service.interfaces.AuthorityService;
@@ -17,7 +17,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public LoggedUser validateUser(String username, String password) {
         String md5Password = PasswordUtil.hashMD5(password);
-        UserEntity userByUsernameAndPassword = userRepo.getUserByUsernameAndPassword(username.toLowerCase(), md5Password);
+        DmcUserEntity userByUsernameAndPassword = userRepo.getUserByUsernameAndPassword(username.toLowerCase(), md5Password);
         if(userByUsernameAndPassword != null) {
             LoggedUser loggedUser = new LoggedUser();
             loggedUser.setUsername(username);

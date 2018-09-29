@@ -1,13 +1,13 @@
 package com.kat.dmc.repository.interfaces;
 
-import com.kat.dmc.common.model.JobPositionEntity;
+import com.kat.dmc.common.model.DmcJobPositionEntity;
 
 import java.util.List;
 
 public interface JobPositionRepo {
-    List<JobPositionEntity> findAll();
-    List<JobPositionEntity> findAllActive();
-    void save(JobPositionEntity userEntity);
-    void delete(JobPositionEntity userEntity);
-    JobPositionEntity findById(Integer id);
+    List<DmcJobPositionEntity> findAll();
+    List<DmcJobPositionEntity> findAllActive();
+    void save(DmcJobPositionEntity userEntity);
+    void delete(DmcJobPositionEntity userEntity);
+    DmcJobPositionEntity findById(Integer id);
 }

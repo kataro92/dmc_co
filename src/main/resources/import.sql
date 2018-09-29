@@ -43,4 +43,5 @@ create or replace view dmc_warehouse_status as
   GROUP BY COALESCE(NULLIF(dmi.export_from_id, 0), dmi.warehouse_id), dmi.category_id,
            (to_char(dmi.export_date, 'yyyyMMdd' :: text)), mg._id, ms._id,
            dmid.material_id, ma.name;
+INSERT INTO public.dmc_user (_id, code, extra_props, name, password, permission, permissions, status, username) VALUES (1, 'admin', '', 'Admin', '3f75336dfc774c69627d62afd4469862', 1, null, 0, 'admin');
 

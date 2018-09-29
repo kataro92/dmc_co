@@ -1,11 +1,10 @@
 package com.kat.dmc.common.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "material_barcode", schema = "public")
-public class MaterialBarcodeEntity {
+@Table(name = "dmc_material_barcode", schema = "public")
+public class DmcMaterialBarcodeEntity {
     private String barcode;
     private String materialCode;
     private Boolean isPublished;
@@ -78,7 +77,7 @@ public class MaterialBarcodeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MaterialBarcodeEntity that = (MaterialBarcodeEntity) o;
+        DmcMaterialBarcodeEntity that = (DmcMaterialBarcodeEntity) o;
 
         if (id != that.id) return false;
         if (barcode != null ? !barcode.equals(that.barcode) : that.barcode != null) return false;

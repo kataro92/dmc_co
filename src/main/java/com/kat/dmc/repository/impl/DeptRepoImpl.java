@@ -1,7 +1,7 @@
 package com.kat.dmc.repository.impl;
 
-import com.kat.dmc.common.model.DepartmentEntity;
-import com.kat.dmc.common.model.DepartmentEntity_;
+import com.kat.dmc.common.model.DmcDepartmentEntity;
+import com.kat.dmc.common.model.DmcDepartmentEntity_;
 import com.kat.dmc.repository.interfaces.DeptRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,29 +27,29 @@ public class DeptRepoImpl implements DeptRepo {
     UtilRepo utilRepo;
     
     @Override
-    public List<DepartmentEntity> findAll() {
+    public List<DmcDepartmentEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<DepartmentEntity> criteriaQuery = builder.createQuery(DepartmentEntity.class);
-        Root<DepartmentEntity> root = criteriaQuery.from(DepartmentEntity.class);
+        CriteriaQuery<DmcDepartmentEntity> criteriaQuery = builder.createQuery(DmcDepartmentEntity.class);
+        Root<DmcDepartmentEntity> root = criteriaQuery.from(DmcDepartmentEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.isNotNull(root.get(DepartmentEntity_.id)));
+        predicates.add(builder.isNotNull(root.get(DmcDepartmentEntity_.id)));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
-        final TypedQuery<DepartmentEntity> query = entityManager.createQuery(criteriaQuery);
+        final TypedQuery<DmcDepartmentEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
     @Override
-    public void save(DepartmentEntity userEntity) {
+    public void save(DmcDepartmentEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
     @Override
-    public void delete(DepartmentEntity userEntity) {
+    public void delete(DmcDepartmentEntity userEntity) {
         entityManager.remove(userEntity);
     }
 
     @Override
-    public DepartmentEntity findById(Integer userId) {
+    public DmcDepartmentEntity findById(Integer userId) {
         return null;
     }
 }

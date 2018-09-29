@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.SupplierDto;
-import com.kat.dmc.common.model.SupplierEntity;
+import com.kat.dmc.common.model.DmcSupplierEntity;
 import com.kat.dmc.repository.interfaces.SupplierRepo;
 import com.kat.dmc.service.interfaces.SupplierService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void save(SupplierDto userDto) {
-        SupplierEntity savingObj = modelMapper.map(userDto, SupplierEntity.class);
+        DmcSupplierEntity savingObj = modelMapper.map(userDto, DmcSupplierEntity.class);
         supplierRepo.save(savingObj);
     }
 
@@ -43,7 +43,7 @@ public class SupplierServiceImpl implements SupplierService {
         supplierRepo.delete(supplierRepo.findById(id));
     }
 
-    private SupplierDto entity2Dto(SupplierEntity entity){
+    private SupplierDto entity2Dto(DmcSupplierEntity entity){
         return modelMapper.map(entity, SupplierDto.class);
     }
 }

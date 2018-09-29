@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.ClientDto;
-import com.kat.dmc.common.model.ClientEntity;
+import com.kat.dmc.common.model.DmcClientEntity;
 import com.kat.dmc.repository.interfaces.ClientRepo;
 import com.kat.dmc.service.interfaces.ClientService;
 import org.modelmapper.ModelMapper;
@@ -27,14 +27,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void save(ClientDto clientDto) {
-        ClientEntity savingObj = clientRepo.findById(clientDto.getId());
+        DmcClientEntity savingObj = clientRepo.findById(clientDto.getId());
         modelMapper.map(clientDto, savingObj);
         clientRepo.save(savingObj);
     }
 
     @Override
     public void delete(Integer clientId) {
-        ClientEntity deletingObj = clientRepo.findById(clientId);
+        DmcClientEntity deletingObj = clientRepo.findById(clientId);
         clientRepo.delete(deletingObj);
     }
 }

@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.EmployeeDto;
-import com.kat.dmc.common.model.EmployeeEntity;
+import com.kat.dmc.common.model.DmcEmployeeEntity;
 import com.kat.dmc.repository.interfaces.EmployeeRepo;
 import com.kat.dmc.service.interfaces.DocumentService;
 import com.kat.dmc.service.interfaces.EmployeeService;
@@ -26,12 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> findByDeptId(int id) {
-        List<EmployeeEntity> byDeptId = employeeRepo.findByDeptId(id);
+        List<DmcEmployeeEntity> byDeptId = employeeRepo.findByDeptId(id);
         List<EmployeeDto> employeeDtos = new ArrayList<>();
         if(byDeptId == null || byDeptId.isEmpty()){
             return employeeDtos;
         }
-        for (EmployeeEntity entity : byDeptId) {
+        for (DmcEmployeeEntity entity : byDeptId) {
             EmployeeDto employeeDto = modelMapper.map(entity, EmployeeDto.class);
             employeeDto.setLstDocuments(documentService.findByEmployeeId(employeeDto.getId()));
             employeeDtos.add(employeeDto);

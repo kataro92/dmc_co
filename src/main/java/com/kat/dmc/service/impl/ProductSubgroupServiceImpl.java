@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.ProductSubgroupDto;
-import com.kat.dmc.common.model.ProductSubgroupEntity;
+import com.kat.dmc.common.model.DmcProductSubgroupEntity;
 import com.kat.dmc.repository.interfaces.ProductSubgroupRepo;
 import com.kat.dmc.service.interfaces.ProductSubgroupService;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ public class ProductSubgroupServiceImpl implements ProductSubgroupService {
 
     @Override
     public void save(ProductSubgroupDto userDto) {
-        ProductSubgroupEntity savingObj = modelMapper.map(userDto, ProductSubgroupEntity.class);
+        DmcProductSubgroupEntity savingObj = modelMapper.map(userDto, DmcProductSubgroupEntity.class);
         productSubgroupRepo.save(savingObj);
     }
 
@@ -48,7 +48,7 @@ public class ProductSubgroupServiceImpl implements ProductSubgroupService {
         return productSubgroupRepo.findAllByGroupId(id).stream().map(this::entity2Dto).collect(Collectors.toList());
     }
 
-    private ProductSubgroupDto entity2Dto(ProductSubgroupEntity entity){
+    private ProductSubgroupDto entity2Dto(DmcProductSubgroupEntity entity){
         return modelMapper.map(entity, ProductSubgroupDto.class);
     }
 }

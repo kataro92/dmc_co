@@ -1,7 +1,7 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.UserDto;
-import com.kat.dmc.common.model.UserEntity;
+import com.kat.dmc.common.model.DmcUserEntity;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.PasswordUtil;
 import com.kat.dmc.repository.interfaces.UserRepo;
@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDto userDto) {
-        UserEntity savingObj = userRepo.findById(userDto.getUserId());
+        DmcUserEntity savingObj = userRepo.findById(userDto.getUserId());
         if(savingObj == null){
-            savingObj = new UserEntity();
+            savingObj = new DmcUserEntity();
             savingObj.setId(userDto.getUserId());
         }
         savingObj.setUsername(userDto.getUserName());
@@ -48,11 +48,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Integer userId) {
-        UserEntity deletingObj = userRepo.findById(userId);
+        DmcUserEntity deletingObj = userRepo.findById(userId);
         userRepo.delete(deletingObj);
     }
 
-    private UserDto TsUser2UserDto(UserEntity input){
+    private UserDto TsUser2UserDto(DmcUserEntity input){
         UserDto map = modelMapper.map(input, UserDto.class);
         map.setStatus(input.getStatus());
         map.setUserName(input.getUsername());

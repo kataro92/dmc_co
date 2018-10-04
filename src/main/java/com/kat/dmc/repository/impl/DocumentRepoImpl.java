@@ -68,7 +68,11 @@ public class DocumentRepoImpl implements DocumentRepo {
         predicates.add(builder.equal(root.get(DmcDocumentEntity_.code),code));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcDocumentEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override

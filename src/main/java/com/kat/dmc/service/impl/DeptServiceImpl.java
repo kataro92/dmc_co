@@ -3,7 +3,9 @@ package com.kat.dmc.service.impl;
 import com.kat.dmc.common.dto.DepartmentDto;
 import com.kat.dmc.common.dto.DocumentDto;
 import com.kat.dmc.common.dto.EmployeeDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcDepartmentEntity;
+import com.kat.dmc.common.model.DmcDocumentEntity;
+import com.kat.dmc.common.model.DmcEmployeeEntity;
 import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.repository.interfaces.DeptRepo;
 import com.kat.dmc.repository.interfaces.DocumentRepo;
@@ -38,7 +40,7 @@ public class DeptServiceImpl implements DeptService {
         List<DmcDepartmentEntity> entityList = deptRepo.findAll();
         List<DepartmentDto> lstReturn = new ArrayList<>();
         for(DmcDepartmentEntity entity : entityList){
-            if(CommonUtil.isNull(entity.getParentCode())){
+            if(CommonUtil.isEmpty(entity.getParentCode())){
                 lstReturn.add(modelMapper.map(entity, DepartmentDto.class));
             }
         }

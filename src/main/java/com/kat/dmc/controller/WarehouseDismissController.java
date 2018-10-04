@@ -21,8 +21,8 @@ import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("warehouseDismiss")
-@ConversationScoped
+@ViewScoped
 public class WarehouseDismissController implements Serializable {
 
     @Autowired
@@ -161,7 +161,6 @@ public class WarehouseDismissController implements Serializable {
             }
             selectedWarehouseDismiss.getLstDetails().add(materialDismissDto);
         }catch (NoResultException ex){
-            ex.printStackTrace();
         }
     }
 

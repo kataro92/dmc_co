@@ -9,8 +9,8 @@ import com.kat.dmc.common.util.StringUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.MaterialService;
 import com.kat.dmc.service.interfaces.SupplierService;
-import com.kat.dmc.service.interfaces.WarehouseTransferService;
 import com.kat.dmc.service.interfaces.WarehouseService;
+import com.kat.dmc.service.interfaces.WarehouseTransferService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -21,8 +21,8 @@ import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("warehouseTransfer")
-@ConversationScoped
+@ViewScoped
 public class WarehouseTransferController implements Serializable {
 
     @Autowired
@@ -161,7 +161,6 @@ public class WarehouseTransferController implements Serializable {
             }
             selectedWarehouseTransfer.getLstDetails().add(materialTransferDto);
         }catch (NoResultException ex){
-            ex.printStackTrace();
         }
     }
 

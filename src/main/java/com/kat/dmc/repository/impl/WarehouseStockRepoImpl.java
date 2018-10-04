@@ -1,19 +1,16 @@
 package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.constant.DateConst;
+import com.kat.dmc.common.dto.WarehouseStockDto;
 import com.kat.dmc.common.model.DmcWarehouseStockEntity;
 import com.kat.dmc.common.model.DmcWarehouseStockEntity_;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.repository.interfaces.WarehouseStockRepo;
-import com.kat.dmc.common.dto.WarehouseStockDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -23,6 +20,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Repository
 public class WarehouseStockRepoImpl implements WarehouseStockRepo {
@@ -54,7 +53,7 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
                 "from dmc_material_import dmi, " +
                 "dmc_material_import_detail dmid " +
                 "WHERE dmi.id = dmid.material_import_id " +
-                "AND dmi.status = 0 " +
+                "AND dmi.status ="+ DEFAULT_ACTIVE.code() +" " +
                 "AND dmi.import_date >= to_date(?1,'yyyyMMdd') " +
                 "AND dmi.import_date < to_date(?2,'yyyyMMdd') + 1 " +
                 "GROUP BY dmi.warehouse_id, dmid.material_id";
@@ -79,7 +78,7 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
                 "from dmc_material_export dmi, " +
                 "dmc_material_export_detail dmid " +
                 "WHERE dmi.id = dmid.material_export_id " +
-                "AND dmi.status = 0 " +
+                "AND dmi.status = "+ DEFAULT_ACTIVE.code() +" " +
                 "AND dmi.export_date >= to_date(?1,'yyyyMMdd') " +
                 "AND dmi.export_date < to_date(?2,'yyyyMMdd') + 1 " +
                 "GROUP BY dmi.warehouse_id, dmid.material_id";
@@ -107,7 +106,7 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
                 "WHERE dmi.id = dmid.material_transfer_id " +
                 "AND dmi.transfer_date >= to_date(?1,'yyyyMMdd') " +
                 "AND dmi.transfer_date < to_date(?2,'yyyyMMdd') + 1 " +
-                "AND dmi.status = 0  " +
+                "AND dmi.status = "+ DEFAULT_ACTIVE.code() +" " +
                 "UNION ALL " +
                 "select dmi.warehouse_id warehouse_id, dmid.material_id " +
                 "  , dmid.quantity quantity " +
@@ -117,7 +116,7 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
                 "WHERE dmi.id = dmid.material_transfer_id " +
                 "AND dmi.transfer_date >= to_date(?3,'yyyyMMdd') " +
                 "AND dmi.transfer_date < to_date(?4,'yyyyMMdd') + 1 " +
-                "      AND dmi.status = 0) AS GROUPING " +
+                "      AND dmi.status = "+ DEFAULT_ACTIVE.code() +") AS GROUPING " +
                 "GROUP BY warehouse_id, material_id";
 
         Query query = entityManager.createNativeQuery(strSQL)
@@ -141,7 +140,7 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
                 "from dmc_material_dismiss dmi, " +
                 "dmc_material_dismiss_detail dmid " +
                 "WHERE dmi.id = dmid.material_dismiss_id " +
-                "AND dmi.status = 0 " +
+                "AND dmi.status = "+ DEFAULT_ACTIVE.code() +" " +
                 "AND dmi.dismiss_date >= to_date(?1,'yyyyMMdd') " +
                 "AND dmi.dismiss_date < to_date(?2,'yyyyMMdd') + 1 " +
                 "GROUP BY dmi.warehouse_id, dmid.material_id";
@@ -185,7 +184,11 @@ public class WarehouseStockRepoImpl implements WarehouseStockRepo {
         predicates.add(builder.equal(root.get(DmcWarehouseStockEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcWarehouseStockEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override

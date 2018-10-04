@@ -58,7 +58,11 @@ public class ConfigRepoImpl implements ConfigRepo {
         predicates.add(builder.equal(root.get(DmcConfigEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcConfigEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override
@@ -70,7 +74,11 @@ public class ConfigRepoImpl implements ConfigRepo {
         predicates.add(builder.equal(root.get(DmcConfigEntity_.key), key));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcConfigEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override

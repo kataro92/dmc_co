@@ -25,10 +25,10 @@ public class ClientRepoImpl implements ClientRepo {
         String strSQL = "SELECT client.address, client.code, client.contact_person, " +
                 "client.def_code, client.email, employee.code employee_code, " +
                 "client.fax, client.name, client.phone, client.status, client.tax_code, " +
-                "client.trademark, client._id, employee._id emp_id, department._id dept_id, " +
+                "client.trademark, client.id, employee.id emp_id, department.id dept_id, " +
                 "employee.name emp_name, department.name deptName " +
-                " FROM dmc_client client LEFT JOIN dmc_employee employee ON client.emp_id = employee._id  " +
-                " LEFT JOIN dmc_department department ON client.dept_id = department._id";
+                " FROM dmc_client client LEFT JOIN dmc_employee employee ON client.emp_id = employee.id  " +
+                " LEFT JOIN dmc_department department ON client.dept_id = department.id";
 
         Query query = entityManager.createNativeQuery(strSQL);
         List<Object[]> resultList = query.getResultList();
@@ -82,8 +82,8 @@ public class ClientRepoImpl implements ClientRepo {
         final TypedQuery<DmcClientEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
         }
     }
 }

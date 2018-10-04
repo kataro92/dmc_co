@@ -35,8 +35,8 @@ public class UserRepoImpl implements UserRepo {
         final TypedQuery<DmcUserEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
         }
     }
 
@@ -73,8 +73,8 @@ public class UserRepoImpl implements UserRepo {
         final TypedQuery<DmcUserEntity> query = entityManager.createQuery(criteriaQuery);
         try {
             return query.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
         }
     }
 }

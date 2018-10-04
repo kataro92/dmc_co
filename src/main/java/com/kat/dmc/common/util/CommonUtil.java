@@ -2,14 +2,47 @@ package com.kat.dmc.common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CommonUtil {
-    public static boolean isNull(String args){
-        return args == null || args.equals("") ? true : false;
+    public static boolean isEmpty(String args){
+        return args == null || args.trim().equals("") ? true : false;
     }
+    public static boolean isEmpty(String[] args){
+        return args == null || args.length == 0 ? true : false;
+    }
+    public static boolean isEmpty(Object[] args){
+        return args == null || args.length == 0 ? true : false;
+    }
+    public static boolean isEmpty(List args){
+        return args == null || args.isEmpty() ? true : false;
+    }
+    public static boolean isEmpty(ArrayList args){
+        return args == null || args.isEmpty() ? true : false;
+    }
+
+    public static boolean isEmpty(Object args){
+        if(args == null){
+            return true;
+        }
+        if(args.getClass().equals(String.class)){
+            return isEmpty((String) args);
+        }
+        if(args.getClass().equals(String[].class)){
+            return isEmpty((String[]) args);
+        }
+        if(args.getClass().equals(Object[].class)){
+            return isEmpty((Object[]) args);
+        }
+        if(args.getClass().equals(List.class)){
+            return isEmpty((List) args);
+        }
+        if(args.getClass().equals(ArrayList.class)){
+            return isEmpty((ArrayList) args);
+        }
+        return false;
+    }
+
 
     public static String rfc5987_encode(final String s) throws UnsupportedEncodingException {
         final byte[] s_bytes = s.getBytes("UTF-8");

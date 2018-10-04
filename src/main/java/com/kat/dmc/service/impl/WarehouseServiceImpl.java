@@ -3,7 +3,10 @@ package com.kat.dmc.service.impl;
 import com.kat.dmc.common.dto.MaterialOnStockDto;
 import com.kat.dmc.common.dto.WarehouseDto;
 import com.kat.dmc.common.dto.WarehouseStatusDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
+import com.kat.dmc.common.model.DmcMaterialImportEntity;
+import com.kat.dmc.common.model.DmcWarehouseEntity;
+import com.kat.dmc.common.model.DmcWarehouseStatus;
 import com.kat.dmc.common.req.WarehouseSearchReq;
 import com.kat.dmc.repository.interfaces.*;
 import com.kat.dmc.service.interfaces.WarehouseService;
@@ -105,7 +108,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (DmcWarehouseStatus e : warehouseRepo.findAllBySearchReq(sumOnStockReq)) {
             WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto);
+            list.add(warehouseStatusDto.clone());
         }
         return list;
     }
@@ -116,7 +119,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (DmcWarehouseStatus e : warehouseRepo.findImportBySearchReq(sumOnStockReq)) {
             WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto);
+            list.add(warehouseStatusDto.clone());
         }
         return list;
     }
@@ -127,7 +130,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (DmcWarehouseStatus e : warehouseRepo.findExportBySearchReq(sumOnStockReq)) {
             WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto);
+            list.add(warehouseStatusDto.clone());
         }
         return list;
     }
@@ -138,7 +141,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (DmcWarehouseStatus e : warehouseRepo.findTempImportBySearchReq(sumOnStockReq)) {
             WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto);
+            list.add(warehouseStatusDto.clone());
         }
         return list;
     }
@@ -150,7 +153,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (DmcWarehouseStatus e : warehouseRepo.findDailyStatus(warehouseId)) {
             WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto);
+            list.add(warehouseStatusDto.clone());
         }
         return list;
     }

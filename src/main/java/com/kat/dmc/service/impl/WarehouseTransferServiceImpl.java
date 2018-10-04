@@ -3,7 +3,8 @@ package com.kat.dmc.service.impl;
 import com.kat.dmc.common.dto.MaterialIETDDto;
 import com.kat.dmc.common.dto.MaterialTransferDetailDto;
 import com.kat.dmc.common.dto.MaterialTransferDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcMaterialTransferDetailEntity;
+import com.kat.dmc.common.model.DmcMaterialTransferEntity;
 import com.kat.dmc.repository.interfaces.MaterialTransferDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialTransferRepo;
 import com.kat.dmc.service.interfaces.WarehouseTransferService;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Service
 @Transactional
@@ -56,6 +59,7 @@ public class WarehouseTransferServiceImpl implements WarehouseTransferService {
            for(MaterialTransferDetailDto transferDetailDto : userDto.getLstDetails()){
                DmcMaterialTransferDetailEntity savingDtlObj = modelMapper.map(transferDetailDto, DmcMaterialTransferDetailEntity.class);
                savingDtlObj.setMaterialTransferId(userDto.getId());
+               savingDtlObj.setStatus(savingObj.getStatus());
                materialTransferDetailRepo.save(savingDtlObj);
            }
         }

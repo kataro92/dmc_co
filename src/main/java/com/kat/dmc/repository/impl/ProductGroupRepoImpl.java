@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -69,6 +70,10 @@ public class ProductGroupRepoImpl implements ProductGroupRepo {
         predicates.add(builder.equal(root.get(DmcProductGroupEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcProductGroupEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 }

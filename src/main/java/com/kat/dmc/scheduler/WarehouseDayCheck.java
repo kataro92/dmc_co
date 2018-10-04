@@ -2,9 +2,9 @@ package com.kat.dmc.scheduler;
 
 import com.kat.dmc.common.constant.ConfigConst;
 import com.kat.dmc.common.constant.DateConst;
+import com.kat.dmc.common.dto.WarehouseStockDto;
 import com.kat.dmc.common.model.DmcConfigEntity;
 import com.kat.dmc.common.model.DmcWarehouseStockEntity;
-import com.kat.dmc.common.dto.WarehouseStockDto;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.common.util.StringUtil;
 import com.kat.dmc.repository.interfaces.ConfigRepo;
@@ -73,7 +73,6 @@ public class WarehouseDayCheck {
             //Update dmc_config
             configRepo.saveConfig(ConfigConst.CHECKED_IMPORT_DATE, DateUtil.toString(checkingDate, DateConst.FORMAT_YYYYMMDD));
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error(ex.getMessage());
         }
         logger.info("... warehouse import done.");
@@ -112,7 +111,6 @@ public class WarehouseDayCheck {
             //Update dmc_config
             configRepo.saveConfig(ConfigConst.CHECKED_EXPORT_DATE, DateUtil.toString(checkingDate, DateConst.FORMAT_YYYYMMDD));
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error(ex.getMessage());
         }
         logger.info("... warehouse export done.");
@@ -150,7 +148,6 @@ public class WarehouseDayCheck {
             //Update dmc_config
             configRepo.saveConfig(ConfigConst.CHECKED_TRANSFER_DATE, DateUtil.toString(checkingDate, DateConst.FORMAT_YYYYMMDD));
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error(ex.getMessage());
         }
         logger.info("... warehouse transfer done.");
@@ -188,7 +185,6 @@ public class WarehouseDayCheck {
             //Update dmc_config
             configRepo.saveConfig(ConfigConst.CHECKED_DISMISS_DATE, DateUtil.toString(checkingDate, DateConst.FORMAT_YYYYMMDD));
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error(ex.getMessage());
         }
         logger.info("... warehouse dismiss done.");

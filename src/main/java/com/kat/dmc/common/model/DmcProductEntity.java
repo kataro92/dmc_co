@@ -110,7 +110,7 @@ public class DmcProductEntity {
     }
 
     @Id
-    @Column(name = "_id")
+    @Column(name = "id")
     public int getId() {
         return id;
     }

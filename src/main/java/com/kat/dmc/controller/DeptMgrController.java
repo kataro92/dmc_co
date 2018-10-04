@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("deptMgr")
-@ConversationScoped
+@ViewScoped
 @RestController
 @RequestMapping("/api")
 public class DeptMgrController implements Serializable {
@@ -148,7 +148,7 @@ public class DeptMgrController implements Serializable {
     private void makeDepttree(){
         lstAllDept.sort((p1, p2) -> p1.getDefCode().compareTo(p2.getDefCode()));
         root = new DefaultTreeNode(null, null);
-        lstAllDept.stream().filter(departmentDto -> CommonUtil.isNull(departmentDto.getParentCode())).forEach(departmentDto -> {
+        lstAllDept.stream().filter(departmentDto -> CommonUtil.isEmpty(departmentDto.getParentCode())).forEach(departmentDto -> {
             TreeNode deptRoot = new DefaultTreeNode(departmentDto, root);
             rescusiveDeptTree(deptRoot, departmentDto);
         });

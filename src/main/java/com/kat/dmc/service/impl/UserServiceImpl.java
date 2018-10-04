@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         savingObj.setCode(userDto.getCode());
         savingObj.setStatus(userDto.getStatus());
         savingObj.setName(userDto.getFullName());
-        if(!CommonUtil.isNull(userDto.getPassword())){
+        if(!CommonUtil.isEmpty(userDto.getPassword())){
             savingObj.setPassword(PasswordUtil.hashMD5(userDto.getPassword()));
         }
         userRepo.save(savingObj);

@@ -9,6 +9,7 @@ public class BuildingMaterialDto implements Serializable {
     private int id;
     private Integer productId;
     private Integer materialId;
+    private Integer materialGroupId;
     private Integer materialType;
     private Integer status;
     private Integer quantity;
@@ -28,7 +29,8 @@ public class BuildingMaterialDto implements Serializable {
 
     public BuildingMaterialDto(int id, Integer productId, Integer materialId, Integer materialType,
                                Integer status, Integer quantity, Integer price, Long total, List<Integer> importId,
-                               Date usedDate, String materialCode, String materialName, String materialUnit, Integer buildingImportId) {
+                               Date usedDate, String materialCode, String materialName, String materialUnit,
+                               Integer buildingImportId, Integer materialGroupId) {
         this.id = id;
         this.productId = productId;
         this.materialId = materialId;
@@ -43,12 +45,14 @@ public class BuildingMaterialDto implements Serializable {
         this.materialName = materialName;
         this.materialUnit = materialUnit;
         this.buildingImportId = buildingImportId;
+        this.materialGroupId = materialGroupId;
     }
 
     @Override
     public BuildingMaterialDto clone(){
         return new BuildingMaterialDto(id, productId, materialId, materialType, status, quantity,
-                price, total, importId, usedDate, materialCode, materialName, materialUnit, buildingImportId);
+                price, total, importId, usedDate, materialCode, materialName, materialUnit,
+                buildingImportId, materialGroupId);
     }
 
     public int getId() {
@@ -161,5 +165,13 @@ public class BuildingMaterialDto implements Serializable {
 
     public void setBuildingImportId(Integer buildingImportId) {
         this.buildingImportId = buildingImportId;
+    }
+
+    public Integer getMaterialGroupId() {
+        return materialGroupId;
+    }
+
+    public void setMaterialGroupId(Integer materialGroupId) {
+        this.materialGroupId = materialGroupId;
     }
 }

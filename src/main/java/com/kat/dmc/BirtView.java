@@ -186,7 +186,7 @@ public class BirtView {
             runAndRenderTask.run();
             runAndRenderTask.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("[BIRT][ERROR] {}", ex);
 //            response.setContentType(birtEngine.getMIMEType(IRenderOption.OUTPUT_FORMAT_HTML));
 //            ServletOutputStream outputStream = response.getOutputStream();
 //            outputStream.println("<h4>"+reportName+"</h4>");

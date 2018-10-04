@@ -85,7 +85,7 @@ public class DmcDepartmentEntity {
     }
 
     @Id
-    @Column(name = "_id")
+    @Column(name = "id")
     public int getId() {
         return id;
     }

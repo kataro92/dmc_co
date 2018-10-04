@@ -14,8 +14,10 @@ public class DmcMaterialImportDetailEntity {
     private Long total;
     private Integer materialId;
     private Integer materialGroupId;
+    private Integer productId;
+    private Integer productGroupId;
     private Timestamp importDate;
-    private Integer createEmpId;
+//    private Integer createEmpId;
     private int status;
 
     @Basic
@@ -109,6 +111,26 @@ public class DmcMaterialImportDetailEntity {
     }
 
     @Basic
+    @Column(name = "product_id")
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    @Basic
+    @Column(name = "product_group_id")
+    public Integer getProductGroupId() {
+        return productGroupId;
+    }
+
+    public void setProductGroupId(Integer productGroupId) {
+        this.productGroupId = productGroupId;
+    }
+
+    @Basic
     @Column(name = "import_date")
     public Timestamp getImportDate() {
         return importDate;
@@ -118,15 +140,15 @@ public class DmcMaterialImportDetailEntity {
         this.importDate = importDate;
     }
 
-    @Basic
-    @Column(name = "create_emp_id")
-    public Integer getCreateEmpId() {
-        return createEmpId;
-    }
-
-    public void setCreateEmpId(Integer createEmpId) {
-        this.createEmpId = createEmpId;
-    }
+//    @Basic
+//    @Column(name = "create_emp_id")
+//    public Integer getCreateEmpId() {
+//        return createEmpId;
+//    }
+//
+//    public void setCreateEmpId(Integer createEmpId) {
+//        this.createEmpId = createEmpId;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -145,8 +167,11 @@ public class DmcMaterialImportDetailEntity {
         if (materialId != null ? !materialId.equals(that.materialId) : that.materialId != null) return false;
         if (materialGroupId != null ? !materialGroupId.equals(that.materialGroupId) : that.materialGroupId != null)
             return false;
+        if (productId != null ? !productId.equals(that.productId) : that.productId != null) return false;
+        if (productGroupId != null ? !productGroupId.equals(that.productGroupId) : that.productGroupId != null)
+            return false;
         if (importDate != null ? !importDate.equals(that.importDate) : that.importDate != null) return false;
-        if (createEmpId != null ? !createEmpId.equals(that.createEmpId) : that.createEmpId != null) return false;
+//        if (createEmpId != null ? !createEmpId.equals(that.createEmpId) : that.createEmpId != null) return false;
 
         return true;
     }
@@ -162,8 +187,10 @@ public class DmcMaterialImportDetailEntity {
         result = 31 * result + (total != null ? total.hashCode() : 0);
         result = 31 * result + (materialId != null ? materialId.hashCode() : 0);
         result = 31 * result + (materialGroupId != null ? materialGroupId.hashCode() : 0);
+        result = 31 * result + (productId != null ? productId.hashCode() : 0);
+        result = 31 * result + (productGroupId != null ? productGroupId.hashCode() : 0);
         result = 31 * result + (importDate != null ? importDate.hashCode() : 0);
-        result = 31 * result + (createEmpId != null ? createEmpId.hashCode() : 0);
+//        result = 31 * result + (createEmpId != null ? createEmpId.hashCode() : 0);
         return result;
     }
 }

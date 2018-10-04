@@ -3,6 +3,7 @@ package com.kat.dmc.controller;
 
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.dto.*;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.*;
@@ -17,7 +18,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Named("productCreator")
 @ViewScoped
@@ -166,6 +171,7 @@ public class ProductCreatorController implements Serializable {
     private void saveProduct2Building(){
         buildingProductDto.setProductId(selectedProduct.getId());
         buildingProductDto.setProductName(selectedProduct.getName());
+        buildingProductDto.setProductGroupId(Integer.valueOf(selectedProduct.getProductGroupCode()));
         if(buildingProductDto.getBuildingMaterialDtos() != null) {
             for (BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()) {
                 buildingMaterialDto.setProductId(selectedProduct.getId());
@@ -179,17 +185,16 @@ public class ProductCreatorController implements Serializable {
                     , "Chưa chọn sản phẩm sẽ sản xuất"));
             return;
         }
-        if(buildingProductDto.getBuildingMaterialDtos() == null
-                || buildingProductDto.getBuildingMaterialDtos().isEmpty()){
+        if(CommonUtil.isEmpty(lstBuildingMaterial)){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Có lỗi!"
                     , "Bạn chưa chọn nguyên liệu sản xuất"));
             return;
         }
         try {
+            buildingProductDto.setStatus(Integer.valueOf(DEFAULT_ACTIVE.code()));
             buildingProductDto.setBuildingMaterialDtos(lstBuildingMaterial);
             saveProduct2Building();
-            buildingService.save(buildingProductDto);
-            init();
+            buildingService.save(buildingProductDto.clone());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Thêm thành công!"
                     , null));
         } catch (Exception e) {
@@ -214,9 +219,12 @@ public class ProductCreatorController implements Serializable {
         materialDto.setQuantity(0);
         materialDto.setMaterialUnit(dto.getUnit());
         materialDto.setPrice(dto.getCurrentPrice());
+        materialDto.setMaterialGroupId(Integer.valueOf(dto.getMaterialGroupCode()));
+        materialDto.setMaterialUnit(dto.getUnit());
         //Find relate import
         List<Integer> importIds = warehouseImportService.findAllActiveByMaterialId(dto.getId());
         materialDto.setImportId(importIds);
+        materialDto.setStatus(Integer.valueOf(DEFAULT_ACTIVE.code()));
         lstBuildingMaterial.add(materialDto);
     }
     public void actDeleteMaterial(int index){
@@ -231,10 +239,26 @@ public class ProductCreatorController implements Serializable {
 
     private void updateBuildingProductInfo(){
         Long totalPrice = 0l;
+        HashMap<String, Integer> hashMap = new HashMap<>();
         for(BuildingMaterialDto materialDto : lstBuildingMaterial){
             if(materialDto.getTotal() != null) {
                 totalPrice += materialDto.getTotal();
             }
+            if(!hashMap.containsKey(materialDto.getMaterialUnit())){
+                hashMap.put(materialDto.getMaterialUnit(), materialDto.getQuantity());
+            }else{
+                hashMap.replace(materialDto.getMaterialUnit(), hashMap.get(materialDto.getMaterialUnit()) + materialDto.getQuantity());
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            stringBuilder.append(" + " + value + key);
+        }
+        String string = stringBuilder.toString();
+        if(string != null && !string.equalsIgnoreCase("")){
+            buildingProductDto.setMaterialClassify(string.substring(2));
         }
         buildingProductDto.setPrice(totalPrice);
     }

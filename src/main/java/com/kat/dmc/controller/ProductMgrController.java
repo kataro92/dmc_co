@@ -3,6 +3,7 @@ package com.kat.dmc.controller;
 
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.dto.*;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;
@@ -14,8 +15,8 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("productMgr")
-@ConversationScoped
+@ViewScoped
 public class ProductMgrController implements Serializable {
 
     @Autowired
@@ -68,6 +69,13 @@ public class ProductMgrController implements Serializable {
         lstProductSubgroup = productSubgroupService.findAllActive();
     }
 
+    public void makeDefaultGroupSub(){
+        if(!CommonUtil.isEmpty(lstProductGroup)){
+            selectedProduct.setProductGroupCode(String.valueOf(lstProductGroup.get(0).getId()));
+            selectProductGroup();
+        }
+    }
+
     public void selectProductGroup(){
         lstFileredProductSubgroup = new ArrayList<>();
         for(ProductSubgroupDto productSubgroupDto : lstProductSubgroup){
@@ -88,6 +96,7 @@ public class ProductMgrController implements Serializable {
         selectedProduct = new ProductDto();
         selectedProduct.setId(utilRepo.findSequenceNextval("product__id_seq"));
         selectedProduct.setCode("VT" + String.format("%06d", selectedProduct.getId()));
+        makeDefaultGroupSub();
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){

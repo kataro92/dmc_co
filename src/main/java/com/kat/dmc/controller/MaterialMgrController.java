@@ -6,6 +6,7 @@ import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.dto.MaterialDto;
 import com.kat.dmc.common.dto.MaterialGroupDto;
 import com.kat.dmc.common.dto.MaterialSubgroupDto;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;
@@ -17,8 +18,8 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("materialMgr")
-@ConversationScoped
+@ViewScoped
 public class MaterialMgrController implements Serializable {
 
     @Autowired
@@ -69,6 +70,13 @@ public class MaterialMgrController implements Serializable {
         lstMaterialSubgroup = materialSubgroupService.findAllActive();
     }
 
+    public void makeDefaultGroupSub(){
+        if(!CommonUtil.isEmpty(lstMaterialGroup)){
+            selectedMaterial.setMaterialGroupCode(String.valueOf(lstMaterialGroup.get(0).getId()));
+            selectMaterialGroup();
+        }
+    }
+
     public void selectMaterialGroup(){
         lstFileredMaterialSubgroup = new ArrayList<>();
         for(MaterialSubgroupDto materialSubgroupDto : lstMaterialSubgroup){
@@ -89,6 +97,7 @@ public class MaterialMgrController implements Serializable {
         selectedMaterial = new MaterialDto();
         selectedMaterial.setId(utilRepo.findSequenceNextval("material__id_seq"));
         selectedMaterial.setCode("VT" + String.format("%06d", selectedMaterial.getId()));
+        makeDefaultGroupSub();
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actCopy(){

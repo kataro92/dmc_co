@@ -3,7 +3,8 @@ package com.kat.dmc.service.impl;
 import com.kat.dmc.common.dto.MaterialExportDetailDto;
 import com.kat.dmc.common.dto.MaterialExportDto;
 import com.kat.dmc.common.dto.MaterialIETDDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcMaterialExportDetailEntity;
+import com.kat.dmc.common.model.DmcMaterialExportEntity;
 import com.kat.dmc.repository.interfaces.MaterialExportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialExportRepo;
 import com.kat.dmc.service.interfaces.WarehouseExportService;
@@ -56,6 +57,8 @@ public class WarehouseExportServiceImpl implements WarehouseExportService {
            for(MaterialExportDetailDto exportDetailDto : userDto.getLstDetails()){
                DmcMaterialExportDetailEntity savingDtlObj = modelMapper.map(exportDetailDto, DmcMaterialExportDetailEntity.class);
                savingDtlObj.setMaterialExportId(userDto.getId());
+               savingDtlObj.setStatus(savingObj.getStatus());
+               savingDtlObj.setQuantity(exportDetailDto.getQuantity());
                materialExportDetailRepo.save(savingDtlObj);
            }
         }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -16,6 +17,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Repository
 public class MaterialTransferDetailRepoImpl implements MaterialTransferDetailRepo {
@@ -44,7 +47,7 @@ public class MaterialTransferDetailRepoImpl implements MaterialTransferDetailRep
         CriteriaQuery<DmcMaterialTransferDetailEntity> criteriaQuery = builder.createQuery(DmcMaterialTransferDetailEntity.class);
         Root<DmcMaterialTransferDetailEntity> root = criteriaQuery.from(DmcMaterialTransferDetailEntity.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(DmcMaterialTransferDetailEntity_.status), 0));
+        predicates.add(builder.equal(root.get(DmcMaterialTransferDetailEntity_.status), DEFAULT_ACTIVE.code()));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialTransferDetailEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
@@ -69,6 +72,10 @@ public class MaterialTransferDetailRepoImpl implements MaterialTransferDetailRep
         predicates.add(builder.equal(root.get(DmcMaterialTransferDetailEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialTransferDetailEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 }

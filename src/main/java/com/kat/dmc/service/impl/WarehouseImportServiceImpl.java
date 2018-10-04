@@ -3,7 +3,8 @@ package com.kat.dmc.service.impl;
 import com.kat.dmc.common.dto.MaterialIETDDto;
 import com.kat.dmc.common.dto.MaterialImportDetailDto;
 import com.kat.dmc.common.dto.MaterialImportDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
+import com.kat.dmc.common.model.DmcMaterialImportEntity;
 import com.kat.dmc.repository.interfaces.MaterialImportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialImportRepo;
 import com.kat.dmc.service.interfaces.WarehouseImportService;
@@ -15,6 +16,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Service
 @Transactional
@@ -80,6 +83,7 @@ public class WarehouseImportServiceImpl implements WarehouseImportService {
            for(MaterialImportDetailDto importDetailDto : userDto.getLstDetails()){
                DmcMaterialImportDetailEntity savingDtlObj = modelMapper.map(importDetailDto, DmcMaterialImportDetailEntity.class);
                savingDtlObj.setMaterialImportId(userDto.getId());
+               savingDtlObj.setStatus(savingObj.getStatus());
                materialImportDetailRepo.save(savingDtlObj);
            }
         }

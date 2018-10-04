@@ -98,13 +98,28 @@
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="txtMaterialgroupID" value="Mã nhóm"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtMaterialgroupID" readonly="true" styleClass="form-control"
+                                     value="#{materialSubgroupMgr.selectedMaterialSubgroup.materialGroupCode}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="txtMaterialgroup" value="Nhóm"/>
+                    </p:column>
+                    <p:column rowspan="3">
+                        <p:selectOneMenu id="txtMaterialgroup" styleClass="form-control"
+                                         disabled="#{materialSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
+                                         value="#{materialSubgroupMgr.selectedMaterialSubgroup.materialGroupCode}">
+                            <f:selectItems value="#{materialSubgroupMgr.lstAllActiveMaterialGroup}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
             <div class="card-header bg-primary text-white">
-                <h:outputText value="Danh sách vật tư" rendered="#{materialSubgroupMgr.currentAct == enumBox.getState('VIEW')}"/>
-                <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
-                               rendered="#{materialSubgroupMgr.currentAct == enumBox.getState('ADD') || materialSubgroupMgr.currentAct == enumBox.getState('COPY') || materialSubgroupMgr.currentAct == enumBox.getState('EDIT')}"
-                               value="Thêm"
-                               update=":main" />
+                <h:outputText value="Danh sách vật tư"/>
             </div>
             <div class="tbl-scroll-y">
                 <p:dataTable rowIndexVar="index"

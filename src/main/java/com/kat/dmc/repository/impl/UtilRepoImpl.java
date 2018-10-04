@@ -4,6 +4,7 @@ import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigInteger;
@@ -19,7 +20,10 @@ public class UtilRepoImpl implements UtilRepo {
         Query query;
         query = entityManager.createNativeQuery("select nextval(?)");
         query.setParameter(1, sequenceName);
-        BigInteger nextSeq = (BigInteger) query.getSingleResult();
-        return nextSeq.intValue();
+        try {
+            return ((BigInteger) query.getSingleResult()).intValue();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 }

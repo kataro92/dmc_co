@@ -16,13 +16,16 @@ public class MaterialImportDetailDto implements Serializable {
     private Integer createEmpId;
     private int status;
     private String unit;
+    private Integer productId;
+    private Integer productGroupId;
 
     public MaterialImportDetailDto() {
     }
 
     public MaterialImportDetailDto(int id, int materialImportId, String code, Integer price,
                                    Integer quantity, Long total, Integer materialId, Integer materialGroupId,
-                                   Date importDate, Integer createEmpId, int status, String unit) {
+                                   Date importDate, Integer createEmpId, int status, String unit,
+                                   Integer productId, Integer productGroupId) {
         this.id = id;
         this.materialImportId = materialImportId;
         this.code = code;
@@ -35,12 +38,14 @@ public class MaterialImportDetailDto implements Serializable {
         this.createEmpId = createEmpId;
         this.status = status;
         this.unit = unit;
+        this.productId = productId;
+        this.productGroupId = productGroupId;
     }
 
     @Override
     public MaterialImportDetailDto clone(){
         return new MaterialImportDetailDto(id, materialImportId, code, price, quantity, total, materialId,
-                materialGroupId, importDate, createEmpId, status, unit);
+                materialGroupId, importDate, createEmpId, status, unit, productId, productGroupId);
     }
 
     public int getId() {
@@ -137,5 +142,21 @@ public class MaterialImportDetailDto implements Serializable {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getProductGroupId() {
+        return productGroupId;
+    }
+
+    public void setProductGroupId(Integer productGroupId) {
+        this.productGroupId = productGroupId;
     }
 }

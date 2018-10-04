@@ -3,13 +3,13 @@ package com.kat.dmc.controller;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
 
 @Named("dashboard")
-@ConversationScoped
+@ViewScoped
 public class DashboardController implements Serializable {
     private LineChartModel animatedModel1;
     private BarChartModel animatedModel2;

@@ -4,10 +4,12 @@ package com.kat.dmc.controller;
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.dto.ProductDto;
+import com.kat.dmc.common.dto.ProductGroupDto;
 import com.kat.dmc.common.dto.ProductSubgroupDto;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;
+import com.kat.dmc.service.interfaces.ProductGroupService;
 import com.kat.dmc.service.interfaces.ProductService;
 import com.kat.dmc.service.interfaces.ProductSubgroupService;
 import org.primefaces.PrimeFaces;
@@ -15,16 +17,19 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("productSubgroupMgr")
-@ConversationScoped
+@ViewScoped
 public class ProductSubgroupMgrController implements Serializable {
+
+    @Autowired
+    ProductGroupService productGroupService;
 
     @Autowired
     ProductSubgroupService productSubgroupService;
@@ -45,6 +50,7 @@ public class ProductSubgroupMgrController implements Serializable {
     private boolean disableDelete;
     private ProductSubgroupDto selectedProductSubgroup;
     private ProductSubgroupDto tempProductSubgroup;
+    private List<ProductGroupDto> lstAllActiveProductGroup;
     private List<ProductSubgroupDto> lstAllProductSubgroup;
     private List<ProductSubgroupDto> lstFilteredProductSubgroup;
     private List<EmployeeDto> lstAllEmployees;
@@ -54,6 +60,7 @@ public class ProductSubgroupMgrController implements Serializable {
     @PostConstruct
     public void init(){
         setCurrentAct(ControllerAction.State.VIEW);
+        lstAllActiveProductGroup = productGroupService.findAllActive();
         lstAllProductSubgroup = productSubgroupService.findAll();
         lstAllEmployees = employeeService.findAllActive();
     }
@@ -206,5 +213,13 @@ public class ProductSubgroupMgrController implements Serializable {
 
     public void setLstProduct(List<ProductDto> lstProduct) {
         this.lstProduct = lstProduct;
+    }
+
+    public List<ProductGroupDto> getLstAllActiveProductGroup() {
+        return lstAllActiveProductGroup;
+    }
+
+    public void setLstAllActiveProductGroup(List<ProductGroupDto> lstAllActiveProductGroup) {
+        this.lstAllActiveProductGroup = lstAllActiveProductGroup;
     }
 }

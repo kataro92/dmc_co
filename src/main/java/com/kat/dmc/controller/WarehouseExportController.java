@@ -21,8 +21,8 @@ import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -30,9 +30,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("warehouseExport")
-@ConversationScoped
+@ViewScoped
 public class WarehouseExportController implements Serializable {
 
     @Autowired
@@ -161,13 +162,13 @@ public class WarehouseExportController implements Serializable {
             }
             selectedWarehouseExport.getLstDetails().add(materialExportDto);
         }catch (NoResultException ex){
-            ex.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
         }
     }
 
     public void updatePrice(int idx){
         MaterialExportDetailDto materialExportDetailDto = selectedWarehouseExport.getLstDetails().get(idx);
-        if(materialExportDetailDto.getPrice() != null && materialExportDetailDto.getQuantity() != null) {
+        if(materialExportDetailDto.getPrice() != null) {
             materialExportDetailDto.setTotal(materialExportDetailDto.getPrice().longValue() * materialExportDetailDto.getQuantity());
         }
         Long allTotal = 0l;
@@ -318,6 +319,7 @@ public class WarehouseExportController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

@@ -22,7 +22,7 @@ public class WarehouseStatusDto implements Serializable {
     public WarehouseStatusDto() {
     }
 
-    public WarehouseStatusDto(Integer warehouseId, String processDate, Integer
+    public WarehouseStatusDto(Integer idx, Integer warehouseId, String processDate, Integer
             categoryId, Integer materialId, String name, Integer groupId,
                               String groupName, Integer subgroupId, String subgroupName,
                               Long quantity, Long price, String type) {
@@ -38,11 +38,12 @@ public class WarehouseStatusDto implements Serializable {
         this.quantity = quantity;
         this.price = price;
         this.type = type;
+        this.idx = idx;
     }
 
     @Override
     public WarehouseStatusDto clone(){
-        return new WarehouseStatusDto(warehouseId, processDate, categoryId, materialId, name, groupId, groupName, subgroupId, subgroupName, quantity, price, type);
+        return new WarehouseStatusDto(idx, warehouseId, processDate, categoryId, materialId, name, groupId, groupName, subgroupId, subgroupName, quantity, price, type);
     }
 
     public Integer getWarehouseId() {

@@ -1,47 +1,118 @@
-create or replace view dmc_warehouse_status as
-  SELECT dmi.warehouse_id,
-         to_char(dmi.import_date, 'yyyyMMdd' :: text) AS process_date,
-         dmi.category_id,
-         dmid.material_id,
-         mg._id                                       AS group_id,
-         mg.name                                      AS group_name,
-         ms._id                                       AS subgroup_id,
-         ms.name                                      AS subgroup_name,
-         sum(dmid.quantity)                           AS quantity,
-         sum(dmid.price)                              AS price,
-         'imp' :: text                                AS type,
-         ma.name                                      AS name
-  FROM dmc_material_import dmi,
-       dmc_material_import_detail dmid,
-       material_group mg,
-       material_subgroup ms, material ma
-  WHERE ((dmi.id = dmid.material_import_id) AND (dmid.material_group_id = ms._id) AND
-         ((mg._id) :: text = (ms.material_group_code) :: text) AND (dmi.status = 0))
-  AND dmid.material_id = ma._id
-  GROUP BY dmi.warehouse_id, dmi.category_id, (to_char(dmi.import_date, 'yyyyMMdd' :: text)), mg._id, ms._id,
-           dmid.material_id, ma.name
-  UNION ALL
-  SELECT COALESCE(NULLIF(dmi.export_from_id, 0), dmi.warehouse_id) AS warehouse_id,
-         to_char(dmi.export_date, 'yyyyMMdd' :: text)              AS process_date,
-         dmi.category_id,
-         dmid.material_id,
-         mg._id                                                    AS group_id,
-         mg.name                                                   AS group_name,
-         ms._id                                                    AS subgroup_id,
-         ms.name                                                   AS subgroup_name,
-         (-sum(dmid.quantity))                                     AS quantity,
-         (-sum(dmid.price))                                        AS price,
-         'exp' :: text                                             AS type,
-         ma.name                                      AS name
-  FROM dmc_material_export dmi,
-       dmc_material_export_detail dmid,
-       material_group mg,
-       material_subgroup ms, material ma
-  WHERE ((dmi.id = dmid.material_export_id) AND (dmid.material_group_id = ms._id) AND
-         ((mg._id) :: text = (ms.material_group_code) :: text) AND (dmi.status = 0) AND (dmi.export_from <> 3))
-    AND dmid.material_id = ma._id
-  GROUP BY COALESCE(NULLIF(dmi.export_from_id, 0), dmi.warehouse_id), dmi.category_id,
-           (to_char(dmi.export_date, 'yyyyMMdd' :: text)), mg._id, ms._id,
-           dmid.material_id, ma.name;
-INSERT INTO public.dmc_user (_id, code, extra_props, name, password, permission, permissions, status, username) VALUES (1, 'admin', '', 'Admin', '3f75336dfc774c69627d62afd4469862', 1, null, 0, 'admin');
+--Insert default data
+INSERT INTO public.dmc_user (id, code, extra_props, name, password, permission, permissions, status, username) VALUES (1, 'admin', '', 'Admin', '3f75336dfc774c69627d62afd4469862', 1, null, 0, 'admin');
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (1, 'Trang chủ', 0, 'main', 'page', 'default', 0);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (8, 'Kế toán', 0, null, 'page_group', 'default', 7);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (4, 'Vật tư', 0, null, 'page_group', 'default', 3);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (10, 'Kinh doanh', 0, null, 'page_group', 'default', 9);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (5, 'Kho vật tư', 0, null, 'page_group', 'default', 4);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (6, 'Thành phẩm', 0, null, 'page_group', 'default', 5);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (13, 'Thông tin đăng nhập', 3, 'user_mgr', 'page', 'default', 17);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (9, 'Sản xuất', 0, null, 'page_group', 'default', 8);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (14, 'Nhân viên phòng ban', 3, 'dept_mgr', 'page', 'default', 18);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (11, 'Quản lí thiết bị', 0, null, 'page_group', 'default', 10);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (3, 'Hệ thống', 0, null, 'page_group', 'default', 1);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (2, 'Thông tin công ty', 0, 'info', 'page', 'default', 2);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (18, 'Khách hàng', 3, 'client_mgr', 'page', 'default', 15);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (16, 'Chức danh', 3, 'position_mgr', 'page', 'default', 13);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (19, 'Nhà cung cấp', 3, 'supplier_mgr', 'page', 'default', 16);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (12, 'Nhóm vật tư', 4, 'material_group_mgr', 'page', 'default', 11);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (20, 'Phân loại nhóm vật tư', 4, 'material_type_mgr', 'page', 'default', 11);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (21, 'Vật tư', 4, 'material_mgr', 'page', 'default', 11);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (99, 'Barcode & QR', 0, 'barcode', 'page', 'default', 99);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (32, 'Nhóm thành phẩm', 6, 'product_group_mgr', 'page', 'default', 1);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (31, 'Phân loại nhóm thành phẩm', 6, 'product_type_mgr', 'page', 'default', 2);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (30, 'Thành phẩm', 6, 'product_mgr', 'page', 'default', 3);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (50, 'Kho', 0, null, 'page_group', 'default', 3);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (51, 'Danh sách kho', 50, 'warehouse_mgr', 'page', 'default', 0);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (52, 'Phiếu Nhập kho', 50, 'warehouse_import', 'page', 'default', 1);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (53, 'Phiếu Xuất kho', 50, 'warehouse_export', 'page', 'default', 2);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (54, 'Phiếu Chuyển kho', 50, 'warehouse_transfer', 'page', 'default', 3);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (56, 'Thông số Cấu hình', 3, 'config', 'page', 'default', 99);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (57, 'Phiếu Hủy hàng trong kho', 50, 'warehouse_dismiss', 'page', 'default', 4);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (55, 'Kiểm kho', 50, 'warehouse_check', 'page', 'default', 5);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (58, 'Tạo thành phẩm từ vật tư', 9, 'create_product', 'page', 'default', 1);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (59, 'Cấu hình vật tư cho thành phẩm', 9, 'material_of_product', 'page', 'default', 2);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (1, 1, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (2, 2, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (3, 3, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (4, 4, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (5, 5, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (6, 6, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (7, 7, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (8, 8, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (9, 9, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (10, 10, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (11, 11, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (12, 12, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (13, 13, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (14, 14, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (16, 16, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (17, 17, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (18, 18, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (19, 19, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (20, 20, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (21, 21, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (30, 30, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (31, 31, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (32, 32, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (33, 50, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (34, 51, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (35, 52, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (36, 53, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (37, 54, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (38, 55, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (39, 56, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (40, 57, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (41, 58, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (42, 59, 1);
+INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (43, 99, 1);
+
+INSERT INTO public.dmc_material_group (id, code, def_code, description, name, status) VALUES (103, 'NT000103', null, 'Thép cán nguôi Phương Nam', 'Thép cán nguôi', 1);
+INSERT INTO public.dmc_material_subgroup (id, code, def_code, material_group_code, name, status) VALUES (103, 'NS000103', null, '103', 'Tôn lạnh NX', 1);
+INSERT INTO public.dmc_material (id, code, is_code_fixed, def_code, full_code, material_group_code, material_subgroup_code, name, producer, short_description, sort_name, status, unit) VALUES (108, 'VT000108', false, null, null, '103', '103', 'Tôn tấm PNX-001A', 'Công ty Phương Nam', '', null, 1, 'tấm');
+INSERT INTO public.dmc_warehouse (id, address, is_can_dismiss, is_can_export, is_can_import, is_can_transfer, category_id, code, name, status) VALUES (101, 'Lạc Long Quân', true, true, true, true, 0, 'KO000101', 'Kho chính', 1);
+INSERT INTO public.dmc_material_import (id, category_id, code, import_date, import_from, import_from_id, reson, status, supplier_id, temp_import, total, warehouse_id) VALUES (105, 0, 'NK000105', '2018-10-01 00:00:00.000000', 0, null, null, 1, 0, null, 27600000, 101);
+INSERT INTO public.dmc_material_import_detail (id, code, import_date, material_group_id, material_id, material_import_id, price, quantity, status, total) VALUES (103, 'NT000103', '2018-10-01 00:00:00.000000', 103, 108, 105, 230000, 120, 1, 27600000);
+INSERT INTO public.dmc_product_group (id, code, def_code, name, status) VALUES (102, 'NT000102', null, 'Máy biến thế', 1);
+INSERT INTO public.dmc_product_subgroup (id, code, def_code, name, product_group_code, status) VALUES (102, 'NS000102', null, 'Máy biến thế trên 1Kv', '102', 1);
+INSERT INTO public.dmc_product (id, code, is_code_fixed, def_code, full_code, name, producer, product_group_code, product_subgroup_code, short_description, sort_name, status, unit) VALUES (103, 'VT000103', false, null, null, 'Máy biến thế hiệu con Đại bàng 5Kv', 'DMC Corp', '102', '102', '', null, 1, 'chiếc');
+
+--Create squence
+CREATE SEQUENCE IF NOT EXISTS client__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS company__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS department__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_barcode_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_building_product_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_builiding_material_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_config_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_document_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_dismiss_detail_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_dismiss_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_export_detail_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_export_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_import_detail_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_import_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_transfer_detail_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_material_transfer_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_object_object_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_user_object_user_object_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_warehouse_stock_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS dmc_warehousr_id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS employee__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START 101;
+CREATE SEQUENCE IF NOT EXISTS job_position__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material_barcode__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material_delivery_voucher__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material_group__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material_receiving_voucher__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS material_subgroup__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS product__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS product_group__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS product_subgroup__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS supplier__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS system_counter__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS user__id_seq START 101;
+
+
 

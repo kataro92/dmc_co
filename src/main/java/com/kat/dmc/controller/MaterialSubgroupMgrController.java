@@ -4,10 +4,12 @@ package com.kat.dmc.controller;
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.dto.MaterialDto;
+import com.kat.dmc.common.dto.MaterialGroupDto;
 import com.kat.dmc.common.dto.MaterialSubgroupDto;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.EmployeeService;
+import com.kat.dmc.service.interfaces.MaterialGroupService;
 import com.kat.dmc.service.interfaces.MaterialService;
 import com.kat.dmc.service.interfaces.MaterialSubgroupService;
 import org.primefaces.PrimeFaces;
@@ -30,6 +32,9 @@ public class MaterialSubgroupMgrController implements Serializable {
     MaterialSubgroupService materialSubgroupService;
 
     @Autowired
+    MaterialGroupService materialGroupService;
+
+    @Autowired
     UtilRepo utilRepo;
 
     @Autowired
@@ -46,6 +51,7 @@ public class MaterialSubgroupMgrController implements Serializable {
     private MaterialSubgroupDto selectedMaterialSubgroup;
     private MaterialSubgroupDto tempMaterialSubgroup;
     private List<MaterialSubgroupDto> lstAllMaterialSubgroup;
+    private List<MaterialGroupDto> lstAllActiveMaterialGroup;
     private List<MaterialSubgroupDto> lstFilteredMaterialSubgroup;
     private List<EmployeeDto> lstAllEmployees;
     private List<MaterialDto> lstMaterial;
@@ -55,6 +61,7 @@ public class MaterialSubgroupMgrController implements Serializable {
     public void init(){
         setCurrentAct(ControllerAction.State.VIEW);
         lstAllMaterialSubgroup = materialSubgroupService.findAll();
+        setLstAllActiveMaterialGroup(materialGroupService.findAllActive());
         lstAllEmployees = employeeService.findAllActive();
     }
 
@@ -206,5 +213,13 @@ public class MaterialSubgroupMgrController implements Serializable {
 
     public void setLstMaterial(List<MaterialDto> lstMaterial) {
         this.lstMaterial = lstMaterial;
+    }
+
+    public List<MaterialGroupDto> getLstAllActiveMaterialGroup() {
+        return lstAllActiveMaterialGroup;
+    }
+
+    public void setLstAllActiveMaterialGroup(List<MaterialGroupDto> lstAllActiveMaterialGroup) {
+        this.lstAllActiveMaterialGroup = lstAllActiveMaterialGroup;
     }
 }

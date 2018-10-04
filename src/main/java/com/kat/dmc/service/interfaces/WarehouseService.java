@@ -1,6 +1,5 @@
 package com.kat.dmc.service.interfaces;
 
-import com.kat.dmc.common.dto.MaterialIETDDto;
 import com.kat.dmc.common.dto.MaterialOnStockDto;
 import com.kat.dmc.common.dto.WarehouseDto;
 import com.kat.dmc.common.dto.WarehouseStatusDto;

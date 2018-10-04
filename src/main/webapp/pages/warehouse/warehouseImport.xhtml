@@ -141,8 +141,8 @@
                             <p:selectOneMenu id="txtStatus" styleClass="form-control"
                                              disabled="#{warehouseImport.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.status}">
-                                <f:selectItem itemLabel="Hiệu lực" itemValue="0" />
-                                <f:selectItem itemLabel="Khoá" itemValue="1" />
+                                <f:selectItem itemLabel="Hiệu lực" itemValue="1" />
+                                <f:selectItem itemLabel="Khoá" itemValue="0" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -246,7 +246,7 @@
                         </p:column>
                         <p:column sortBy="#{warehouseImport.getMaterialById(rows.materialId).name}" headerText="Tên hàng hóa">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{warehouseImport.getMaterialById(rows.materialId).name}" /></f:facet>
+                                <f:facet name="output"><h:outputText value="#{warehouseImport.selectedWarehouseImport.categoryId == 0 ? warehouseImport.getMaterialById(rows.materialId).name : warehouseImport.getProductById(rows.productId).name}" /></f:facet>
                                 <f:facet name="input">
                                     <p:selectOneMenu value="#{rows.materialId}" style="width:100%"
                                                      filter="true" filterMatchMode="contains">
@@ -258,10 +258,10 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column sortBy="#{rows.price}" headerText="Giá" style="width: 120px" styleClass="text-right">
+                        <p:column sortBy="#{rows.price}" headerText="Giá" style="width: 120px" styleClass="text-right" rendered="#{warehouseImport.selectedWarehouseImport.categoryId == 0}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{rows.price}">
+                                    <h:outputText rendered="#{rows.price != null}" value="#{rows.price}">
                                         <f:convertNumber />
                                     </h:outputText>
                                 </f:facet>
@@ -275,7 +275,7 @@
                         <p:column sortBy="#{rows.quantity}" headerText="Số lượng" style="width: 110px" styleClass="text-right">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{rows.quantity}">
+                                    <h:outputText rendered="#{rows.quantity != null}" value="#{rows.quantity}">
                                         <f:convertNumber />
                                     </h:outputText>
                                 </f:facet>
@@ -290,7 +290,7 @@
                             <h:outputText value="#{warehouseImport.getMaterialById(rows.materialId).unit}" />
                         </p:column>
                         <p:column sortBy="#{rows.total}" headerText="Tổng tiền" style="width: 140px" styleClass="text-right">
-                            <h:outputText value="#{rows.total}">
+                            <h:outputText rendered="#{rows.total != null}" value="#{rows.total}">
                                 <f:convertNumber />
                             </h:outputText>
                         </p:column>

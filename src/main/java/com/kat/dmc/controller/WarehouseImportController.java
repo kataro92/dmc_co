@@ -4,6 +4,7 @@ package com.kat.dmc.controller;
 import com.kat.dmc.common.constant.CommonConst;
 import com.kat.dmc.common.constant.ControllerAction;
 import com.kat.dmc.common.dto.*;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.DateUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.common.util.StringUtil;
@@ -19,8 +20,8 @@ import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("warehouseImport")
-@ConversationScoped
+@ViewScoped
 public class WarehouseImportController implements Serializable {
 
     @Autowired
@@ -47,6 +48,8 @@ public class WarehouseImportController implements Serializable {
 
     @Autowired
     MaterialService materialService;
+    @Autowired
+    ProductService productService;
 
     @Autowired
     SessionController sessionController;
@@ -66,6 +69,7 @@ public class WarehouseImportController implements Serializable {
     private List<SupplierDto> lstAllSuppliers;
     private List<WarehouseDto> lstAllWarehouse;
     private List <MaterialDto> lstAllMaterial;
+    private List <ProductDto> lstAllProduct;
 
 
     @PostConstruct
@@ -75,6 +79,7 @@ public class WarehouseImportController implements Serializable {
         lstAllSuppliers = supplierService.findAllActive();
         lstAllWarehouse = warehouseService.findAllActiveByPermission(true, null, null, null);
         lstAllMaterial = materialService.findAllActive();
+        lstAllProduct = productService.findAllActive();
     }
 
     public void handleExcelImportUpload(FileUploadEvent event){
@@ -162,7 +167,6 @@ public class WarehouseImportController implements Serializable {
             }
             selectedWarehouseImport.getLstDetails().add(materialImportDto);
         }catch (NoResultException ex){
-            ex.printStackTrace();
         }
     }
 
@@ -224,6 +228,18 @@ public class WarehouseImportController implements Serializable {
         }
         return new MaterialDto();
     }
+    
+    public ProductDto getProductById(Integer id){
+        if(id == null){
+            return new ProductDto();
+        }
+        for(ProductDto productDto : lstAllProduct){
+            if(productDto.getId().equals(id)){
+                return productDto;
+            }
+        }
+        return new ProductDto();
+    }
 
     public void actAddMaterial(){
         MaterialImportDetailDto importDto = new MaterialImportDetailDto();
@@ -233,19 +249,22 @@ public class WarehouseImportController implements Serializable {
         if(selectedWarehouseImport.getLstDetails() == null){
             selectedWarehouseImport.setLstDetails(new ArrayList<>());
         }
-        selectedWarehouseImport.getLstDetails().add(importDto);
+        if(!CommonUtil.isEmpty(lstAllMaterial)) {
+            MaterialDto materialDto = lstAllMaterial.get(0);
+            importDto.setMaterialGroupId(Integer.parseInt(materialDto.getMaterialGroupCode()));
+            importDto.setCode("NT" + String.format("%06d", importDto.getId())+ "-" + materialDto.getCode());
+            selectedWarehouseImport.getLstDetails().add(importDto);
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN
+                    , "Warn", "Chưa có vật tư để tạo phiếu nhập"));
+            return;
+        }
     }
 
     public void selectWarehouseImport(SelectEvent selectEvent){
         tempWarehouseImport = (MaterialImportDto) selectEvent.getObject();
         selectedWarehouseImport = tempWarehouseImport.clone();
-        if(String.valueOf(selectedWarehouseImport.getCategoryId()).equals(CommonConst.Code.IMPORT_CATEGORY_ID_0.code())) {
-            //Vật tư
-            selectedWarehouseImport.setLstDetails(warehouseImportService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
-        }else if(String.valueOf(selectedWarehouseImport.getCategoryId()).equals(CommonConst.Code.IMPORT_CATEGORY_ID_1.code())) {
-            //Thành phẩm
-            selectedWarehouseImport.setLstDetails(buildingService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
-        }
+        selectedWarehouseImport.setLstDetails(warehouseImportService.findAllActiveDtlByMaterialImpId(selectedWarehouseImport.getId()));
     }
 
     public void actAdd(){

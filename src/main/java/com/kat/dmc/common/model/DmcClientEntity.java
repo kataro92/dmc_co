@@ -153,7 +153,7 @@ public class DmcClientEntity {
     }
 
     @Id
-    @Column(name = "_id")
+    @Column(name = "id")
     public int getId() {
         return id;
     }

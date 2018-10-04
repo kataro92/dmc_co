@@ -2,7 +2,10 @@ package com.kat.dmc.repository.impl;
 
 import com.kat.dmc.common.dto.MaterialDto;
 import com.kat.dmc.common.dto.MaterialImportDetailDto;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcMaterialEntity;
+import com.kat.dmc.common.model.DmcMaterialEntity_;
+import com.kat.dmc.common.model.DmcMaterialExportDetailEntity;
+import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
 import com.kat.dmc.repository.interfaces.MaterialExportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialImportDetailRepo;
 import com.kat.dmc.repository.interfaces.MaterialRepo;
@@ -17,6 +20,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
 @Repository
 public class MaterialRepoImpl implements MaterialRepo {
@@ -76,7 +82,11 @@ public class MaterialRepoImpl implements MaterialRepo {
         predicates.add(builder.equal(root.get(DmcMaterialEntity_.id), id));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override
@@ -100,32 +110,36 @@ public class MaterialRepoImpl implements MaterialRepo {
         predicates.add(builder.equal(root.get(DmcMaterialEntity_.code), code));
         criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
         final TypedQuery<DmcMaterialEntity> query = entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            throw new RuntimeException("Single return empty result !");
+        }
     }
 
     @Override
     public List<MaterialDto> findAllByImport() {
-        String strSQL = "SELECT MS._id, " +
+        String strSQL = "SELECT MS.id, " +
                 " MS.code, " +
                 " MS.material_group_code, " +
                 " MS.material_subgroup_code, " +
                 " MS.name, " +
                 " MS.status " +
-                " FROM material MS " +
-                " WHERE MS.status=0 " +
-                " AND MS._id IN (SELECT SUMMARY.material_id " +
+                " FROM dmc_material MS " +
+                " WHERE MS.status=" + DEFAULT_ACTIVE.code() +
+                " AND MS.id IN (SELECT SUMMARY.material_id " +
                 "FROM ( " +
                 "  SELECT " +
                 "    MID.material_id, " +
                 "    MID.quantity " +
                 "  FROM dmc_material_import_detail MID " +
-                "  WHERE MID.status = 0 " +
+                "  WHERE MID.status =" + DEFAULT_ACTIVE.code() +
                 "  UNION ALL " +
                 "  SELECT " +
                 "    MED.material_id, " +
                 "    -MED.quantity " +
                 "  FROM dmc_material_export_detail MED " +
-                "  WHERE MED.status = 0 " +
+                "  WHERE MED.status =" + DEFAULT_ACTIVE.code() +
                 ") AS SUMMARY " +
                 "GROUP BY SUMMARY.material_id " +
                 "HAVING sum(SUMMARY.quantity) > 0)";
@@ -155,8 +169,8 @@ public class MaterialRepoImpl implements MaterialRepo {
                 DmcMaterialEntity dmcMaterialEntity = findById(importDetailDto.getMaterialId());
                 importDetailDto.setUnit(dmcMaterialEntity.getUnit());
             }
-        }catch (NoResultException ex){
-            System.out.println(ex.getMessage());
+        }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
         }
         return detailDtoList;
     }
@@ -170,6 +184,8 @@ public class MaterialRepoImpl implements MaterialRepo {
             detailDto.setQuantity(detailEntity.getQuantity());
             detailDto.setPrice(detailEntity.getPrice());
             detailDto.setCode(detailEntity.getCode());
+            detailDto.setMaterialId(detailEntity.getMaterialId());
+            detailDto.setMaterialGroupId(detailEntity.getMaterialGroupId());
             detailDtos.add(detailDto);
 
         }
@@ -181,6 +197,8 @@ public class MaterialRepoImpl implements MaterialRepo {
                 detailDto.setQuantity(detailEntity.getQuantity());
                 detailDto.setPrice(detailEntity.getPrice());
                 detailDto.setCode(detailEntity.getCode());
+                detailDto.setMaterialId(detailEntity.getMaterialId());
+                detailDto.setMaterialGroupId(detailEntity.getMaterialGroupId());
                 detailDtos.add(detailDto);
 
                 detailEntity.setQuantity(0);
@@ -191,6 +209,8 @@ public class MaterialRepoImpl implements MaterialRepo {
                 detailDto.setQuantity(detailEntity.getQuantity());
                 detailDto.setPrice(detailEntity.getPrice());
                 detailDto.setCode(detailEntity.getCode());
+                detailDto.setMaterialId(detailEntity.getMaterialId());
+                detailDto.setMaterialGroupId(detailEntity.getMaterialGroupId());
                 detailDtos.add(detailDto);
 
                 exportDetailEntity.setQuantity(0);

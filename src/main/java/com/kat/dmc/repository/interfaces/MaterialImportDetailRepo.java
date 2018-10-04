@@ -1,7 +1,6 @@
 package com.kat.dmc.repository.interfaces;
 
 import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
-import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
 
 import java.util.List;
 

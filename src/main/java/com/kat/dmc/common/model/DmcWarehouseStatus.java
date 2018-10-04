@@ -122,6 +122,7 @@ public class DmcWarehouseStatus implements Serializable {
         this.processDate = processDate;
     }
 
+    @Id
     @Basic
     @Column(name = "category_id")
     public Integer getCategoryId() {

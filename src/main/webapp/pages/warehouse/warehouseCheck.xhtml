@@ -168,7 +168,7 @@
                                                        style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
                                         update="main:checkTab:tblDetail1Sum"/>
                                     </h:panelGrid>
-                                    <p:dataTable id="tblDetail1Sum" value="#{warehouseCheck.sumOnStockRes}"
+                                    <p:dataTable id="tblDetail1Sum" rendered="#{warehouseCheck.sumOnStockRes != null}" value="#{warehouseCheck.sumOnStockRes}"
                                                  tableStyleClass="card-body"
                                                  rowIndexVar="index"
                                                  selectionMode="single"
@@ -278,7 +278,7 @@
                                                        style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
                                                        update="main:checkTab:tblDetail2Sum"/>
                                     </h:panelGrid>
-                                    <p:dataTable id="tblDetail2Sum" value="#{warehouseCheck.sumImportRes}"
+                                    <p:dataTable id="tblDetail2Sum" rendered="#{warehouseCheck.sumImportRes!=null}" value="#{warehouseCheck.sumImportRes}"
                                                  tableStyleClass="card-body"
                                                  rowIndexVar="index"
                                                  selectionMode="single"
@@ -388,7 +388,7 @@
                                                        style="position: absolute; right: 215px; top: 64px" value="Tìm kiếm"
                                                        update="main:checkTab:tblDetail3Sum"/>
                                     </h:panelGrid>
-                                    <p:dataTable id="tblDetail3Sum" value="#{warehouseCheck.sumExportRes}"
+                                    <p:dataTable id="tblDetail3Sum" rendered="#{warehouseCheck.sumImportRes!=null}" value="#{warehouseCheck.sumExportRes}"
                                                  tableStyleClass="card-body"
                                                  rowIndexVar="index"
                                                  selectionMode="single"

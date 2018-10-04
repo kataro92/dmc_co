@@ -16,8 +16,8 @@ import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("userMgr")
-@ConversationScoped
+@ViewScoped
 public class UserMgrController implements Serializable {
 
     @Autowired

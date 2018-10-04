@@ -17,13 +17,17 @@ public class BuildingProductDto implements Serializable {
     private Integer code;
     private String warehouseName;
     private String productName;
+    private Integer productGroupId;
     private List<BuildingMaterialDto> buildingMaterialDtos;
+    private String materialClassify;
     public BuildingProductDto() {
     }
 
     public BuildingProductDto(int id, Integer productId, Integer warehouseId, Date createdDate,
                               Integer siteMoney, Long price, Integer quantity, Long total,
-                              Integer status, Integer code, String warehouseName, String productName, List<BuildingMaterialDto> buildingMaterialDtos) {
+                              Integer status, Integer code, String warehouseName, String productName,
+                              List<BuildingMaterialDto> buildingMaterialDtos,
+                              Integer productGroupId, String materialClassify) {
         this.id = id;
         this.productId = productId;
         this.warehouseId = warehouseId;
@@ -36,13 +40,16 @@ public class BuildingProductDto implements Serializable {
         this.code = code;
         this.warehouseName = warehouseName;
         this.productName = productName;
-        this.setBuildingMaterialDtos(buildingMaterialDtos);
+        this.buildingMaterialDtos = buildingMaterialDtos;
+        this.productGroupId = productGroupId;
+        this.materialClassify = materialClassify;
     }
 
     @Override
     public BuildingProductDto clone(){
         return new BuildingProductDto(id, productId, warehouseId, createdDate, siteMoney, price,
-                quantity, total, status, code, warehouseName, productName, getBuildingMaterialDtos());
+                quantity, total, status, code, warehouseName, productName,
+                buildingMaterialDtos, productGroupId, materialClassify);
     }
 
     public int getId() {
@@ -147,5 +154,21 @@ public class BuildingProductDto implements Serializable {
 
     public void setBuildingMaterialDtos(List<BuildingMaterialDto> buildingMaterialDtos) {
         this.buildingMaterialDtos = buildingMaterialDtos;
+    }
+
+    public Integer getProductGroupId() {
+        return productGroupId;
+    }
+
+    public void setProductGroupId(Integer productGroupId) {
+        this.productGroupId = productGroupId;
+    }
+
+    public String getMaterialClassify() {
+        return materialClassify;
+    }
+
+    public void setMaterialClassify(String materialClassify) {
+        this.materialClassify = materialClassify;
     }
 }

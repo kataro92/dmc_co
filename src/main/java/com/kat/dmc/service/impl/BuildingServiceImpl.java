@@ -1,9 +1,14 @@
 package com.kat.dmc.service.impl;
 
 import com.kat.dmc.common.dto.*;
-import com.kat.dmc.common.model.*;
+import com.kat.dmc.common.model.DmcBuildingMaterialEntity;
+import com.kat.dmc.common.model.DmcBuildingProductEntity;
+import com.kat.dmc.common.model.DmcMaterialImportDetailEntity;
 import com.kat.dmc.common.util.DateUtil;
-import com.kat.dmc.repository.interfaces.*;
+import com.kat.dmc.repository.interfaces.BuildingMaterialRepo;
+import com.kat.dmc.repository.interfaces.BuildingProductRepo;
+import com.kat.dmc.repository.interfaces.MaterialImportRepo;
+import com.kat.dmc.repository.interfaces.UtilRepo;
 import com.kat.dmc.service.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -75,6 +80,100 @@ public class BuildingServiceImpl implements BuildingService {
 
     }
 
+    private MaterialImportDto makeImportData(BuildingProductDto buildingProductDto){
+        //Create import paper
+        MaterialImportDto selectedWarehouseImport = new MaterialImportDto();
+        selectedWarehouseImport.setImportDate(DateUtil.getCurrentDayTS());
+        selectedWarehouseImport.setId(utilRepo.findSequenceNextval("dmc_material_import_id_seq"));
+        selectedWarehouseImport.setCode("NK" + String.format("%06d", selectedWarehouseImport.getId()));
+        selectedWarehouseImport.setImportFrom(3);
+        selectedWarehouseImport.setStatus(1);
+        selectedWarehouseImport.setCategoryId(1);
+        selectedWarehouseImport.setWarehouseId(buildingProductDto.getWarehouseId());
+        Long total = 0L;
+        Integer totalQuantity = 0;
+        List<MaterialImportDetailDto> buildingMaterialDtoList = new ArrayList<>();
+        for(BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()){
+            total += buildingMaterialDto.getTotal();
+        }
+
+        MaterialImportDetailDto importDetailDto = new MaterialImportDetailDto();
+        importDetailDto.setStatus(1);
+        importDetailDto.setProductId(buildingProductDto.getProductId());
+        importDetailDto.setProductGroupId(buildingProductDto.getProductGroupId());
+        importDetailDto.setQuantity(1);
+        importDetailDto.setId(utilRepo.findSequenceNextval("dmc_material_import_detail_id_seq"));
+        importDetailDto.setCode("NT" + String.format("%06d", importDetailDto.getId()));
+        importDetailDto.setImportDate(selectedWarehouseImport.getImportDate());
+        importDetailDto.setTotal(total);
+        buildingMaterialDtoList.add(importDetailDto);
+
+        selectedWarehouseImport.setLstDetails(buildingMaterialDtoList);
+        selectedWarehouseImport.setTotal(total);
+        selectedWarehouseImport.setChildQuantity(totalQuantity);
+        return selectedWarehouseImport;
+    }
+
+    private List<MaterialExportDto> makeExportDataList(BuildingProductDto buildingProductDto, List<MaterialOnStockDto> materialOnStock){
+        Integer oldImportId = 0;
+        Integer curentI = 0;
+        List<MaterialExportDto> materialExportDtoList = new ArrayList<>();
+        for(BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()){
+            for(MaterialOnStockDto materialOnStockDto : materialOnStock){
+                if(materialOnStockDto.getMaterialId() == buildingMaterialDto.getMaterialId()
+                        && buildingMaterialDto.getQuantity() > 0 && materialOnStockDto.getMaterialQuantity() > 0){
+                    //Create export detail
+                    MaterialExportDetailDto materialExportDetailDto = new MaterialExportDetailDto();
+                    materialExportDetailDto.setId(utilRepo.findSequenceNextval("dmc_material_export_detail_id_seq"));
+                    materialExportDetailDto.setCode("XT" + String.format("%06d", materialExportDetailDto.getId()));
+                    materialExportDetailDto.setExportDate(buildingProductDto.getCreatedDate());
+                    materialExportDetailDto.setMaterialId(materialOnStockDto.getMaterialId());
+                    materialExportDetailDto.setMaterialGroupId(materialOnStockDto.getMaterialGroupId());
+                    materialExportDetailDto.setPrice(materialOnStockDto.getMaterialPrice());
+                    materialExportDetailDto.setStatus(1);
+                    if(buildingMaterialDto.getQuantity() > materialOnStockDto.getMaterialQuantity()){
+                        materialExportDetailDto.setQuantity(materialOnStockDto.getMaterialQuantity().intValue());
+                        buildingMaterialDto.setQuantity(buildingMaterialDto.getQuantity().intValue() - materialOnStockDto.getMaterialQuantity().intValue());
+                        materialOnStockDto.setMaterialQuantity(0);
+                    }else if (buildingMaterialDto.getQuantity() < materialOnStockDto.getMaterialQuantity()){
+                        materialExportDetailDto.setQuantity(buildingMaterialDto.getQuantity().intValue());
+                        materialOnStockDto.setMaterialQuantity(materialOnStockDto.getMaterialQuantity().intValue() - buildingMaterialDto.getQuantity().intValue());
+                        buildingMaterialDto.setQuantity(0);
+                    }else{
+                        materialExportDetailDto.setQuantity(buildingMaterialDto.getQuantity().intValue());
+                        buildingMaterialDto.setQuantity(0);
+                        materialOnStockDto.setMaterialQuantity(0);
+                    }
+                    materialExportDetailDto.setTotal(materialExportDetailDto.getQuantity() * materialExportDetailDto.getPrice().longValue());
+                    if(oldImportId != materialOnStockDto.getImportId()){
+                        MaterialExportDto selectedWarehouseExport = new MaterialExportDto();
+                        selectedWarehouseExport.setExportDate(DateUtil.getCurrentDayTS());
+                        selectedWarehouseExport.setId(utilRepo.findSequenceNextval("dmc_material_export_id_seq"));
+                        selectedWarehouseExport.setCode("XK" + String.format("%06d", selectedWarehouseExport.getId()));
+                        selectedWarehouseExport.setExportFrom(3);
+                        selectedWarehouseExport.setCategoryId(1);
+                        selectedWarehouseExport.setStatus(1);
+                        curentI++;
+                        oldImportId = materialOnStockDto.getImportId();
+                        List<MaterialExportDetailDto> materialExportDtos = new ArrayList<>();
+                        materialExportDetailDto.setMaterialExportId(selectedWarehouseExport.getId());
+                        materialExportDtos.add(materialExportDetailDto.clone());
+                        selectedWarehouseExport.setLstDetails(materialExportDtos);
+                        materialExportDtoList.add(selectedWarehouseExport);
+                        selectedWarehouseExport.setTotal(materialExportDetailDto.getTotal());
+                    }else{
+                        MaterialExportDto selectedWarehouseExport = materialExportDtoList.get(curentI - 1);
+                        materialExportDetailDto.setMaterialExportId(selectedWarehouseExport.getId());
+                        selectedWarehouseExport.getLstDetails().add(materialExportDetailDto.clone());
+                        selectedWarehouseExport.setTotal(selectedWarehouseExport.getTotal() + materialExportDetailDto.getTotal());
+
+                    }
+                }
+            }
+        }
+        return materialExportDtoList;
+    }
+
     @Override
     public void save(BuildingProductDto buildingProductDto) throws Exception {
         //Check quantity for each material
@@ -88,26 +187,7 @@ public class BuildingServiceImpl implements BuildingService {
                 throw new Exception("Nguyên liệu không đủ để chế tạo sản phẩm ["+buildingMaterialDto.getMaterialName()+"]");
             }
         }
-        //Create import paper
-        MaterialImportDto selectedWarehouseImport = new MaterialImportDto();
-        selectedWarehouseImport.setImportDate(DateUtil.getCurrentDayTS());
-        selectedWarehouseImport.setId(utilRepo.findSequenceNextval("dmc_material_import_id_seq"));
-        selectedWarehouseImport.setCode("NK" + String.format("%06d", selectedWarehouseImport.getId()));
-        selectedWarehouseImport.setImportFrom(3);
-        selectedWarehouseImport.setStatus(0);
-        selectedWarehouseImport.setCategoryId(1);
-        selectedWarehouseImport.setWarehouseId(buildingProductDto.getWarehouseId());
-        Long total = 0L;
-        List<MaterialImportDetailDto> buildingMaterialDtoList = new ArrayList<>();
-        for(BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()){
-            total += buildingMaterialDto.getTotal();
-            buildingMaterialDto.setBuildingImportId(selectedWarehouseImport.getId());
-            buildingMaterialDto.setStatus(0);
-            buildingMaterialDtoList.add(materialBuildingDetail2Dto(buildingMaterialDto));
-        }
-        selectedWarehouseImport.setLstDetails(buildingMaterialDtoList);
-        selectedWarehouseImport.setTotal(total);
-        warehouseImportService.save(selectedWarehouseImport);
+        warehouseImportService.save(makeImportData(buildingProductDto));
         //Create new building product
         DmcBuildingProductEntity buildingProductEntity = modelMapper.map(buildingProductDto, DmcBuildingProductEntity.class);
         buildingProductEntity = buildingProductRepo.save(buildingProductEntity);
@@ -118,64 +198,8 @@ public class BuildingServiceImpl implements BuildingService {
         //Create export material
         //Tìm các nguyên liệu từ kho nào
         List<MaterialOnStockDto> materialOnStock = warehouseService.findAllMaterialOnStock();
-        //TO-DO làm nốt phần tự động tạo phiếu xuất kho
-        Integer oldImportId = 0;
-        Integer curentI = 0;
-        List<MaterialExportDto> materialExportDtoList = new ArrayList<>();
-        for(BuildingMaterialDto buildingMaterialDto : buildingProductDto.getBuildingMaterialDtos()){
-            for(MaterialOnStockDto materialOnStockDto : materialOnStock){
-                if(materialOnStockDto.getMaterialId() == buildingMaterialDto.getMaterialId()
-                        && buildingMaterialDto.getQuantity() > 0 && materialOnStockDto.getMaterialQuantity() > 0){
-                    MaterialExportDto selectedWarehouseExport;
-                    //Create export detail
-                    MaterialExportDetailDto materialExportDetailDto = new MaterialExportDetailDto();
-                    materialExportDetailDto.setId(utilRepo.findSequenceNextval("dmc_material_export_detail_id_seq"));
-                    materialExportDetailDto.setCode("XT" + String.format("%06d", materialExportDetailDto.getId()));
-                    materialExportDetailDto.setExportDate(buildingProductDto.getCreatedDate());
-                    materialExportDetailDto.setMaterialId(materialOnStockDto.getMaterialId());
-                    materialExportDetailDto.setMaterialGroupId(materialOnStockDto.getMaterialGroupId());
-                    materialExportDetailDto.setPrice(materialOnStockDto.getMaterialPrice());
-                    materialExportDetailDto.setStatus(0);
-                    if(buildingMaterialDto.getQuantity() > materialOnStockDto.getMaterialQuantity()){
-                        materialExportDetailDto.setQuantity(materialOnStockDto.getMaterialQuantity());
-                        buildingMaterialDto.setQuantity(buildingMaterialDto.getQuantity() - materialOnStockDto.getMaterialQuantity());
-                        materialOnStockDto.setMaterialQuantity(0);
-                    }else if (buildingMaterialDto.getQuantity() < materialOnStockDto.getMaterialQuantity()){
-                        materialExportDetailDto.setQuantity(buildingMaterialDto.getQuantity());
-                        materialOnStockDto.setMaterialQuantity(materialOnStockDto.getMaterialQuantity() - buildingMaterialDto.getQuantity());
-                        buildingMaterialDto.setQuantity(0);
-                    }else{
-                        materialExportDetailDto.setQuantity(buildingMaterialDto.getQuantity());
-                        buildingMaterialDto.setQuantity(0);
-                        materialOnStockDto.setMaterialQuantity(0);
-                    }
-                    materialExportDetailDto.setTotal(materialExportDetailDto.getQuantity().longValue() * materialExportDetailDto.getPrice().longValue());
-                    if(oldImportId != materialOnStockDto.getImportId()){
-                        selectedWarehouseExport = new MaterialExportDto();
-                        selectedWarehouseExport.setExportDate(DateUtil.getCurrentDayTS());
-                        selectedWarehouseExport.setId(utilRepo.findSequenceNextval("dmc_material_export_id_seq"));
-                        selectedWarehouseExport.setCode("XK" + String.format("%06d", selectedWarehouseExport.getId()));
-                        selectedWarehouseExport.setExportFrom(3);
-                        selectedWarehouseExport.setCategoryId(1);
-                        selectedWarehouseExport.setStatus(0);
-                        curentI++;
-                        oldImportId = materialOnStockDto.getImportId();
-                        List<MaterialExportDetailDto> materialExportDtos = new ArrayList<>();
-                        materialExportDtos.add(materialExportDetailDto);
-                        selectedWarehouseExport.setLstDetails(materialExportDtos);
-                        materialExportDtoList.add(selectedWarehouseExport);
-                        selectedWarehouseExport.setTotal(materialExportDetailDto.getTotal());
-                    }else{
-                        selectedWarehouseExport = materialExportDtoList.get(curentI - 1);
-                        selectedWarehouseExport.getLstDetails().add(materialExportDetailDto);
-                        selectedWarehouseExport.setTotal(selectedWarehouseExport.getTotal() + materialExportDetailDto.getTotal());
-                    }
-                    if(selectedWarehouseExport.getLstDetails() != null && !selectedWarehouseExport.getLstDetails().isEmpty()) {
-                        warehouseExportService.save(selectedWarehouseExport);
-                    }
-                }
-            }
-
+        for(MaterialExportDto materialExportDto : makeExportDataList(buildingProductDto, materialOnStock)){
+            warehouseExportService.save(materialExportDto);
         }
     }
 
@@ -200,19 +224,6 @@ public class BuildingServiceImpl implements BuildingService {
         MaterialImportDetailDto materialImportDetailDto = new MaterialImportDetailDto();
         materialImportDetailDto.setId(buildingMaterialEntity.getId());
         materialImportDetailDto.setMaterialImportId(buildingMaterialEntity.getImportId());
-        materialImportDetailDto.setCode(buildingMaterialEntity.getMaterialCode());
-        materialImportDetailDto.setPrice(buildingMaterialEntity.getPrice());
-        materialImportDetailDto.setQuantity(buildingMaterialEntity.getQuantity());
-        materialImportDetailDto.setTotal(buildingMaterialEntity.getTotal());
-        materialImportDetailDto.setMaterialId(buildingMaterialEntity.getMaterialId());
-        materialImportDetailDto.setImportDate(buildingMaterialEntity.getUsedDate());
-        materialImportDetailDto.setStatus(buildingMaterialEntity.getStatus());
-        return materialImportDetailDto;
-    }
-    private MaterialImportDetailDto materialBuildingDetail2Dto(BuildingMaterialDto buildingMaterialEntity){
-        MaterialImportDetailDto materialImportDetailDto = new MaterialImportDetailDto();
-        materialImportDetailDto.setId(buildingMaterialEntity.getId());
-        materialImportDetailDto.setMaterialImportId(buildingMaterialEntity.getBuildingImportId());
         materialImportDetailDto.setCode(buildingMaterialEntity.getMaterialCode());
         materialImportDetailDto.setPrice(buildingMaterialEntity.getPrice());
         materialImportDetailDto.setQuantity(buildingMaterialEntity.getQuantity());

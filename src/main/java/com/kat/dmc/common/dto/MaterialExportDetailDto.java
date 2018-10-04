@@ -8,7 +8,7 @@ public class MaterialExportDetailDto implements Serializable {
     private int materialExportId;
     private String code;
     private Integer price;
-    private Integer quantity;
+    private int quantity;
     private Long total;
     private Integer materialId;
     private Integer materialGroupId;
@@ -19,7 +19,7 @@ public class MaterialExportDetailDto implements Serializable {
     public MaterialExportDetailDto() {
     }
 
-    public MaterialExportDetailDto(int id, int materialExportId, String code, Integer price, Integer quantity, Long total, Integer materialId, Integer materialGroupId, Date exportDate, Integer createEmpId, int status) {
+    public MaterialExportDetailDto(int id, int materialExportId, String code, Integer price, int quantity, Long total, Integer materialId, Integer materialGroupId, Date exportDate, Integer createEmpId, int status) {
         this.id = id;
         this.materialExportId = materialExportId;
         this.code = code;
@@ -70,11 +70,11 @@ public class MaterialExportDetailDto implements Serializable {
         this.price = price;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

@@ -85,7 +85,8 @@ public class MaterialRepoImpl implements MaterialRepo {
         try {
             return query.getSingleResult();
         }catch (NoResultException ex){
-            throw new RuntimeException("Single return empty result !");
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
         }
     }
 
@@ -113,7 +114,8 @@ public class MaterialRepoImpl implements MaterialRepo {
         try {
             return query.getSingleResult();
         }catch (NoResultException ex){
-            throw new RuntimeException("Single return empty result !");
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
         }
     }
 

@@ -178,8 +178,14 @@
                                                  sortBy="#{rows.processDate}"
                                                  paginator="true"
                                                  paginatorPosition="bottom"
-                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                                  rowsPerPageTemplate="5,10,20, 50">
+                                        <f:facet name="{Exporters}">
+                                            <h:commandLink>
+                                                <img src="#{request.contextPath}/img/icon/ico-excel.png" height="16"/>
+                                                <p:dataExporter type="xls" target="tblList" fileName="ds_kiem_kho" />
+                                            </h:commandLink>
+                                        </f:facet>
                                         <p:column headerText="STT" styleClass="col-tbl-idx">
                                             <h:outputText value="#{index+1}"/>
                                         </p:column>
@@ -288,8 +294,14 @@
                                                  sortBy="#{rows.processDate}"
                                                  paginator="true"
                                                  paginatorPosition="bottom"
-                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                                  rowsPerPageTemplate="5,10,20, 50">
+                                        <f:facet name="{Exporters}">
+                                            <h:commandLink>
+                                                <img src="#{request.contextPath}/img/icon/ico-excel.png" height="16"/>
+                                                <p:dataExporter type="xls" target="tblList" fileName="ds_kiem_kho_nhap" />
+                                            </h:commandLink>
+                                        </f:facet>
                                         <p:column headerText="STT" styleClass="col-tbl-idx">
                                             <h:outputText value="#{index+1}"/>
                                         </p:column>
@@ -398,8 +410,14 @@
                                                  sortBy="#{rows.processDate}"
                                                  paginator="true"
                                                  paginatorPosition="bottom"
-                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                                  rowsPerPageTemplate="5,10,20, 50">
+                                        <f:facet name="{Exporters}">
+                                            <h:commandLink>
+                                                <img src="#{request.contextPath}/img/icon/ico-excel.png" height="16"/>
+                                                <p:dataExporter type="xls" target="tblList" fileName="ds_kiem_kho_xuat" />
+                                            </h:commandLink>
+                                        </f:facet>
                                         <p:column headerText="STT" styleClass="col-tbl-idx">
                                             <h:outputText value="#{index+1}"/>
                                         </p:column>

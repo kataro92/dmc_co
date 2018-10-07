@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("warehouseImport")
 @ViewScoped
@@ -167,6 +168,7 @@ public class WarehouseImportController implements Serializable {
             }
             selectedWarehouseImport.getLstDetails().add(materialImportDto);
         }catch (NoResultException ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
         }
     }
 
@@ -315,6 +317,7 @@ public class WarehouseImportController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
@@ -346,6 +349,7 @@ public class WarehouseImportController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

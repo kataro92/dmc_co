@@ -32,6 +32,8 @@ INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (55, 'Kiểm kho', 50, 'warehouse_check', 'page', 'default', 5);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (58, 'Tạo thành phẩm từ vật tư', 9, 'create_product', 'page', 'default', 1);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (59, 'Cấu hình vật tư cho thành phẩm', 9, 'material_of_product', 'page', 'default', 2);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (60, 'Danh sách thiết bị', 11, 'property_mgr', 'page', 'default', 1);
+INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (61, 'Giá trị vật tư tiêu hao', 11, 'property_value', 'page', 'default', 2);
 INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (1, 1, 1);
 INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (2, 2, 1);
 INSERT INTO public.dmc_user_object (user_object_id, object_id, user_id) VALUES (3, 3, 1);

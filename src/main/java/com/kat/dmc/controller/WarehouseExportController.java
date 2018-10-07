@@ -288,6 +288,7 @@ public class WarehouseExportController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

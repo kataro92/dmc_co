@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("materialGroupMgr")
 @ViewScoped
@@ -93,6 +94,7 @@ public class MaterialGroupMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
@@ -124,6 +126,7 @@ public class MaterialGroupMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

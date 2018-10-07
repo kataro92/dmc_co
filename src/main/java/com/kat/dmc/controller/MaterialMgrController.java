@@ -25,6 +25,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("materialMgr")
 @ViewScoped
@@ -84,12 +85,29 @@ public class MaterialMgrController implements Serializable {
                 lstFileredMaterialSubgroup.add(materialSubgroupDto);
             }
         }
+        selectedMaterial.setFullCode(makeFullcode(selectedMaterial));
     }
 
     public void selectMaterial(SelectEvent selectEvent){
         tempMaterial = (MaterialDto) selectEvent.getObject();
         selectedMaterial = tempMaterial.clone();
         selectMaterialGroup();
+    }
+
+    public String makeFullcode(MaterialDto materialDto){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(MaterialGroupDto materialGroupDto : lstMaterialGroup){
+            if(String.valueOf(materialGroupDto.getId()).equals(materialDto.getMaterialGroupCode())){
+                stringBuilder.append(materialGroupDto.getCode() + "_");
+            }
+        }
+        for(MaterialSubgroupDto materialSubgroupDto : lstMaterialSubgroup){
+            if(String.valueOf(materialSubgroupDto.getId()).equals(materialDto.getMaterialSubgroupCode())){
+                stringBuilder.append(materialSubgroupDto.getCode() + "_");
+            }
+        }
+        stringBuilder.append(materialDto.getCode());
+        return stringBuilder.toString();
     }
 
     public void actAdd(){
@@ -105,6 +123,7 @@ public class MaterialMgrController implements Serializable {
         selectedMaterial = selectedMaterial.clone();
         selectedMaterial.setId(utilRepo.findSequenceNextval("material__id_seq"));
         selectedMaterial.setCode("VT" + String.format("%06d", selectedMaterial.getId()));
+        selectedMaterial.setFullCode(makeFullcode(selectedMaterial));
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actEdit(){
@@ -122,6 +141,7 @@ public class MaterialMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
@@ -133,6 +153,7 @@ public class MaterialMgrController implements Serializable {
     }
     public void actAccept(){
         try {
+            selectedMaterial.setFullCode(makeFullcode(selectedMaterial));
             materialService.save(selectedMaterial);
             tempMaterial = selectedMaterial;
             if (getCurrentAct() == ControllerAction.State.ADD || getCurrentAct() == ControllerAction.State.COPY) {
@@ -153,6 +174,7 @@ public class MaterialMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

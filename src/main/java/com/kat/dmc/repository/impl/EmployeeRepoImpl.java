@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
@@ -74,7 +75,8 @@ public class EmployeeRepoImpl implements EmployeeRepo {
         try {
             return query.getSingleResult();
         }catch (NoResultException ex){
-            throw new RuntimeException("Single return empty result !");
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
         }
     }
 
@@ -84,7 +86,7 @@ public class EmployeeRepoImpl implements EmployeeRepo {
         for(Integer id : lstEmpIds){
             lstEmp += ","+id;
         }
-        Query query = entityManager.createNativeQuery("DELETE FROM employee WHERE dept_id = ?1 AND _id NOT IN (" +
+        Query query = entityManager.createNativeQuery("DELETE FROM dmc_employee WHERE dept_id = ?1 AND id NOT IN (" +
                 lstEmp +
                 ")")
                 .setParameter("1", deptId);

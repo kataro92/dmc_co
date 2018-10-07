@@ -106,7 +106,7 @@
                              rows="20"
                              paginator="true"
                              paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                              rowsPerPageTemplate="5,10,20, 50">
                     <p:column sortBy="#{rows.materialCode}" headerText="Mã" style="width: 100px">
                         <h:outputText value="#{rows.materialCode}"/>
@@ -175,7 +175,7 @@
                              rows="20"
                              paginator="true"
                              paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                              rowsPerPageTemplate="5,10,20, 50">
                     <p:column headerText=" " style="width: 36px; text-align: center;">
                         <p:commandLink update=":main:pnlDetail" actionListener="#{productCreator.actAddMaterial(index)}">
@@ -280,7 +280,7 @@
                                          rows="20"
                                          paginator="true"
                                          paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                          rowsPerPageTemplate="5,10,20, 50">
                                 <p:column headerText="STT" style="width: 60px; text-align: center;">
                                     <h:outputText value="#{index+1}"/>

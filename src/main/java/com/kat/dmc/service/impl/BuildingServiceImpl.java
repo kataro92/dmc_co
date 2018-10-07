@@ -106,6 +106,7 @@ public class BuildingServiceImpl implements BuildingService {
         importDetailDto.setCode("NT" + String.format("%06d", importDetailDto.getId()));
         importDetailDto.setImportDate(selectedWarehouseImport.getImportDate());
         importDetailDto.setTotal(total);
+        importDetailDto.setPrice(total.intValue());
         buildingMaterialDtoList.add(importDetailDto);
 
         selectedWarehouseImport.setLstDetails(buildingMaterialDtoList);
@@ -151,7 +152,8 @@ public class BuildingServiceImpl implements BuildingService {
                         selectedWarehouseExport.setId(utilRepo.findSequenceNextval("dmc_material_export_id_seq"));
                         selectedWarehouseExport.setCode("XK" + String.format("%06d", selectedWarehouseExport.getId()));
                         selectedWarehouseExport.setExportFrom(3);
-                        selectedWarehouseExport.setCategoryId(1);
+                        selectedWarehouseExport.setExportFromId(buildingProductDto.getWarehouseId());
+                        selectedWarehouseExport.setCategoryId(0);
                         selectedWarehouseExport.setStatus(1);
                         curentI++;
                         oldImportId = materialOnStockDto.getImportId();

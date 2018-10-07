@@ -17,6 +17,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 public class ProductSubgroupRepoImpl implements ProductSubgroupRepo {
@@ -73,7 +74,8 @@ public class ProductSubgroupRepoImpl implements ProductSubgroupRepo {
         try {
             return query.getSingleResult();
         }catch (NoResultException ex){
-            throw new RuntimeException("Single return empty result !");
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
         }
     }
 

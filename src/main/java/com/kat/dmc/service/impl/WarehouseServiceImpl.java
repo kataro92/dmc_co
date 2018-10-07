@@ -105,10 +105,29 @@ public class WarehouseServiceImpl implements WarehouseService {
     public List<WarehouseStatusDto> findAllBySearchReq(WarehouseSearchReq sumOnStockReq) {
         Integer idx = 0;
         List<WarehouseStatusDto> list = new ArrayList<>();
-        for (DmcWarehouseStatus e : warehouseRepo.findAllBySearchReq(sumOnStockReq)) {
-            WarehouseStatusDto warehouseStatusDto = statusEntity2Dto(e);
+
+        List<WarehouseStatusDto> importList = findImportBySearchReq(sumOnStockReq);
+        List<WarehouseStatusDto> exportList = findExportBySearchReq(sumOnStockReq);
+        for(WarehouseStatusDto warehouseStatusDto : importList){
+            for(WarehouseStatusDto exWarehouseStatusDto : exportList){
+                if(exWarehouseStatusDto.getMaterialId() == warehouseStatusDto.getMaterialId()){
+                    warehouseStatusDto.setQuantity(warehouseStatusDto.getQuantity() + exWarehouseStatusDto.getQuantity());
+                }
+            }
             warehouseStatusDto.setIdx(idx++);
-            list.add(warehouseStatusDto.clone());
+            list.add(warehouseStatusDto);
+        }
+        for(WarehouseStatusDto exWarehouseStatusDto : exportList){
+            boolean meet = false;
+            for(WarehouseStatusDto imWarehouseStatusDto : importList){
+                if(imWarehouseStatusDto.getMaterialId() == exWarehouseStatusDto.getMaterialId()){
+                    meet = true;
+                }
+            }
+            if(!meet){
+                exWarehouseStatusDto.setIdx(idx++);
+                list.add(exWarehouseStatusDto);
+            }
         }
         return list;
     }

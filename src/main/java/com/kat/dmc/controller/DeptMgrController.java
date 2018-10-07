@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("deptMgr")
 @ViewScoped
@@ -202,6 +203,7 @@ public class DeptMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
@@ -225,11 +227,15 @@ public class DeptMgrController implements Serializable {
     public void actAcceptEmployee(){
         boolean meet = false;
         int idx = -1;
-        for (int i = 0 ; i < selectedDept.getLstEmployees().size(); i++) {
-            if(selectedDept.getLstEmployees().get(i).getId() == selectedEmployee.getId()){
-                meet = true;
-                idx = i;
+        if(selectedDept.getLstEmployees() != null) {
+            for (int i = 0; i < selectedDept.getLstEmployees().size(); i++) {
+                if (selectedDept.getLstEmployees().get(i).getId() == selectedEmployee.getId()) {
+                    meet = true;
+                    idx = i;
+                }
             }
+        }else{
+            selectedDept.setLstEmployees(new ArrayList<>());
         }
         if(!meet){
             selectedDept.getLstEmployees().add(selectedEmployee.clone());
@@ -267,6 +273,7 @@ public class DeptMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

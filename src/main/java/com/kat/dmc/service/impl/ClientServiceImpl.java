@@ -28,7 +28,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void save(ClientDto clientDto) {
         DmcClientEntity savingObj = clientRepo.findById(clientDto.getId());
-        modelMapper.map(clientDto, savingObj);
+        if(savingObj != null) {
+            modelMapper.map(clientDto, savingObj);
+        }else{
+            savingObj = modelMapper.map(clientDto, DmcClientEntity.class);
+        }
         clientRepo.save(savingObj);
     }
 

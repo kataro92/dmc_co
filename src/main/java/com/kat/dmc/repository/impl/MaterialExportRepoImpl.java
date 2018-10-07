@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.kat.dmc.common.constant.CommonConst.Code.DEFAULT_ACTIVE;
 
@@ -75,7 +76,8 @@ public class MaterialExportRepoImpl implements MaterialExportRepo {
         try {
             return query.getSingleResult();
         }catch (NoResultException ex){
-            throw new RuntimeException("Single return empty result !");
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
         }
     }
 

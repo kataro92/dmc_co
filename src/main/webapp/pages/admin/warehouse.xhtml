@@ -36,10 +36,16 @@
                              rows="20"
                              paginator="true"
                              paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                              rowsPerPageTemplate="5,10,20, 50">
                     <p:ajax event="rowSelect" listener="#{warehouseMgr.selectWarehouse}"
                             update=":main:pnlDetail" />
+                    <f:facet name="{Exporters}">
+                        <h:commandLink>
+                            <img src="#{request.contextPath}/img/icon/ico-excel.png" height="16"/>
+                            <p:dataExporter type="xls" target="tblList" fileName="ds_kho" />
+                        </h:commandLink>
+                    </f:facet>
                     <p:column headerText="STT" style="width: 60px; text-align: center;">
                         <h:outputText value="#{index+1}"/>
                     </p:column>
@@ -137,7 +143,7 @@
                                          value="#{warehouseMgr.selectedWarehouse.lstImport}"
                                          paginator="true"
                                          paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                          rowsPerPageTemplate="5,10,20, 50">
                                 <p:column headerText="STT" style="width: 60px; text-align: center;">
                                     <h:outputText value="#{index+1}"/>
@@ -175,7 +181,7 @@
                                          value="#{warehouseMgr.selectedWarehouse.lstExport}"
                                          paginator="true"
                                          paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                          rowsPerPageTemplate="5,10,20, 50">
                                 <p:column headerText="STT" style="width: 60px; text-align: center;">
                                     <h:outputText value="#{index+1}"/>
@@ -213,7 +219,7 @@
                                          value="#{warehouseMgr.selectedWarehouse.lstTransfer}"
                                          paginator="true"
                                          paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                          rowsPerPageTemplate="5,10,20, 50">
                                 <p:column headerText="STT" style="width: 60px; text-align: center;">
                                     <h:outputText value="#{index+1}"/>
@@ -251,7 +257,7 @@
                                          value="#{warehouseMgr.selectedWarehouse.lstDismiss}"
                                          paginator="true"
                                          paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                          rowsPerPageTemplate="5,10,20, 50">
                                 <p:column headerText="STT" style="width: 60px; text-align: center;">
                                     <h:outputText value="#{index+1}"/>

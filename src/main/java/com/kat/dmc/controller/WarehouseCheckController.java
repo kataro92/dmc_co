@@ -44,7 +44,7 @@ public class WarehouseCheckController implements Serializable {
     private WarehouseSearchReq sumOnStockReq;//Hàng trong kho
     private WarehouseSearchReq sumImportReq;//Hàng nhập
     private WarehouseSearchReq sumExportReq;//Hàng xuất
-    private WarehouseSearchReq sumTempImpExpReq;//Hàng tạm nhập tá xuất
+    private WarehouseSearchReq sumTempImpExpReq;//Hàng tạm nhập tái xuất
 
     private List<WarehouseStatusDto> sumOnStockRes;
     private List<WarehouseStatusDto> sumImportRes;
@@ -180,13 +180,15 @@ public class WarehouseCheckController implements Serializable {
     }
 
     private Long sumPrice(List<WarehouseStatusDto> sumRes, String processDay){
-        Long price = 0L;
+        Long totalPrice = 0L;
         for(WarehouseStatusDto statusDto : sumRes){
             if(statusDto.getProcessDate().equals(processDay)) {
-                price += statusDto.getPrice();
+                if(statusDto.getPrice() != null) {
+                    totalPrice += statusDto.getPrice() * statusDto.getQuantity();
+                }
             }
         }
-        return price;
+        return totalPrice;
     }
 
     public void exportExcel(){

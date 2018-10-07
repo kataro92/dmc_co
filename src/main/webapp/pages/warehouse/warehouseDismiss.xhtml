@@ -36,7 +36,7 @@
                              rows="20"
                              paginator="true"
                              paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                              rowsPerPageTemplate="5,10,20, 50">
                     <p:ajax event="rowSelect" listener="#{warehouseDismiss.selectWarehouseDismiss}"
                             update=":main:pnlDetail" />
@@ -224,7 +224,7 @@
                                  value="#{warehouseDismiss.selectedWarehouseDismiss.lstDetails}"
                                  paginator="true"
                                  paginatorPosition="bottom"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                  rowsPerPageTemplate="5,10,20, 50">
                         <p:column headerText="STT" style="width: 60px; text-align: center;">
                             <h:outputText value="#{index+1}"/>

@@ -22,6 +22,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("productMgr")
 @ViewScoped
@@ -83,6 +84,7 @@ public class ProductMgrController implements Serializable {
                 lstFileredProductSubgroup.add(productSubgroupDto);
             }
         }
+        selectedProduct.setFullCode(makeFullcode(selectedProduct));
     }
 
     public void selectProduct(SelectEvent selectEvent){
@@ -91,6 +93,22 @@ public class ProductMgrController implements Serializable {
         selectProductGroup();
     }
 
+    public String makeFullcode(ProductDto productDto){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(ProductGroupDto productGroupDto : lstProductGroup){
+            if(String.valueOf(productGroupDto.getId()).equals(productDto.getProductGroupCode())){
+                stringBuilder.append(productGroupDto.getCode() + "_");
+            }
+        }
+        for(ProductSubgroupDto productSubgroupDto : lstProductSubgroup){
+            if(String.valueOf(productSubgroupDto.getId()).equals(productDto.getProductSubgroupCode())){
+                stringBuilder.append(productSubgroupDto.getCode() + "_");
+            }
+        }
+        stringBuilder.append(productDto.getCode());
+        return stringBuilder.toString();
+    }
+    
     public void actAdd(){
         setCurrentAct(ControllerAction.State.ADD);
         selectedProduct = new ProductDto();
@@ -104,6 +122,7 @@ public class ProductMgrController implements Serializable {
         selectedProduct = selectedProduct.clone();
         selectedProduct.setId(utilRepo.findSequenceNextval("product__id_seq"));
         selectedProduct.setCode("VT" + String.format("%06d", selectedProduct.getId()));
+        selectedProduct.setFullCode(makeFullcode(selectedProduct));
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
     public void actEdit(){
@@ -120,6 +139,7 @@ public class ProductMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
@@ -131,6 +151,7 @@ public class ProductMgrController implements Serializable {
     }
     public void actAccept(){
         try {
+            selectedProduct.setFullCode(makeFullcode(selectedProduct));
             productService.save(selectedProduct);
             tempProduct = selectedProduct;
             if (getCurrentAct() == ControllerAction.State.ADD || getCurrentAct() == ControllerAction.State.COPY) {
@@ -151,6 +172,7 @@ public class ProductMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
         }catch (Exception ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }

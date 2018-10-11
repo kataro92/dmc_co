@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{clientMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{clientMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{clientMgr.disableAdd}" value="Thêm"
                                    actionListener="#{clientMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{clientMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{clientMgr.disableCopy}" value="Chép"
                                    actionListener="#{clientMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{clientMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{clientMgr.disableEdit}" value="Sửa"
                                    actionListener="#{clientMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{clientMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{clientMgr.disableDelete}" value="Xoá"
                                    actionListener="#{clientMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -64,11 +64,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{clientMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí khách hàng" rendered="#{clientMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{clientMgr.currentAct == enumBox.getState('ADD') || clientMgr.currentAct == enumBox.getState('COPY') || clientMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{clientMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{clientMgr.currentAct == enumBox.getState('ADD') || clientMgr.currentAct == enumBox.getState('COPY') || clientMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{clientMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
@@ -229,9 +229,9 @@
                         #{employee.deptName}
                     </p:column>
                     <p:column headerText="Chọn" style="width: 57px; text-align: center;">
-                        <p:commandLink actionListener="#{clientMgr.actChooseEmployee(employee.id)}" update="main:pnlDetail">
+                        <p:commandButton actionListener="#{clientMgr.actChooseEmployee(employee.id)}" update="main:pnlDetail">
                             <img height="16" width="20" alt="Chọn" src="#{request.contextPath}/img/icon/ico-click.png"/>
-                        </p:commandLink>
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:dialog>

@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{productSubgroupMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{productSubgroupMgr.disableAdd}" value="Thêm"
                                    actionListener="#{productSubgroupMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{productSubgroupMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{productSubgroupMgr.disableCopy}" value="Chép"
                                    actionListener="#{productSubgroupMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{productSubgroupMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{productSubgroupMgr.disableEdit}" value="Sửa"
                                    actionListener="#{productSubgroupMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{productSubgroupMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{productSubgroupMgr.disableDelete}" value="Xoá"
                                    actionListener="#{productSubgroupMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -64,11 +64,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí loại nhóm thành phẩm" rendered="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{productSubgroupMgr.currentAct == enumBox.getState('ADD') || productSubgroupMgr.currentAct == enumBox.getState('COPY') || productSubgroupMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{productSubgroupMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{productSubgroupMgr.currentAct == enumBox.getState('ADD') || productSubgroupMgr.currentAct == enumBox.getState('COPY') || productSubgroupMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{productSubgroupMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
@@ -125,7 +125,7 @@
                 </p:panelGrid>
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Danh sách thành phẩm" rendered="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{productSubgroupMgr.currentAct == enumBox.getState('ADD') || productSubgroupMgr.currentAct == enumBox.getState('COPY') || productSubgroupMgr.currentAct == enumBox.getState('EDIT')}"
                                    value="Thêm"
                                    update=":main" />

@@ -49,10 +49,10 @@ footer {
 .ui-datatable .ui-paginator, .ui-datatable .ui-paginator {
     padding: 0px;
 }
-.nav-link, .navbar {
-    padding-top: 0rem;
-    padding-bottom: 0rem;
-}
+/*.nav-link, .navbar {*/
+    /*padding-top: 0rem;*/
+    /*padding-bottom: 0rem;*/
+/*}*/
 .btn.btn-sm {
     padding: .2rem .4rem;
     font-size: .9rem;

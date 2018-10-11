@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{materialMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{materialMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{materialMgr.disableAdd}" value="Thêm"
                                    actionListener="#{materialMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{materialMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{materialMgr.disableCopy}" value="Chép"
                                    actionListener="#{materialMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{materialMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{materialMgr.disableEdit}" value="Sửa"
                                    actionListener="#{materialMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{materialMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{materialMgr.disableDelete}" value="Xoá"
                                    actionListener="#{materialMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -64,11 +64,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{materialMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí vật tư" rendered="#{materialMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{materialMgr.currentAct == enumBox.getState('ADD') || materialMgr.currentAct == enumBox.getState('COPY') || materialMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{materialMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{materialMgr.currentAct == enumBox.getState('ADD') || materialMgr.currentAct == enumBox.getState('COPY') || materialMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{materialMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
@@ -174,15 +174,15 @@
                         </p:column>
                         <p:column colspan="3">
                             <p:barcode id="txtBarcodeId" value="01234567895" type="upca" format="png"/>
-                            <p:commandLink title="In phiếu dán mã barcode" styleClass="btn btn-sm btn-white">
+                            <p:commandButton title="In phiếu dán mã barcode" styleClass="btn btn-sm btn-white">
                                 <img height="32" width="32" alt="Chọn" src="#{request.contextPath}/img/icon/ico-print.png"/>
-                            </p:commandLink>
+                            </p:commandButton>
                         </p:column>
                         <p:column colspan="2">
                             <p:barcode id="txtBarcodeQr" value="8936036023633" type="qr"/>
-                            <p:commandLink title="In phiếu dán mã QR" styleClass="btn btn-sm btn-white">
+                            <p:commandButton title="In phiếu dán mã QR" styleClass="btn btn-sm btn-white">
                                 <img height="32" width="32" alt="Chọn" src="#{request.contextPath}/img/icon/ico-print.png"/>
-                            </p:commandLink>
+                            </p:commandButton>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

@@ -49,6 +49,7 @@ public class KatRewriteConfiguration extends HttpConfigurationProvider {
                 .addRule(Join.path("/create_product").to("/pages/product/createProduct.xhtml"))
                 .addRule(Join.path("/material_of_product").to("/pages/warehouse/configProductMaterial.xhtml"))
                 .addRule(Join.path("/property_mgr").to("/pages/admin/property.xhtml"))
+                .addRule(Join.path("/info").to("/pages/admin/info.xhtml"))
 //                .addRule(Join.path("/report").to("/pages/tools/report.xhtml"))
                 ;
     }

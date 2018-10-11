@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{warehouseMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{warehouseMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{warehouseMgr.disableAdd}" value="Thêm"
                                    actionListener="#{warehouseMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{warehouseMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{warehouseMgr.disableCopy}" value="Chép"
                                    actionListener="#{warehouseMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{warehouseMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{warehouseMgr.disableEdit}" value="Sửa"
                                    actionListener="#{warehouseMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{warehouseMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{warehouseMgr.disableDelete}" value="Xoá"
                                    actionListener="#{warehouseMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -64,11 +64,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{warehouseMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí kho" rendered="#{warehouseMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{warehouseMgr.currentAct == enumBox.getState('ADD') || warehouseMgr.currentAct == enumBox.getState('COPY') || warehouseMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{warehouseMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{warehouseMgr.currentAct == enumBox.getState('ADD') || warehouseMgr.currentAct == enumBox.getState('COPY') || warehouseMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{warehouseMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
@@ -165,9 +165,9 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width: 37px">
-                                    <p:commandLink actionListener="#{warehouseMgr.viewImportDetail(index)}">
+                                    <p:commandButton actionListener="#{warehouseMgr.viewImportDetail(index)}">
                                         <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
-                                    </p:commandLink>
+                                    </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </div>
@@ -203,9 +203,9 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width: 37px">
-                                    <p:commandLink actionListener="#{warehouseMgr.viewExportDetail(index)}">
+                                    <p:commandButton actionListener="#{warehouseMgr.viewExportDetail(index)}">
                                         <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
-                                    </p:commandLink>
+                                    </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </div>
@@ -241,9 +241,9 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width: 37px">
-                                    <p:commandLink actionListener="#{warehouseMgr.viewTransferDetail(index)}">
+                                    <p:commandButton actionListener="#{warehouseMgr.viewTransferDetail(index)}">
                                         <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
-                                    </p:commandLink>
+                                    </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </div>
@@ -279,9 +279,9 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width: 37px">
-                                    <p:commandLink actionListener="#{warehouseMgr.viewDismissDetail(index)}">
+                                    <p:commandButton actionListener="#{warehouseMgr.viewDismissDetail(index)}">
                                         <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
-                                    </p:commandLink>
+                                    </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </div>

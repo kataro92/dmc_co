@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:body>
+    <ui:composition template="../../layouts/layout_home.xhtml">
+        <ui:define name="content">
+            <p:growl keepAlive="3000" id="messages" showDetail="true" closable="true" escape="false">
+                <p:autoUpdate />
+            </p:growl>
+            <p:panelGrid styleClass="ui-panelgrid-blank" rendered="#{deptMgr.selectedEmployee != null}">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Mã số thuế"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtMst" value="#{info.myCompany.mst}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Tên công ty"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtName" value="#{info.myCompany.name}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Người đại diện"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtRepresent" value="#{info.myCompany.represent}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Địa chỉ"/>
+                    </p:column>
+                    <p:column colspan="5">
+                        <p:inputText id="txtAddress" value="#{info.myCompany.address}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Ngày bắt đầu thành lập"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtStartDate" value="#{info.myCompany.startDate}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Ngày bắt đầu hoạt động"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtWorkingDate" value="#{info.myCompany.workingDate}"/>
+                    </p:column>
+                    <p:column colspan="2">
+
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Điện thoại liên hệ"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtPhone" value="#{info.myCompany.phone}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Số máy FAX"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtFax" value="#{info.myCompany.fax}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="Email"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="txtEmail" value="#{info.myCompany.email}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:commandButton styleClass="margin-auto" value="Lưu thông tin"/>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

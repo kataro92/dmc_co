@@ -16,21 +16,21 @@
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4"
                            rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{deptMgr.disableAdd}"
+                    <p:commandButton id="btnAdd" disabled="#{deptMgr.disableAdd}"
                                    actionListener="#{deptMgr.actAdd}"
-                                   styleClass="btn btn-blue btn-md" value="Thêm"
+                                   value="Thêm"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{deptMgr.disableCopy}"
+                    <p:commandButton id="btnCopy" disabled="#{deptMgr.disableCopy}"
                                    actionListener="#{deptMgr.actCopy}"
-                                   styleClass="btn btn-blue btn-md" value="Chép"
+                                   value="Chép"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{deptMgr.disableEdit}"
+                    <p:commandButton id="btnEdit" disabled="#{deptMgr.disableEdit}"
                                    actionListener="#{deptMgr.actEdit}"
-                                   styleClass="btn btn-blue btn-md" value="Sửa"
+                                   value="Sửa"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{deptMgr.disableDelete}"
+                    <p:commandButton id="btnDelete" disabled="#{deptMgr.disableDelete}"
                                    actionListener="#{deptMgr.actDelete}"
-                                   styleClass="btn btn-blue btn-md" value="Xoá"
+                                   value="Xoá"
                                    update=":main" />
                 </div>
                 <p:treeTable value="#{deptMgr.root}" tableStyleClass="card-body" var="dept" selectionMode="single">
@@ -50,11 +50,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{deptMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí phòng ban" rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{deptMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{deptMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
@@ -117,7 +117,7 @@
                 </p:panelGrid>
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Danh sách nhân viên" rendered="#{deptMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{deptMgr.currentAct == enumBox.getState('ADD') || deptMgr.currentAct == enumBox.getState('COPY') || deptMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{deptMgr.actAddEmployee()}" value="Thêm"
                                    update=":main:pnlAddEmployee" />
@@ -152,9 +152,9 @@
                         <h:outputText value="#{common.getCommon('EMP_STATUS', rows.status)}" />
                     </p:column>
                     <p:column headerText=" " style="width: 37px">
-                        <p:commandLink actionListener="#{deptMgr.actViewEmployee(index)}">
+                        <p:commandButton actionListener="#{deptMgr.actViewEmployee(index)}">
                             <img height="16" alt="Xem chi tiết" src="#{request.contextPath}/img/icon/ico-detail.png"/>
-                        </p:commandLink>
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
                 <div class="card-footer">
@@ -244,7 +244,7 @@
                         </p:column>
                         <p:column>
                             <p:calendar id="txtIdentityDate" disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
-                                        value="#{deptMgr.selectedEmployee.identityCardIssuedDate}" showOn="button"/>
+                                        value="#{deptMgr.selectedEmployee.identityCardIssuedDate}" showOn="button" pattern="dd/MM/yyyy"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtIdentityProvided" value="Nơi cấp"/>
@@ -296,15 +296,15 @@
                             <div class="card-body">
                                 <h6><a href="#{request.contextPath}/api/downloadDocument/#{document.code}">#{document.name}</a></h6>
                                 <span class="card-text">#{document.code}</span>
-                                <p:commandLink rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actDeleteDocument(status.index)}" value="Xoá" styleClass="btn btn-danger btn-sm float-right"/>
+                                <p:commandButton rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actDeleteDocument(status.index)}" value="Xoá" styleClass="btn btn-danger btn-sm float-right"/>
                             </div>
                         </div>
                     </p:repeat>
                 </p:outputPanel>
                 <!-- Modal footer -->
                 <p:outputPanel class="modal-footer">
-                    <p:commandLink rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actAcceptEmployee()}" styleClass="btn btn-primary" value="Đồng ý"/>
-                    <p:commandLink rendered="#{deptMgr.currentEmployeeAct == enumBox.getState('EDIT')}" actionListener="#{deptMgr.actDeleteEmployee()}" styleClass="btn btn-danger" value="Xoá"/>
+                    <p:commandButton rendered="#{deptMgr.currentAct != enumBox.getState('VIEW')}" actionListener="#{deptMgr.actAcceptEmployee()}" styleClass="btn btn-primary" value="Đồng ý"/>
+                    <p:commandButton rendered="#{deptMgr.currentEmployeeAct == enumBox.getState('EDIT')}" actionListener="#{deptMgr.actDeleteEmployee()}" styleClass="btn btn-danger" value="Xoá"/>
                     <button onclick="PF('pnlAddEmployee').hide()" type="button" class="btn btn-blue-grey">Đóng</button>
                 </p:outputPanel>
             </p:dialog>

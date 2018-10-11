@@ -1,10 +1,7 @@
 --Insert default data
 INSERT INTO public.dmc_user (id, code, extra_props, name, password, permission, permissions, status, username) VALUES (1, 'admin', '', 'Admin', '3f75336dfc774c69627d62afd4469862', 1, null, 0, 'admin');
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (1, 'Trang chủ', 0, 'main', 'page', 'default', 0);
-INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (8, 'Kế toán', 0, null, 'page_group', 'default', 7);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (4, 'Vật tư', 0, null, 'page_group', 'default', 3);
-INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (10, 'Kinh doanh', 0, null, 'page_group', 'default', 9);
-INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (5, 'Kho vật tư', 0, null, 'page_group', 'default', 4);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (6, 'Thành phẩm', 0, null, 'page_group', 'default', 5);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (13, 'Thông tin đăng nhập', 3, 'user_mgr', 'page', 'default', 17);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (9, 'Sản xuất', 0, null, 'page_group', 'default', 8);
@@ -79,6 +76,17 @@ INSERT INTO public.dmc_product_group (id, code, def_code, name, status) VALUES (
 INSERT INTO public.dmc_product_subgroup (id, code, def_code, name, product_group_code, status) VALUES (102, 'NS000102', null, 'Máy biến thế trên 1Kv', '102', 1);
 INSERT INTO public.dmc_product (id, code, is_code_fixed, def_code, full_code, name, producer, product_group_code, product_subgroup_code, short_description, sort_name, status, unit) VALUES (103, 'VT000103', false, null, null, 'Máy biến thế hiệu con Đại bàng 5Kv', 'DMC Corp', '102', '102', '', null, 1, 'chiếc');
 
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (1, 'dmco', 'mst', '0105788349');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (2, 'dmco', 'address', 'Số 4, ngách 342/101, đường Khương Đình, Phường Hạ Đình, Quận Thanh Xuân, Thành phố Hà Nội');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (3, 'dmco', 'name', 'DANG MAI CO., LTD');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (4, 'dmco', 'represent', 'Đặng Hồng Quân');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (5, 'dmco', 'startDate', '11/02/2012');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (6, 'dmco', 'workingDate', '10/02/2012');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (7, 'dmco', 'phone', '090801015');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (8, 'dmco', 'fax', '0485869672');
+INSERT INTO public.dmc_config (id, ext, key, value) VALUES (9, 'dmco', 'email', 'kataro92@gmail.com');
+
+
 --Create squence
 CREATE SEQUENCE IF NOT EXISTS client__id_seq START 101;
 CREATE SEQUENCE IF NOT EXISTS company__id_seq START 101;
@@ -115,6 +123,7 @@ CREATE SEQUENCE IF NOT EXISTS product_subgroup__id_seq START 101;
 CREATE SEQUENCE IF NOT EXISTS supplier__id_seq START 101;
 CREATE SEQUENCE IF NOT EXISTS system_counter__id_seq START 101;
 CREATE SEQUENCE IF NOT EXISTS user__id_seq START 101;
+CREATE SEQUENCE IF NOT EXISTS property__id_seq START 101;
 
 
 

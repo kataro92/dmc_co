@@ -40,8 +40,8 @@
                 </c:forEach>
             </ul>
             <h:form styleClass="form-inline my-2 my-md-0">
-                <a class="text-light bg-dark">#{authority.loggedUser.empName}</a>
-                <p:commandLink styleClass="btn btn-blue btn-md" actionListener="#{login.actLogout()}" value="Đăng xuất" icon="ui-icon-extlink" />
+                <a class="text-light bg-dark nav-link">#{authority.loggedUser.empName}</a>
+                <p:commandButton actionListener="#{login.actLogout()}" value="Đăng xuất" icon="ui-icon-extlink" />
             </h:form>
         </div>
     </nav>

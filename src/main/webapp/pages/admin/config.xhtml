@@ -14,16 +14,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{configMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{configMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{configMgr.disableAdd}" value="Thêm"
                                    actionListener="#{configMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{configMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{configMgr.disableCopy}" value="Chép"
                                    actionListener="#{configMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{configMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{configMgr.disableEdit}" value="Sửa"
                                    actionListener="#{configMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{configMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{configMgr.disableDelete}" value="Xoá"
                                    actionListener="#{configMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -64,11 +64,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{configMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí cấu hình" rendered="#{configMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{configMgr.currentAct == enumBox.getState('ADD') || configMgr.currentAct == enumBox.getState('COPY') || configMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{configMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{configMgr.currentAct == enumBox.getState('ADD') || configMgr.currentAct == enumBox.getState('COPY') || configMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{configMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />

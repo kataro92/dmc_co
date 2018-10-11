@@ -34,7 +34,7 @@ public class ObjectRepoImpl implements ObjectRepo {
         Root<DmcObjectEntity> root = criteriaQuery.from(DmcObjectEntity.class);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(builder.isNotNull(root.get(DmcObjectEntity_.objectId)));
-        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new)).orderBy(builder.asc(root.get(DmcObjectEntity_.ord)));
         final TypedQuery<DmcObjectEntity> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }

@@ -15,16 +15,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{propertyMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{propertyMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{propertyMgr.disableAdd}" value="Thêm"
                                    actionListener="#{propertyMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{propertyMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{propertyMgr.disableCopy}" value="Chép"
                                    actionListener="#{propertyMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{propertyMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{propertyMgr.disableEdit}" value="Sửa"
                                    actionListener="#{propertyMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{propertyMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{propertyMgr.disableDelete}" value="Xoá"
                                    actionListener="#{propertyMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -32,7 +32,7 @@
                              rowIndexVar="index"
                              selectionMode="single"
                              var="rows"
-                             rowKey="#{rows.userId}"
+                             rowKey="#{rows.id}"
                              value="#{propertyMgr.lstAllProperty}"
                              rows="20"
                              paginator="true"
@@ -50,11 +50,16 @@
                     <p:column headerText="STT" style="width: 60px; text-align: center;">
                         <h:outputText value="#{index+1}"/>
                     </p:column>
-                    <p:column sortBy="#{rows.userName}" headerText="Tên đăng nhập" style="width: 160px">
-                        <h:outputText value="#{rows.userName}"/>
+                    <p:column sortBy="#{rows.name}" headerText="Tên tài sản" style="width: 160px">
+                        <h:outputText value="#{rows.name}"/>
                     </p:column>
-                    <p:column sortBy="#{rows.fullName}" headerText="Họ và tên">
-                        <h:outputText value="#{rows.fullName}"/>
+                    <p:column sortBy="#{rows.receiveDate}" headerText="Ngày nhập">
+                        <h:outputText value="#{rows.receiveDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{rows.status}" headerText="Trạng thái">
+                        <h:outputText value="#{rows.status == 1 ? 'Kích hoạt' : 'Khóa'}"/>
                     </p:column>
                 </p:dataTable>
                 <div class="card-footer">
@@ -63,33 +68,80 @@
             </p:outputPanel>
             <p:blockUI block="pnlList" widgetVar="blkList"/>
             <p:outputPanel id="pnlDetail" styleClass="#{propertyMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
+                <p:panelGrid columns="4" rendered="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                             layout="grid"
+                             styleClass="ui-panelgrid-blank card-body">
+                    <p:outputLabel for="txtSearchCode" value="Mã"/>
+                    <p:inputText id="txtSearchCode" styleClass="form-control"
+                                 value="#{propertyMgr.searchProperty.code}"/>
+                    <p:outputLabel for="txtSearchPropertyname" value="Tên tài sản"/>
+                    <p:inputText id="txtSearchPropertyname" styleClass="form-control"
+                                 value="#{propertyMgr.searchProperty.name}"/>
+
+                    <p:outputLabel for="txtSearchStatus" value="Trạng thái"/>
+                    <p:selectOneMenu id="txtSearchStatus" styleClass="form-control"
+                                     value="#{propertyMgr.searchProperty.status}">
+                        <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
+                        <f:selectItem itemLabel="Khoá" itemValue="0" />
+                    </p:selectOneMenu>
+                    <h:outputText value=" "/>
+                    <p:commandButton rendered="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="Tìm kiếm" actionListener="#{propertyMgr.actSearch()}" process="@form" update="@form"/>
+
+                </p:panelGrid>
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí tài sản" rendered="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{propertyMgr.currentAct == enumBox.getState('ADD') || propertyMgr.currentAct == enumBox.getState('COPY') || propertyMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{propertyMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{propertyMgr.currentAct == enumBox.getState('ADD') || propertyMgr.currentAct == enumBox.getState('COPY') || propertyMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{propertyMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />
                 </div>
-                <p:panelGrid columns="4"
+                <p:panelGrid columns="6"
                              rendered="#{propertyMgr.selectedProperty != null}"
-                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
                              layout="grid"
                              styleClass="ui-panelgrid-blank card-body">
 
-                    <p:outputLabel for="txtPropertyID" value="Property ID"/>
-                    <p:inputText id="txtPropertyID" readonly="true" styleClass="form-control"
-                                 value="#{propertyMgr.selectedProperty.userId}"/>
+                    <p:outputLabel for="txtPropertyCode" value="Mã"/>
+                    <p:outputLabel id="txtPropertyCode"
+                                 value="#{propertyMgr.selectedProperty.code}"/>
                     <p:outputLabel for="txtPropertyname" value="Tên tài sản"/>
                     <p:inputText id="txtPropertyname" styleClass="form-control"
                                  readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
-                                 value="#{propertyMgr.selectedProperty.userName}"/>
+                                 value="#{propertyMgr.selectedProperty.name}"/>
+                    <p:outputLabel for="dtReceiveDate" value="Ngày nhập"/>
+                    <p:calendar id="dtReceiveDate" pattern="dd/MM/yyyy"
+                                 readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                 value="#{propertyMgr.selectedProperty.receiveDate}" showOn="button"/>
 
+                    <p:outputLabel for="txtPropertyprice" value="Giá nhập"/>
+                    <p:inputNumber id="txtPropertyprice"
+                                 readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                 value="#{propertyMgr.selectedProperty.buyPrice}"/>
+
+                    <p:outputLabel for="dtStartOfWarrantyDate" value="Bảo hành từ ngày"/>
+                    <p:calendar id="dtStartOfWarrantyDate" pattern="dd/MM/yyyy"
+                                readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                value="#{propertyMgr.selectedProperty.receiveDate}" showOn="button"/>
+
+                    <p:outputLabel for="dtEndOfWarrantyDate" value="Bảo hành đến ngày"/>
+                    <p:calendar id="dtEndOfWarrantyDate" pattern="dd/MM/yyyy"
+                                readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                value="#{propertyMgr.selectedProperty.endOfWarrantyDate}" showOn="button"/>
+                    <p:outputLabel for="dtNextMaintainceDate" value="Ngày đến hạn bảo dưỡng"/>
+                    <p:calendar id="dtNextMaintainceDate" pattern="dd/MM/yyyy"
+                                readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                value="#{propertyMgr.selectedProperty.nextMaintainceDate}" showOn="button"/>
+                    <p:outputLabel for="dtLastMaintainceDate" value="Lần bảo dưỡng gần nhất"/>
+                    <p:calendar id="dtLastMaintainceDate" pattern="dd/MM/yyyy"
+                                readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
+                                value="#{propertyMgr.selectedProperty.lastMaintainceDate}" showOn="button"/>
                     <p:outputLabel for="txtStatus" value="Trạng thái"/>
-                    <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                    <p:selectOneMenu id="txtStatus"
                                      disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{propertyMgr.selectedProperty.status}">
                         <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -99,31 +151,9 @@
                 </p:panelGrid>
 
                 <div class="card-header bg-primary text-white">
-                    <h:outputText value="Phân quyền truy cập"/>
+                    <h:outputText value="Khấu hao thiết bị"/>
                 </div>
-                <p:treeTable value="#{propertyMgr.root}" var="permission" tableStyleClass="card-body">
-                    <p:column headerText="Danh mục">
-                        <h:outputText value="#{permission.objectTitle}" />
-                    </p:column>
-                    <p:column headerText="Xem" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Thêm" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Sửa" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Xóa" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Nhập" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Xuất" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{propertyMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                </p:treeTable>
+
                 <p:outputPanel styleClass="card-footer">
                 </p:outputPanel>
             </p:outputPanel>

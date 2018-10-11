@@ -15,16 +15,16 @@
             </p:growl>
             <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{jobPositionMgr.currentAct == enumBox.getState('VIEW')}">
                 <div class="card-header text-center">
-                    <p:commandLink id="btnAdd" disabled="#{jobPositionMgr.disableAdd}" styleClass="btn btn-blue btn-md" value="Thêm"
+                    <p:commandButton id="btnAdd" disabled="#{jobPositionMgr.disableAdd}" value="Thêm"
                                    actionListener="#{jobPositionMgr.actAdd()}"
                                    update=":main" />
-                    <p:commandLink id="btnCopy" disabled="#{jobPositionMgr.disableCopy}" styleClass="btn btn-blue btn-md" value="Chép"
+                    <p:commandButton id="btnCopy" disabled="#{jobPositionMgr.disableCopy}" value="Chép"
                                    actionListener="#{jobPositionMgr.actCopy()}"
                                    update=":main" />
-                    <p:commandLink id="btnEdit" disabled="#{jobPositionMgr.disableEdit}" styleClass="btn btn-blue btn-md" value="Sửa"
+                    <p:commandButton id="btnEdit" disabled="#{jobPositionMgr.disableEdit}" value="Sửa"
                                    actionListener="#{jobPositionMgr.actEdit()}"
                                    update=":main" />
-                    <p:commandLink id="btnDelete" disabled="#{jobPositionMgr.disableDelete}" styleClass="btn btn-blue btn-md" value="Xoá"
+                    <p:commandButton id="btnDelete" disabled="#{jobPositionMgr.disableDelete}" value="Xoá"
                                    actionListener="#{jobPositionMgr.actDelete()}"
                                    update=":main" />
                 </div>
@@ -65,11 +65,11 @@
             <p:outputPanel id="pnlDetail" styleClass="#{jobPositionMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
                 <div class="card-header bg-primary text-white">
                     <h:outputText value="Màn hình quản lí chức danh" rendered="#{jobPositionMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandLink styleClass="btn btn-md btn-light-blue pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
                                    rendered="#{jobPositionMgr.currentAct == enumBox.getState('ADD') || jobPositionMgr.currentAct == enumBox.getState('COPY') || jobPositionMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{jobPositionMgr.actBack()}" value="Quay lại"
                                    update=":main" />
-                    <p:commandLink styleClass="btn btn-md btn-light-green pull-right"
+                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
                                    rendered="#{jobPositionMgr.currentAct == enumBox.getState('ADD') || jobPositionMgr.currentAct == enumBox.getState('COPY') || jobPositionMgr.currentAct == enumBox.getState('EDIT')}"
                                    actionListener="#{jobPositionMgr.actAccept()}" value="Đồng ý"
                                    update=":main" />

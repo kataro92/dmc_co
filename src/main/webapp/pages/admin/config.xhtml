@@ -80,14 +80,14 @@
                         <p:outputLabel for="txtConfigID" value="ID"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtConfigID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtConfigID" readonly="true" styleclass="form-control input-sm"
                                      value="#{configMgr.selectedConfig.id}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtConfigname" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtConfigname" styleClass="form-control"
+                        <p:inputText id="txtConfigname" styleclass="form-control input-sm"
                                      readonly="#{configMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{configMgr.selectedConfig.key}"/>
                     </p:column>
@@ -99,7 +99,7 @@
                     <p:column colspan="3">
                         <p:inputText id="txtValue"
                                      readonly="#{configMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{configMgr.selectedConfig.value}"/>
                     </p:column>
                 </p:row>
@@ -108,7 +108,7 @@
                         <p:outputLabel for="txtExt" value="Thông tin mở rộng"/>
                     </p:column>
                     <p:column colspan="3">
-                        <p:inputTextarea id="txtExt" styleClass="form-control"
+                        <p:inputTextarea id="txtExt" styleclass="form-control input-sm"
                                      readonly="#{configMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{configMgr.selectedConfig.ext}"/>
                     </p:column>

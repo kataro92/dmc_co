@@ -81,14 +81,14 @@
                         <p:outputLabel for="txtSupplierID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtSupplierID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtSupplierID" readonly="true" styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtSuppliername" value="Tên nhà cung cấp"/>
                     </p:column>
                     <p:column colspan="3">
-                        <p:inputText id="txtSuppliername" styleClass="form-control"
+                        <p:inputText id="txtSuppliername" styleclass="form-control input-sm"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{supplierMgr.selectedSupplier.name}"/>
                     </p:column>
@@ -101,7 +101,7 @@
                     <p:column>
                         <p:inputText id="txtBrand"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.trademark}"/>
                     </p:column>
                     <p:column>
@@ -110,7 +110,7 @@
                     <p:column colspan="3">
                         <p:inputText id="txtTaxId"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.taxCode}"/>
                     </p:column>
                 </p:row>
@@ -121,7 +121,7 @@
                     <p:column>
                         <p:inputText id="txtPhone"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.phone}"/>
                     </p:column>
                     <p:column>
@@ -130,7 +130,7 @@
                     <p:column>
                         <p:inputText id="txtFax"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.fax}"/>
                     </p:column>
                     <p:column>
@@ -139,7 +139,7 @@
                     <p:column>
                         <p:inputText id="txtEmail"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.email}"/>
                     </p:column>
                 </p:row>
@@ -150,7 +150,7 @@
                     <p:column colspan="3">
                         <p:inputText id="txtAddress"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.address}"/>
                     </p:column>
                     <p:column>
@@ -159,7 +159,7 @@
                     <p:column>
                         <p:inputText id="txtContact"
                                      readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{supplierMgr.selectedSupplier.contactPerson}"/>
                     </p:column>
                 </p:row>
@@ -170,14 +170,14 @@
                     <p:column colspan="3">
                         <p:inputTextarea id="txtNote"
                                          readonly="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
-                                         styleClass="form-control"
+                                         styleclass="form-control input-sm"
                                          value="#{supplierMgr.selectedSupplier.description}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtStatus" value="Trạng thái"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                        <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                          disabled="#{supplierMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{supplierMgr.selectedSupplier.status}">
                             <f:selectItem itemLabel="Kích hoạt" itemValue="1" />

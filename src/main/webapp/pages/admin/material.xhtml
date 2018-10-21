@@ -80,14 +80,14 @@
                             <p:outputLabel for="txtMaterialID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtMaterialID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtMaterialID" readonly="true" styleclass="form-control input-sm"
                                          value="#{materialMgr.selectedMaterial.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtMaterialGroup" value="Nhóm vật tư"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtMaterialGroup" styleClass="form-control"
+                            <p:selectOneMenu id="txtMaterialGroup" styleclass="form-control input-sm"
                                              disabled="#{materialMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{materialMgr.selectedMaterial.materialGroupCode}">
                                 <p:ajax listener="#{materialMgr.selectMaterialGroup}" update="main:txtMaterialSubgroup"/>
@@ -98,7 +98,7 @@
                             <p:outputLabel for="txtMaterialSubgroup" value="Phân loại nhóm vật tư"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtMaterialSubgroup" styleClass="form-control"
+                            <p:selectOneMenu id="txtMaterialSubgroup" styleclass="form-control input-sm"
                                              disabled="#{materialMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{materialMgr.selectedMaterial.materialSubgroupCode}">
                                 <f:selectItems value="#{materialMgr.lstFileredMaterialSubgroup}" var="subGroup" itemLabel="#{subGroup.name}" itemValue="#{subGroup.id}" />
@@ -110,14 +110,14 @@
                             <p:outputLabel for="txtMaterialCode" value="Mã đầy đủ"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtMaterialCode" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtMaterialCode" readonly="true" styleclass="form-control input-sm"
                                          value="#{materialMgr.selectedMaterial.fullCode}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtMaterialname" value="Tên vật tư"/>
                         </p:column>
                         <p:column colspan="3">
-                            <p:inputText id="txtMaterialname" styleClass="form-control"
+                            <p:inputText id="txtMaterialname" styleclass="form-control input-sm"
                                          readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{materialMgr.selectedMaterial.name}"/>
                         </p:column>
@@ -127,21 +127,21 @@
                             <p:outputLabel for="txtManufactory" value="Nhà sản xuất"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtManufactory" readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtManufactory" readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{materialMgr.selectedMaterial.producer}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtUnit" value="Đơn vị tính"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtUnit" readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtUnit" readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{materialMgr.selectedMaterial.unit}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{materialMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{materialMgr.selectedMaterial.status}">
                                 <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -156,7 +156,7 @@
                         <p:column colspan="3">
                             <p:inputTextarea id="txtNote"
                                              readonly="#{materialMgr.currentAct == enumBox.getState('VIEW')}"
-                                             styleClass="form-control"
+                                             styleclass="form-control input-sm"
                                              value="#{materialMgr.selectedMaterial.shortDescription}"/>
                         </p:column>
                         <p:column>

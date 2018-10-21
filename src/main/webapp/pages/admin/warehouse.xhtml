@@ -80,14 +80,14 @@
                             <p:outputLabel for="txtWarehouseID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtWarehouseID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtWarehouseID" readonly="true" styleclass="form-control input-sm"
                                          value="#{warehouseMgr.selectedWarehouse.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtWarehousename" value="Tên kho"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtWarehousename" styleClass="form-control"
+                            <p:inputText id="txtWarehousename" styleclass="form-control input-sm"
                                          readonly="#{warehouseMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{warehouseMgr.selectedWarehouse.name}"/>
                         </p:column>
@@ -124,7 +124,7 @@
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{warehouseMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseMgr.selectedWarehouse.status}">
                                 <f:selectItem itemLabel="Kích hoạt" itemValue="1" />

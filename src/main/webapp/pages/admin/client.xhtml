@@ -80,14 +80,14 @@
                         <p:outputLabel for="txtClientID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtClientID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtClientID" readonly="true" styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtClientname" value="Tên khách hàng"/>
                     </p:column>
                     <p:column colspan="3">
-                        <p:inputText id="txtClientname" styleClass="form-control"
+                        <p:inputText id="txtClientname" styleclass="form-control input-sm"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{clientMgr.selectedClient.name}"/>
                     </p:column>
@@ -99,7 +99,7 @@
                     <p:column>
                         <p:inputText id="txtBrand"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.trademark}"/>
                     </p:column>
                     <p:column>
@@ -108,7 +108,7 @@
                     <p:column colspan="3">
                         <p:inputText id="txtTaxId"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.taxCode}"/>
                     </p:column>
                 </p:row>
@@ -119,7 +119,7 @@
                     <p:column>
                         <p:inputText id="txtPhone"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.phone}"/>
                     </p:column>
                     <p:column>
@@ -128,7 +128,7 @@
                     <p:column>
                         <p:inputText id="txtFax"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.fax}"/>
                     </p:column>
                     <p:column>
@@ -137,7 +137,7 @@
                     <p:column>
                         <p:inputText id="txtEmail"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.email}"/>
                     </p:column>
                 </p:row>
@@ -148,7 +148,7 @@
                     <p:column colspan="3">
                         <p:inputText id="txtAddress"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.address}"/>
                     </p:column>
                     <p:column>
@@ -157,7 +157,7 @@
                     <p:column>
                         <p:inputText id="txtContact"
                                      readonly="#{clientMgr.currentAct == enumBox.getState('VIEW')}"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.contactPerson}"/>
                     </p:column>
                 </p:row>
@@ -168,13 +168,13 @@
                     <p:column>
                         <p:inputText id="txtAdmin"
                                      readonly="true"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.employeeCode}"/>
                     </p:column>
                     <p:column colspan="2">
                         <p:inputText id="txtEmpname"
                                      readonly="true"
-                                     styleClass="form-control"
+                                     styleclass="form-control input-sm"
                                      value="#{clientMgr.selectedClient.empName} - #{clientMgr.selectedClient.deptName} "/>
                     </p:column>
                     <p:column rendered="#{clientMgr.currentAct != enumBox.getState('VIEW')}">

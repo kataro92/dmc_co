@@ -81,14 +81,14 @@
                             <p:outputLabel for="txtWarehouseImportID" value="Mã phiếu"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtWarehouseImportID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtWarehouseImportID" readonly="true" styleclass="form-control input-sm"
                                          value="#{warehouseImport.selectedWarehouseImport.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtWarehouseImportname" value="Ngày nhập"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="txtWarehouseImportname" styleClass="form-control" pattern="dd/MM/yyyy"
+                            <p:calendar id="txtWarehouseImportname" styleclass="form-control input-sm" pattern="dd/MM/yyyy"
                                         style="width: 190px"
                                         readonly="#{warehouseImport.currentAct == enumBox.getState('VIEW')}"
                                         value="#{warehouseImport.selectedWarehouseImport.importDate}"
@@ -98,7 +98,7 @@
                             <p:outputLabel for="cbxCategory" value="Loại hàng hóa"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxCategory" styleClass="form-control"
+                            <p:selectOneMenu id="cbxCategory" styleclass="form-control input-sm"
                                              disabled="#{warehouseImport.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.categoryId}">
                                 <f:selectItem itemLabel="Vật tư" itemValue="0" />
@@ -111,7 +111,7 @@
                             <p:outputLabel for="cbxImportFrom" value="Nhập từ"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxImportFrom" styleClass="form-control"
+                            <p:selectOneMenu id="cbxImportFrom" styleclass="form-control input-sm"
                                              disabled="#{warehouseImport.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.importFrom}"
                                              filter="true" filterMatchMode="contains">
@@ -126,7 +126,7 @@
                             <p:outputLabel for="cbxWarehouseTo" value="Kho nhận"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxWarehouseTo" styleClass="form-control"
+                            <p:selectOneMenu id="cbxWarehouseTo" styleclass="form-control input-sm"
                                              rendered="#{warehouseImport.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.warehouseId}"
                                              filter="true" filterMatchMode="contains">
@@ -138,7 +138,7 @@
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{warehouseImport.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.status}">
                                 <f:selectItem itemLabel="Hiệu lực" itemValue="1" />
@@ -151,7 +151,7 @@
                             <p:outputLabel for="cbxSupplier" value="Nhà cung cấp"/>
                         </p:column>
                         <p:column rendered="#{warehouseImport.selectedWarehouseImport.importFrom == 0}">
-                            <p:selectOneMenu id="cbxSupplier" styleClass="form-control"
+                            <p:selectOneMenu id="cbxSupplier" styleclass="form-control input-sm"
                                              rendered="#{warehouseImport.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.supplierId}"
                                              filter="true" filterMatchMode="contains">
@@ -164,7 +164,7 @@
                             <p:outputLabel for="cbxWarehouseFrom" value="Kho xuất"/>
                         </p:column>
                         <p:column rendered="#{warehouseImport.selectedWarehouseImport.importFrom == 1}">
-                            <p:selectOneMenu id="cbxWarehouseFrom" styleClass="form-control"
+                            <p:selectOneMenu id="cbxWarehouseFrom" styleclass="form-control input-sm"
                                              rendered="#{warehouseImport.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseImport.selectedWarehouseImport.importFromId}"
                                              filter="true" filterMatchMode="contains">
@@ -176,7 +176,7 @@
                             <p:outputLabel for="txtReson" value="Lý do"/>
                         </p:column>
                         <p:column rendered="#{warehouseImport.selectedWarehouseImport.importFrom == 2}" colspan="5">
-                            <p:inputText id="txtReson" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtReson" readonly="true" styleclass="form-control input-sm"
                                          value="#{warehouseImport.selectedWarehouseImport.reson}"/>
                         </p:column>
                     </p:row>

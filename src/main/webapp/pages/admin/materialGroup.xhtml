@@ -81,14 +81,14 @@
                         <p:outputLabel for="txtMaterialGroupID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtMaterialGroupID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtMaterialGroupID" readonly="true" styleclass="form-control input-sm"
                                      value="#{materialGroupMgr.selectedMaterialGroup.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtMaterialGroupname" value="Tên nhóm vật tư"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtMaterialGroupname" styleClass="form-control"
+                        <p:inputText id="txtMaterialGroupname" styleclass="form-control input-sm"
                                      readonly="#{materialGroupMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{materialGroupMgr.selectedMaterialGroup.name}"/>
                     </p:column>
@@ -96,7 +96,7 @@
                         <p:outputLabel for="txtStatus" value="Trạng thái"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                        <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                          disabled="#{materialGroupMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{materialGroupMgr.selectedMaterialGroup.status}">
                             <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -111,7 +111,7 @@
                     <p:column colspan="5">
                         <p:inputTextarea id="txtNote"
                                          readonly="#{materialGroupMgr.currentAct == enumBox.getState('VIEW')}"
-                                         styleClass="form-control"
+                                         styleclass="form-control input-sm"
                                          value="#{materialGroupMgr.selectedMaterialGroup.description}"/>
                     </p:column>
                 </p:row>

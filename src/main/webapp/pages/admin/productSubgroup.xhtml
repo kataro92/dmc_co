@@ -80,14 +80,14 @@
                             <p:outputLabel for="txtProductSubgroupID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtProductSubgroupID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtProductSubgroupID" readonly="true" styleclass="form-control input-sm"
                                          value="#{productSubgroupMgr.selectedProductSubgroup.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtProductSubgroupname" value="Tên nhóm thành phẩm"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtProductSubgroupname" styleClass="form-control"
+                            <p:inputText id="txtProductSubgroupname" styleclass="form-control input-sm"
                                          readonly="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{productSubgroupMgr.selectedProductSubgroup.name}"/>
                         </p:column>
@@ -95,7 +95,7 @@
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{productSubgroupMgr.selectedProductSubgroup.status}">
                                 <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -108,14 +108,14 @@
                             <p:outputLabel for="txtProductgroupID" value="Mã nhóm"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtProductgroupID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtProductgroupID" readonly="true" styleclass="form-control input-sm"
                                          value="#{productSubgroupMgr.selectedProductSubgroup.productGroupCode}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtProductgroup" value="Nhóm"/>
                         </p:column>
                         <p:column rowspan="3">
-                            <p:selectOneMenu id="txtProductgroup" styleClass="form-control"
+                            <p:selectOneMenu id="txtProductgroup" styleclass="form-control input-sm"
                                              disabled="#{productSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{productSubgroupMgr.selectedProductSubgroup.productGroupCode}">
                                 <f:selectItems value="#{productSubgroupMgr.lstAllActiveProductGroup}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}"/>

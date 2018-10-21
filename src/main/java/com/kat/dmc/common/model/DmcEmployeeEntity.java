@@ -27,6 +27,61 @@ public class DmcEmployeeEntity {
     private Timestamp dateOfBirth;
     private Timestamp identityCardIssuedDate;
 
+    private String extraProps;
+    private String password;
+    private Integer userType;
+    private String permissions;
+    private String username;
+
+    @Basic
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Basic
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Basic
+    @Column(name = "user_type")
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    @Basic
+    @Column(name = "permissions")
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    @Basic
+    @Column(name = "extra_props")
+    public String getExtraProps() {
+        return extraProps;
+    }
+
+    public void setExtraProps(String extraProps) {
+        this.extraProps = extraProps;
+    }
     @Basic
     @Column(name = "address")
     public String getAddress() {
@@ -256,6 +311,11 @@ public class DmcEmployeeEntity {
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (userCode != null ? !userCode.equals(that.userCode) : that.userCode != null) return false;
         if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) return false;
+        if (extraProps != null ? !extraProps.equals(that.extraProps) : that.extraProps != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (userType != null ? !userType.equals(that.userType) : that.userType != null) return false;
+        if (permissions != null ? !permissions.equals(that.permissions) : that.permissions != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null) return false;
         if (identityCardIssuedDate != null ? !identityCardIssuedDate.equals(that.identityCardIssuedDate) : that.identityCardIssuedDate != null)
             return false;
 
@@ -283,6 +343,11 @@ public class DmcEmployeeEntity {
         result = 31 * result + id;
         result = 31 * result + deptId;
         result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = 31 * result + (extraProps != null ? extraProps.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (userType != null ? userType.hashCode() : 0);
+        result = 31 * result + (permissions != null ? permissions.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (identityCardIssuedDate != null ? identityCardIssuedDate.hashCode() : 0);
         return result;
     }

@@ -2,13 +2,13 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
+import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.dto.ObjectDto;
-import com.kat.dmc.common.dto.UserDto;
 import com.kat.dmc.common.util.RescusiveUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
+import com.kat.dmc.service.interfaces.EmployeeService;
 import com.kat.dmc.service.interfaces.ObjectService;
-import com.kat.dmc.service.interfaces.UserService;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -27,10 +27,10 @@ import java.util.logging.Logger;
 
 @Named("userMgr")
 @ViewScoped
-public class UserMgrController implements Serializable {
+public class EmployeeMgrController implements Serializable {
 
     @Autowired
-    UserService userService;
+    EmployeeService employeeService;
 
     @Autowired
     ObjectService objectService;
@@ -43,10 +43,10 @@ public class UserMgrController implements Serializable {
     private boolean disableCopy;
     private boolean disableEdit;
     private boolean disableDelete;
-    private UserDto selectedUser;
-    private UserDto tempUser;
-    private List<UserDto> lstAllUser;
-    private List<UserDto> lstFilteredUser;
+    private EmployeeDto selectedUser;
+    private EmployeeDto tempUser;
+    private List<EmployeeDto> lstAllUser;
+    private List<EmployeeDto> lstFilteredUser;
     private List<ObjectDto> lstObject;
     private List<ObjectDto> lstPermission;
     private TreeNode root;
@@ -55,7 +55,7 @@ public class UserMgrController implements Serializable {
     @PostConstruct
     public void init(){
         setCurrentAct(ControllerAction.State.VIEW);
-        lstAllUser = userService.findAll();
+        lstAllUser = employeeService.findAll();
         lstObject = objectService.findAll();
         root = new DefaultTreeNode(null, null);
     }
@@ -81,9 +81,9 @@ public class UserMgrController implements Serializable {
 
 
     public void selectUser(SelectEvent selectEvent){
-        tempUser = (UserDto) selectEvent.getObject();
+        tempUser = (EmployeeDto) selectEvent.getObject();
         selectedUser = tempUser.clone();
-        List<Integer> objectIDHasPermission = objectService.findObjectIdByUserId(selectedUser.getUserId());
+        List<Integer> objectIDHasPermission = objectService.findObjectIdByUserId(selectedUser.getId());
         lstPermission = new ArrayList<>();
         lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
         RescusiveUtil.rescusiveSetPermission(lstPermission, objectIDHasPermission);
@@ -92,19 +92,23 @@ public class UserMgrController implements Serializable {
 
     public void actAdd(){
         setCurrentAct(ControllerAction.State.ADD);
-        selectedUser = new UserDto();
-        selectedUser.setUserId(utilRepo.findSequenceNextval("user__id_seq"));
-        selectedUser.setCode("US" + String.format("%06d", selectedUser.getUserId()));
+        selectedUser = new EmployeeDto();
+        selectedUser.setId(utilRepo.findSequenceNextval("user__id_seq"));
+        selectedUser.setCode("US" + String.format("%06d", selectedUser.getId()));
         lstPermission = new ArrayList<>();
         lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
         RescusiveUtil.rescusiveSetPermission(lstPermission, new ArrayList<>());
         root = lstObject2Tree(lstPermission);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
-    public void actCopy(){
-        selectedUser = selectedUser.clone();
-        selectedUser.setUserId(utilRepo.findSequenceNextval("user__id_seq"));
-        selectedUser.setCode("US" + String.format("%06d", selectedUser.getUserId()));
+    public void actCopy(int userId){
+        for(EmployeeDto employeeDto : lstAllUser){
+            if(employeeDto.getId() == userId){
+                selectedUser = employeeDto.clone();
+            }
+        }
+        selectedUser.setId(utilRepo.findSequenceNextval("user__id_seq"));
+        selectedUser.setCode("US" + String.format("%06d", selectedUser.getId()));
         lstPermission = new ArrayList<>();
         lstObject.forEach(objectDto -> lstPermission.add(objectDto.clone()));
         RescusiveUtil.rescusiveSetPermission(lstPermission, new ArrayList<>());
@@ -112,14 +116,19 @@ public class UserMgrController implements Serializable {
         setCurrentAct(ControllerAction.State.COPY);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
-    public void actEdit(){
+    public void actEdit(int userId){
+        for(EmployeeDto employeeDto : lstAllUser){
+            if(employeeDto.getId() == userId){
+                selectedUser = employeeDto.clone();
+            }
+        }
         setCurrentAct(ControllerAction.State.EDIT);
         PrimeFaces.current().executeScript("PF('blkList').show()");
     }
-    public void actDelete(){
+    public void actDelete(Integer userId){
         try{
-            userService.delete(selectedUser.getUserId());
-            lstAllUser.removeIf(s -> s.getUserId() == selectedUser.getUserId());
+            employeeService.delete(userId);
+            lstAllUser.removeIf(s -> s.getId() == selectedUser.getId());
             selectedUser = null;
             root = new DefaultTreeNode(null, null);
             setCurrentAct(ControllerAction.State.VIEW);
@@ -139,13 +148,13 @@ public class UserMgrController implements Serializable {
     }
     public void actAccept(){
         try {
-            userService.save(selectedUser);
+            employeeService.save(selectedUser);
             List<TreeNode> children = root.getChildren();
             List<ObjectDto> lstNewPermission = new ArrayList<>();
             for (TreeNode treeNode : children) {
                 rescusiveGetObject(treeNode, lstNewPermission);
             }
-            objectService.saveNewPermission(lstNewPermission, selectedUser.getUserId());
+            objectService.saveNewPermission(lstNewPermission, selectedUser.getId());
             tempUser = selectedUser;
             if (getCurrentAct() == ControllerAction.State.ADD || getCurrentAct() == ControllerAction.State.COPY) {
                 lstAllUser.add(selectedUser);
@@ -153,8 +162,8 @@ public class UserMgrController implements Serializable {
 
             int slIdx = -1;
             for (int i = 0; i < lstAllUser.size(); i++) {
-                UserDto clientDto = lstAllUser.get(i);
-                if (clientDto.getUserId() == selectedUser.getUserId()) {
+                EmployeeDto clientDto = lstAllUser.get(i);
+                if (clientDto.getId() == selectedUser.getId()) {
                     slIdx = i;
                 }
             }
@@ -224,27 +233,27 @@ public class UserMgrController implements Serializable {
         this.disableDelete = disableDelete;
     }
 
-    public UserDto getSelectedUser() {
+    public EmployeeDto getSelectedUser() {
         return selectedUser;
     }
 
-    public void setSelectedUser(UserDto selectedUser) {
+    public void setSelectedUser(EmployeeDto selectedUser) {
         this.selectedUser = selectedUser;
     }
 
-    public List<UserDto> getLstAllUser() {
+    public List<EmployeeDto> getLstAllUser() {
         return lstAllUser;
     }
 
-    public void setLstAllUser(List<UserDto> lstAllUser) {
+    public void setLstAllUser(List<EmployeeDto> lstAllUser) {
         this.lstAllUser = lstAllUser;
     }
 
-    public List<UserDto> getLstFilteredUser() {
+    public List<EmployeeDto> getLstFilteredUser() {
         return lstFilteredUser;
     }
 
-    public void setLstFilteredUser(List<UserDto> lstFilteredUser) {
+    public void setLstFilteredUser(List<EmployeeDto> lstFilteredUser) {
         this.lstFilteredUser = lstFilteredUser;
     }
 

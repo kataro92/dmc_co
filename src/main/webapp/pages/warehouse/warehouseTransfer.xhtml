@@ -81,14 +81,14 @@
                             <p:outputLabel for="txtWarehouseTransferID" value="Mã phiếu"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtWarehouseTransferID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtWarehouseTransferID" readonly="true" styleclass="form-control input-sm"
                                          value="#{warehouseTransfer.selectedWarehouseTransfer.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtWarehouseTransfername" value="Ngày nhập"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="txtWarehouseTransfername" styleClass="form-control" pattern="dd/MM/yyyy"
+                            <p:calendar id="txtWarehouseTransfername" styleclass="form-control input-sm" pattern="dd/MM/yyyy"
                                         style="width: 190px"
                                         readonly="#{warehouseTransfer.currentAct == enumBox.getState('VIEW')}"
                                         value="#{warehouseTransfer.selectedWarehouseTransfer.transferDate}"
@@ -98,7 +98,7 @@
                             <p:outputLabel for="cbxCategory" value="Loại hàng hóa"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxCategory" styleClass="form-control"
+                            <p:selectOneMenu id="cbxCategory" styleclass="form-control input-sm"
                                              disabled="#{warehouseTransfer.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.categoryId}">
                                 <f:selectItem itemLabel="Vật tư" itemValue="0" />
@@ -111,7 +111,7 @@
                             <p:outputLabel for="cbxTransferFrom" value="Nhập từ"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxTransferFrom" styleClass="form-control"
+                            <p:selectOneMenu id="cbxTransferFrom" styleclass="form-control input-sm"
                                              disabled="#{warehouseTransfer.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.transferFrom}"
                                              filter="true" filterMatchMode="contains">
@@ -125,7 +125,7 @@
                             <p:outputLabel for="cbxWarehouseTo" value="Kho nhận"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="cbxWarehouseTo" styleClass="form-control"
+                            <p:selectOneMenu id="cbxWarehouseTo" styleclass="form-control input-sm"
                                              rendered="#{warehouseTransfer.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.warehouseId}"
                                              filter="true" filterMatchMode="contains">
@@ -137,7 +137,7 @@
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{warehouseTransfer.currentAct == enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.status}">
                                 <f:selectItem itemLabel="Hiệu lực" itemValue="1" />
@@ -150,7 +150,7 @@
                             <p:outputLabel for="cbxSupplier" value="Nhà cung cấp"/>
                         </p:column>
                         <p:column rendered="#{warehouseTransfer.selectedWarehouseTransfer.transferFrom == 0}">
-                            <p:selectOneMenu id="cbxSupplier" styleClass="form-control"
+                            <p:selectOneMenu id="cbxSupplier" styleclass="form-control input-sm"
                                              rendered="#{warehouseTransfer.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.supplierId}"
                                              filter="true" filterMatchMode="contains">
@@ -163,7 +163,7 @@
                             <p:outputLabel for="cbxWarehouseFrom" value="Kho xuất"/>
                         </p:column>
                         <p:column rendered="#{warehouseTransfer.selectedWarehouseTransfer.transferFrom == 1}">
-                            <p:selectOneMenu id="cbxWarehouseFrom" styleClass="form-control"
+                            <p:selectOneMenu id="cbxWarehouseFrom" styleclass="form-control input-sm"
                                              rendered="#{warehouseTransfer.currentAct != enumBox.getState('VIEW')}"
                                              value="#{warehouseTransfer.selectedWarehouseTransfer.transferFromId}"
                                              filter="true" filterMatchMode="contains">
@@ -175,7 +175,7 @@
                             <p:outputLabel for="txtReson" value="Lý do"/>
                         </p:column>
                         <p:column rendered="#{warehouseTransfer.selectedWarehouseTransfer.transferFrom == 2}" colspan="5">
-                            <p:inputText id="txtReson" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtReson" readonly="true" styleclass="form-control input-sm"
                                          value="#{warehouseTransfer.selectedWarehouseTransfer.reson}"/>
                         </p:column>
                     </p:row>

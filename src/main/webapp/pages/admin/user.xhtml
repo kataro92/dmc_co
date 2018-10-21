@@ -13,26 +13,12 @@
             <p:growl keepAlive="3000" id="messages" showDetail="true" closable="true" escape="false">
                 <p:autoUpdate />
             </p:growl>
-            <p:outputPanel id="pnlList" styleClass="ui-ng card ui-g-4" rendered="#{userMgr.currentAct == enumBox.getState('VIEW')}">
-                <div class="card-header text-center">
-                    <p:commandButton id="btnAdd" disabled="#{userMgr.disableAdd}" value="Thêm"
-                                   actionListener="#{userMgr.actAdd()}"
-                                   update=":main" />
-                    <p:commandButton id="btnCopy" disabled="#{userMgr.disableCopy}" value="Chép"
-                                   actionListener="#{userMgr.actCopy()}"
-                                   update=":main" />
-                    <p:commandButton id="btnEdit" disabled="#{userMgr.disableEdit}" value="Sửa"
-                                   actionListener="#{userMgr.actEdit()}"
-                                   update=":main" />
-                    <p:commandButton id="btnDelete" disabled="#{userMgr.disableDelete}" value="Xoá"
-                                   actionListener="#{userMgr.actDelete()}"
-                                   update=":main" />
-                </div>
-                <p:dataTable id="tblList" tableStyleClass="card-body"
+            <p:outputPanel id="pnlList" styleClass="ui-ng card" rendered="#{userMgr.currentAct == enumBox.getState('VIEW')}">
+                <p:dataTable id="tblList" tableStyleClass="card-body" widgetVar="tblList"
                              rowIndexVar="index"
                              selectionMode="single"
                              var="rows"
-                             rowKey="#{rows.userId}"
+                             rowKey="#{rows.id}"
                              value="#{userMgr.lstAllUser}"
                              rows="20"
                              paginator="true"
@@ -50,72 +36,111 @@
                     <p:column headerText="STT" style="width: 60px; text-align: center;">
                         <h:outputText value="#{index+1}"/>
                     </p:column>
-                    <p:column sortBy="#{rows.userName}" headerText="Tên đăng nhập" style="width: 160px">
+                    <p:column filterBy="#{rows.jobPositionCode}" sortBy="#{rows.deptName}" headerText="Phong ban">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('tblList').filter()" >
+                                <f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{deptMgrController.lstAllDept}" var="dept" itemLabel="#{dept.name}" itemValue="#{dept.id}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{rows.deptName}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.jobPositionCode}" sortBy="#{rows.email}" headerText="Vi tri">
+                        <h:outputText value="#{rows.jobPositionCode}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.code}" sortBy="#{rows.code}" headerText="Ma nhan vien">
+                        <h:outputText value="#{rows.code}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.userName}" sortBy="#{rows.userName}" headerText="Tên đăng nhập" style="width: 160px">
                         <h:outputText value="#{rows.userName}"/>
                     </p:column>
-                    <p:column sortBy="#{rows.fullName}" headerText="Họ và tên">
+                    <p:column filterBy="#{rows.fullName}" sortBy="#{rows.fullName}" headerText="Họ và tên">
                         <h:outputText value="#{rows.fullName}"/>
                     </p:column>
+                    <p:column filterBy="#{rows.dateOfBirth}" sortBy="#{rows.dateOfBirth}" headerText="Ngay sinh">
+                        <h:outputText value="#{rows.dateOfBirth}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column filterBy="#{rows.identityCardCardNumber}" sortBy="#{rows.identityCardCardNumber}" headerText="CMT">
+                        <h:outputText value="#{rows.identityCardCardNumber}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.identityCardIssuedBy}" sortBy="#{rows.identityCardIssuedBy}" headerText="Noi cap">
+                        <h:outputText value="#{rows.identityCardIssuedBy}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.email}" sortBy="#{rows.email}" headerText="Email">
+                        <h:outputText value="#{rows.email}"/>
+                    </p:column>
+                    <p:column filterBy="#{rows.email}" sortBy="#{rows.email}" headerText="Trang thai">
+                        <h:outputText value="#{rows.status}"/>
+                    </p:column>
+                    <p:column style="width: 67px">
+                        <p:commandLink id="btnCopy" disabled="#{userMgr.disableCopy}" title="Chép"
+                                         actionListener="#{userMgr.actCopy(rows.id)}"
+                                         update=":main">
+                            <img src="#{request.contextPath}/img/icon-if/if_page_copy.png" height="16"/>
+                        </p:commandLink>
+                        <p:commandLink id="btnEdit" disabled="#{userMgr.disableEdit}" title="Sửa"
+                                         actionListener="#{userMgr.actEdit(rows.id)}"
+                                         update=":main" >
+                            <img src="#{request.contextPath}/img/icon-if/if_page_white_edit.png" height="16"/>
+                        </p:commandLink>
+                        <p:commandLink id="btnDelete" disabled="#{userMgr.disableDelete}" title="Xoá"
+                                         actionListener="#{userMgr.actDelete(rows.id)}"
+                                         update=":main" >
+                            <img src="#{request.contextPath}/img/icon-if/if_page_white_delete.png" height="16"/>
+                        </p:commandLink>
+                    </p:column>
                 </p:dataTable>
-                <div class="card-footer">
-                    <!--Tổng cộng #{userMgr.lstAllUser.size()} bản ghi-->
-                </div>
             </p:outputPanel>
-            <p:blockUI block="pnlList" widgetVar="blkList"/>
-            <p:outputPanel id="pnlDetail" styleClass="#{userMgr.currentAct == enumBox.getState('VIEW') ? 'ui-g-8' : 'ui-g-12'} ui-g-nopad form-group card">
-                <div class="card-header bg-primary text-white">
-                    <h:outputText value="Màn hình quản lí tài khoản" rendered="#{userMgr.currentAct == enumBox.getState('VIEW')}"/>
-                    <p:commandButton styleClass="btn btn-md btn-light-blue pull-right"
-                                   rendered="#{userMgr.currentAct == enumBox.getState('ADD') || userMgr.currentAct == enumBox.getState('COPY') || userMgr.currentAct == enumBox.getState('EDIT')}"
-                                   actionListener="#{userMgr.actBack()}" value="Quay lại"
-                                   update=":main" />
-                    <p:commandButton styleClass="btn btn-md btn-light-green pull-right"
-                                   rendered="#{userMgr.currentAct == enumBox.getState('ADD') || userMgr.currentAct == enumBox.getState('COPY') || userMgr.currentAct == enumBox.getState('EDIT')}"
-                                   actionListener="#{userMgr.actAccept()}" value="Đồng ý"
-                                   update=":main" />
+            <p:outputPanel id="pnlDetail" styleClass="ui-g-nopad form-group card" rendered="#{userMgr.currentAct != enumBox.getState('VIEW')}">
+
+                <div class="card-header">
+                    <p:commandButton actionListener="#{userMgr.actBack()}" value="Quay lại"
+                                     update=":main" styleClass="float-right" />
+                    <p:commandButton actionListener="#{userMgr.actAccept()}" value="Đồng ý"
+                                     update=":main" styleClass="float-right" />
                 </div>
-                <p:panelGrid columns="4"
+                <p:panelGrid columns="8"
                              rendered="#{userMgr.selectedUser != null}"
-                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
-                             layout="grid"
-                             styleClass="ui-panelgrid-blank card-body">
+                             styleClass="ui-panelgrid-blank">
 
                     <p:outputLabel for="txtUserID" value="User ID"/>
-                    <p:inputText id="txtUserID" readonly="true" styleClass="form-control"
-                                 value="#{userMgr.selectedUser.userId}"/>
+                    <p:inputText id="txtUserID" readonly="true" styleclass="form-control input-sm"
+                                 value="#{userMgr.selectedUser.id}"/>
                     <p:outputLabel for="txtUsername" value="Tên đăng nhập"/>
-                    <p:inputText id="txtUsername" styleClass="form-control"
+                    <p:inputText id="txtUsername" styleclass="form-control input-sm"
                                  readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                  value="#{userMgr.selectedUser.userName}"/>
 
                     <p:outputLabel for="txtPassword" value="Mật khẩu"/>
-                    <p:password id="txtPassword" styleClass="form-control"
+                    <p:password id="txtPassword" styleclass="form-control input-sm"
                                 readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                 value="#{userMgr.selectedUser.password}" match="txtRePassword"  required="false"/>
                     <p:outputLabel for="txtRePassword" value="Gõ lại mật khâủ"/>
-                    <p:password id="txtRePassword" styleClass="form-control"
+                    <p:password id="txtRePassword" styleclass="form-control input-sm"
                                 readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                 required="false"/>
 
 
                     <p:outputLabel for="txtCode" value="Mã số"/>
-                    <p:inputText id="txtCode" styleClass="form-control"
+                    <p:inputText id="txtCode" styleclass="form-control input-sm"
                                  readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                  value="#{userMgr.selectedUser.code}" />
                     <p:outputLabel for="txtFullname" value="Họ và tên"/>
-                    <p:inputText id="txtFullname" styleClass="form-control"
+                    <p:inputText id="txtFullname" styleclass="form-control input-sm"
                                  readonly="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                  value="#{userMgr.selectedUser.fullName}" />
 
                     <p:outputLabel for="txtType" value="Loại tài khoản"/>
-                    <p:selectOneMenu id="txtType" styleClass="form-control"
+                    <p:selectOneMenu id="txtType" styleclass="form-control input-sm"
                                      disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{userMgr.selectedUser.userType}">
                         <f:selectItem itemLabel="Bình thường" itemValue="0" />
                         <f:selectItem itemLabel="Quản trị hệ thống" itemValue="1" />
                     </p:selectOneMenu>
                     <p:outputLabel for="txtStatus" value="Trạng thái"/>
-                    <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                    <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                      disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{userMgr.selectedUser.status}">
                         <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -123,33 +148,30 @@
                     </p:selectOneMenu>
 
                 </p:panelGrid>
-
-                <div class="card-header bg-primary text-white">
-                    <h:outputText value="Phân quyền truy cập"/>
-                </div>
                 <p:treeTable value="#{userMgr.root}" var="permission" tableStyleClass="card-body">
-                    <p:column headerText="Danh mục">
-                        <h:outputText value="#{permission.objectTitle}" />
-                    </p:column>
-                    <p:column headerText="Xem" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Thêm" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Sửa" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Xóa" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Nhập" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
-                    <p:column headerText="Xuất" style="width: 55px; text-align: center;">
-                        <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
-                    </p:column>
+                        <p:column headerText="Phan quyen truy cap">
+                            <h:outputText value="#{permission.objectTitle}" />
+                        </p:column>
+                        <p:column headerText="Xem" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
+                        <p:column headerText="Thêm" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
+                        <p:column headerText="Sửa" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
+                        <p:column headerText="Xóa" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
+                        <p:column headerText="Nhập" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
+                        <p:column headerText="Xuất" style="width: 55px; text-align: center;">
+                            <p:selectBooleanCheckbox disabled="#{userMgr.currentAct == enumBox.getState('VIEW')}" value="#{permission.hasPermission}"/>
+                        </p:column>
                 </p:treeTable>
+
                 <p:outputPanel styleClass="card-footer">
                 </p:outputPanel>
             </p:outputPanel>

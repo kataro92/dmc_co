@@ -81,14 +81,14 @@
                         <p:outputLabel for="txtProductGroupID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtProductGroupID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtProductGroupID" readonly="true" styleclass="form-control input-sm"
                                      value="#{productGroupMgr.selectedProductGroup.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtProductGroupname" value="Tên nhóm thành phẩm"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtProductGroupname" styleClass="form-control"
+                        <p:inputText id="txtProductGroupname" styleclass="form-control input-sm"
                                      readonly="#{productGroupMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{productGroupMgr.selectedProductGroup.name}"/>
                     </p:column>
@@ -96,7 +96,7 @@
                         <p:outputLabel for="txtStatus" value="Trạng thái"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                        <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                          disabled="#{productGroupMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{productGroupMgr.selectedProductGroup.status}">
                             <f:selectItem itemLabel="Kích hoạt" itemValue="1" />

@@ -66,14 +66,14 @@
                             <p:outputLabel for="txtDeptID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtDeptID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtDeptID" readonly="true" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedDept.defCode}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtDeptname" value="Tên"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtDeptname" styleClass="form-control"
+                            <p:inputText id="txtDeptname" styleclass="form-control input-sm"
                                          readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{deptMgr.selectedDept.name}"/>
                         </p:column>
@@ -83,7 +83,7 @@
                             <p:outputLabel for="txtParent" value="Phòng cha"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtParent" styleClass="form-control"
+                            <p:selectOneMenu id="txtParent" styleclass="form-control input-sm"
                                              disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{deptMgr.selectedDept.parentCode}">
                                 <f:selectItem itemLabel="--Không có--" itemValue="" />
@@ -96,7 +96,7 @@
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{deptMgr.selectedDept.status}">
                                 <f:selectItem itemLabel="Hoạt động" itemValue="0" />
@@ -177,14 +177,14 @@
                             <p:outputLabel for="txtEmloyeeID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtEmloyeeID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtEmloyeeID" readonly="true" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtEmployeeName" value="Tên"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtEmployeeName" styleClass="form-control"
+                            <p:inputText id="txtEmployeeName" styleclass="form-control input-sm"
                                          readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{deptMgr.selectedEmployee.name}"/>
                         </p:column>
@@ -206,14 +206,14 @@
                             <p:outputLabel for="txtEmail" value="Email"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtEmail" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtEmail" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.email}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtPhone" value="Số điện thoại"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtPhone" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtPhone" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.phone}"/>
                         </p:column>
                         <p:column>
@@ -236,21 +236,21 @@
                             <p:outputLabel for="txtIdentity" value="CMND"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtIdentity" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtIdentity" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.identityCardCardNumber}" maxlength="12"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtIdentityDate" value="Ngày cấp"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="txtIdentityDate" disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:calendar id="txtIdentityDate" disabled="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                         value="#{deptMgr.selectedEmployee.identityCardIssuedDate}" showOn="button" pattern="dd/MM/yyyy"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtIdentityProvided" value="Nơi cấp"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtIdentityProvided" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtIdentityProvided" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.identityCardIssuedBy}" maxlength="200"/>
                         </p:column>
                     </p:row>
@@ -259,7 +259,7 @@
                             <p:outputLabel for="txtAddress" value="Địa chỉ"/>
                         </p:column>
                         <p:column colspan="3">
-                            <p:inputText id="txtAddress" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtAddress" readonly="#{deptMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{deptMgr.selectedEmployee.address}" maxlength="255"/>
                         </p:column>
                         <p:column>

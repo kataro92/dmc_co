@@ -1,5 +1,5 @@
 --Insert default data
-INSERT INTO public.dmc_user (id, code, extra_props, name, password, permission, permissions, status, username) VALUES (1, 'admin', '', 'Admin', '3f75336dfc774c69627d62afd4469862', 1, null, 0, 'admin');
+INSERT INTO public.dmc_employee (id, address, code, date_of_birth, def_code, dept_id, edited_by, email, extra_props, first_name, gender, identity_card_card_number, identity_card_issued_by, identity_card_issued_date, job_position_code, leave_date, name, password, permissions, phone, start_date, status, user_code, user_type, username) VALUES (1, 'LLQ', 'NV0001', null, null, 1, null, null, null, null, '1', null, null, null, null, null, 'ADmin', '3f75336dfc774c69627d62afd4469862', '1', null, null, 1, '1', 1, 'admin');
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (1, 'Trang chủ', 0, 'main', 'page', 'default', 0);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (4, 'Vật tư', 0, null, 'page_group', 'default', 3);
 INSERT INTO public.dmc_object (object_id, object_title, parent_object_id, object_value, object_type, object_icon, ord) VALUES (6, 'Thành phẩm', 0, null, 'page_group', 'default', 5);
@@ -86,6 +86,36 @@ INSERT INTO public.dmc_config (id, ext, key, value) VALUES (7, 'dmco', 'phone', 
 INSERT INTO public.dmc_config (id, ext, key, value) VALUES (8, 'dmco', 'fax', '0485869672');
 INSERT INTO public.dmc_config (id, ext, key, value) VALUES (9, 'dmco', 'email', 'kataro92@gmail.com');
 
+
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (1, 'PB0001', 'pb0001', 'Ban Giám Đốc', null, 'Ban Giám Đốc', null, 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (2, 'PB0002', 'pb0002', 'Phòng Kỹ Thuật', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (3, 'PB0003', 'pb0003', 'Phòng Kỹ Thuật - Tủ Điện', null, null, '2', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (4, 'PB0004', 'pb0004', 'Phòng Kỹ Thuật - Cơ Khí', null, null, '2', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (5, 'PB0005', 'pb0005', 'Phòng Hành Chính - Nhân Sự', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (6, 'PB0006', 'pb0006', 'Phòng Kế Toán', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (7, 'PB0007', 'pb0007', 'Phòng Kinh Doanh', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (8, 'PB0008', 'pb0008', 'Phòng Sản Xuất', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (9, 'PB0009', 'pb0009', 'Phòng Kế Hoạch - Điều Độ Sản Xuất', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (10, 'PB0010', 'pb0010', 'Tổ Lắp Ráp Tủ Điện', null, null, '8', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (11, 'PB0011', null, 'Tổ Máy Gấp Cánh', null, null, '8', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (12, 'PB0012', null, 'Tổ Máy Cắt - Đột - Chấn', null, null, '8', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (13, 'PB0013', null, 'Tổ Hàn Cánh', null, null, '8', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (14, 'PB0014', null, 'Tổ Hàn Vành - Đáy - Mặt', null, null, '8', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (15, 'PB0015', null, 'Tổ Hàn Tủ', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (16, 'PB0016', null, 'Tổ Sơn Vỏ MBA', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (17, 'PB0017', null, 'Tổ Sơn Vỏ TBĐ', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (19, 'PB0019', null, 'Tổ Hàn Sắt Kẹp - Phụ Kiện', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (20, 'PB0020', 'pb0020', 'Phòng Kiểm Soát Chất Lượng', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (21, 'PB0021', null, 'Phòng Vật Tư', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (22, 'PB0022', null, 'Phòng Mua Bán', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (23, 'PB0023', null, 'Quản Lý Kho', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (24, 'PB0024', null, 'Đội Xe', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (25, 'PB0025', null, 'Phòng Dịch Vụ - Hậu Cần', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (26, 'PB0026', null, 'Tổ Bếp', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (27, 'PB0027', null, 'Tổ Bảo Vệ', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (28, 'PB0028', null, 'Tổ Vệ Sinh', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (18, 'PB0018', null, 'Tổ Bảo Dưỡng - Bảo Trì Thiết Bị', null, null, '1', 1);
+INSERT INTO public.dmc_department (id, code, def_code, name, edited_by, description, parent_code, status) VALUES (29, 'PB0029', null, 'Tổ Thử Kín', null, null, '1', 1);
 
 --Create squence
 CREATE SEQUENCE IF NOT EXISTS client__id_seq START 101;

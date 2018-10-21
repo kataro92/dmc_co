@@ -13,4 +13,5 @@ public interface EmployeeRepo {
     DmcEmployeeEntity findById(Integer userId);
     void deleteByDeptIdNotIn(List<Integer> lstEmpIds, Integer deptId);
     List<EmployeeDto> findAllActive();
+    DmcEmployeeEntity getEmployeeByEmployeenameAndPassword(String username, String md5_password);
 }

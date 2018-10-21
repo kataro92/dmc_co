@@ -28,18 +28,15 @@ public class EmployeeDto implements Serializable {
     private List<DocumentDto> lstDocuments;
     private int deptId;
     private String deptName;
+    private String userName;
+    private String fullName;
+    private String password;
+    private int userType;
 
     public EmployeeDto() {
     }
 
-    public EmployeeDto(String address, String code, Date dateOfBirth,
-                       String defCode, String email, String firstName,
-                       String gender, String identityCardCardNumber,
-                       String identityCardIssuedBy, Date identityCardIssuedDate,
-                       String jobPositionCode, String leaveDate, String name,
-                       String phone, String startDate, Integer status,
-                       String userCode, int id, List<DocumentDto> lstDocuments, int deptId,
-                       String deptName) {
+    public EmployeeDto(String address, String code, Date dateOfBirth, String defCode, String email, String firstName, String gender, String identityCardCardNumber, String identityCardIssuedBy, Date identityCardIssuedDate, String jobPositionCode, String leaveDate, String name, String phone, String startDate, Integer status, String userCode, int id, List<DocumentDto> lstDocuments, int deptId, String deptName, String userName, String fullName, String password, int userType) {
         this.address = address;
         this.code = code;
         this.dateOfBirth = dateOfBirth;
@@ -61,13 +58,18 @@ public class EmployeeDto implements Serializable {
         this.lstDocuments = lstDocuments;
         this.deptId = deptId;
         this.deptName = deptName;
+        this.userName = userName;
+        this.fullName = fullName;
+        this.password = password;
+        this.userType = userType;
     }
 
     public EmployeeDto clone(){
         return new EmployeeDto(address, code, dateOfBirth, defCode, email,
                 firstName, gender, identityCardCardNumber, identityCardIssuedBy,
                 identityCardIssuedDate, jobPositionCode, leaveDate, name, phone,
-                startDate, status, userCode, id, lstDocuments, deptId, deptName);
+                startDate, status, userCode, id, lstDocuments, deptId, deptName,
+                userName, fullName, password, userType);
     }
 
     public String getAddress() {
@@ -239,5 +241,37 @@ public class EmployeeDto implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 }

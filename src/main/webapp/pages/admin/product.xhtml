@@ -81,14 +81,14 @@
                             <p:outputLabel for="txtProductID" value="Mã"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtProductID" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtProductID" readonly="true" styleclass="form-control input-sm"
                                          value="#{productMgr.selectedProduct.code}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtProductGroup" value="Nhóm thành phẩm"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtProductGroup" styleClass="form-control"
+                            <p:selectOneMenu id="txtProductGroup" styleclass="form-control input-sm"
                                              disabled="#{productMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{productMgr.selectedProduct.productGroupCode}">
                                 <p:ajax listener="#{productMgr.selectProductGroup}" update="main:txtProductSubgroup"/>
@@ -99,7 +99,7 @@
                             <p:outputLabel for="txtProductSubgroup" value="Phân loại nhóm thành phẩm"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtProductSubgroup" styleClass="form-control"
+                            <p:selectOneMenu id="txtProductSubgroup" styleclass="form-control input-sm"
                                              disabled="#{productMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{productMgr.selectedProduct.productSubgroupCode}">
                                 <f:selectItems value="#{productMgr.lstFileredProductSubgroup}" var="subGroup" itemLabel="#{subGroup.name}" itemValue="#{subGroup.id}" />
@@ -111,14 +111,14 @@
                             <p:outputLabel for="txtProductCode" value="Mã đầy đủ"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtProductCode" readonly="true" styleClass="form-control"
+                            <p:inputText id="txtProductCode" readonly="true" styleclass="form-control input-sm"
                                          value="#{productMgr.selectedProduct.fullCode}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtProductname" value="Tên thành phẩm"/>
                         </p:column>
                         <p:column colspan="3">
-                            <p:inputText id="txtProductname" styleClass="form-control"
+                            <p:inputText id="txtProductname" styleclass="form-control input-sm"
                                          readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{productMgr.selectedProduct.name}"/>
                         </p:column>
@@ -128,21 +128,21 @@
                             <p:outputLabel for="txtManufactory" value="Nhà sản xuất"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtManufactory" readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtManufactory" readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{productMgr.selectedProduct.producer}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtUnit" value="Đơn vị tính"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtUnit" readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}" styleClass="form-control"
+                            <p:inputText id="txtUnit" readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}" styleclass="form-control input-sm"
                                          value="#{productMgr.selectedProduct.unit}"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel for="txtStatus" value="Trạng thái"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                            <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                              disabled="#{productMgr.currentAct == enumBox.getState('VIEW')}"
                                              value="#{productMgr.selectedProduct.status}">
                                 <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -157,7 +157,7 @@
                         <p:column colspan="3">
                             <p:inputTextarea id="txtNote"
                                              readonly="#{productMgr.currentAct == enumBox.getState('VIEW')}"
-                                             styleClass="form-control"
+                                             styleclass="form-control input-sm"
                                              value="#{productMgr.selectedProduct.shortDescription}"/>
                         </p:column>
                         <p:column>

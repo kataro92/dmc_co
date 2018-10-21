@@ -81,14 +81,14 @@
                         <p:outputLabel for="txtJobPositionID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtJobPositionID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtJobPositionID" readonly="true" styleclass="form-control input-sm"
                                      value="#{jobPositionMgr.selectedJobPosition.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtJobPositionname" value="Tên chức danh"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtJobPositionname" styleClass="form-control"
+                        <p:inputText id="txtJobPositionname" styleclass="form-control input-sm"
                                      readonly="#{jobPositionMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{jobPositionMgr.selectedJobPosition.name}"/>
                     </p:column>

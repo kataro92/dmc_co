@@ -81,14 +81,14 @@
                         <p:outputLabel for="txtMaterialSubgroupID" value="Mã"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtMaterialSubgroupID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtMaterialSubgroupID" readonly="true" styleclass="form-control input-sm"
                                      value="#{materialSubgroupMgr.selectedMaterialSubgroup.code}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtMaterialSubgroupname" value="Tên nhóm vật tư"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtMaterialSubgroupname" styleClass="form-control"
+                        <p:inputText id="txtMaterialSubgroupname" styleclass="form-control input-sm"
                                      readonly="#{materialSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                      value="#{materialSubgroupMgr.selectedMaterialSubgroup.name}"/>
                     </p:column>
@@ -96,7 +96,7 @@
                         <p:outputLabel for="txtStatus" value="Trạng thái"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="txtStatus" styleClass="form-control"
+                        <p:selectOneMenu id="txtStatus" styleclass="form-control input-sm"
                                          disabled="#{materialSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{materialSubgroupMgr.selectedMaterialSubgroup.status}">
                             <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
@@ -109,14 +109,14 @@
                         <p:outputLabel for="txtMaterialgroupID" value="Mã nhóm"/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="txtMaterialgroupID" readonly="true" styleClass="form-control"
+                        <p:inputText id="txtMaterialgroupID" readonly="true" styleclass="form-control input-sm"
                                      value="#{materialSubgroupMgr.selectedMaterialSubgroup.materialGroupCode}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="txtMaterialgroup" value="Nhóm"/>
                     </p:column>
                     <p:column rowspan="3">
-                        <p:selectOneMenu id="txtMaterialgroup" styleClass="form-control"
+                        <p:selectOneMenu id="txtMaterialgroup" styleclass="form-control input-sm"
                                          disabled="#{materialSubgroupMgr.currentAct == enumBox.getState('VIEW')}"
                                          value="#{materialSubgroupMgr.selectedMaterialSubgroup.materialGroupCode}">
                             <f:selectItems value="#{materialSubgroupMgr.lstAllActiveMaterialGroup}" var="rows" itemLabel="#{rows.name}" itemValue="#{rows.id}"/>

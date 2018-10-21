@@ -29,6 +29,26 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     @Autowired
     UtilRepo utilRepo;
 
+
+    @Override
+    public DmcEmployeeEntity getEmployeeByEmployeenameAndPassword(String username, String md5_password) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcEmployeeEntity> criteriaQuery = builder.createQuery(DmcEmployeeEntity.class);
+        Root<DmcEmployeeEntity> root = criteriaQuery.from(DmcEmployeeEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.isNotNull(root.get(DmcEmployeeEntity_.id)));
+        predicates.add(builder.equal(root.get(DmcEmployeeEntity_.username), username));
+        predicates.add(builder.equal(root.get(DmcEmployeeEntity_.password), md5_password));
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcEmployeeEntity> query = entityManager.createQuery(criteriaQuery);
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException ex){
+            Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
+            return null;
+        }
+    }
+    
     @Override
     public List<DmcEmployeeEntity> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();

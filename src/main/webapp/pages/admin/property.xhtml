@@ -73,14 +73,14 @@
                              layout="grid"
                              styleClass="ui-panelgrid-blank card-body">
                     <p:outputLabel for="txtSearchCode" value="Mã"/>
-                    <p:inputText id="txtSearchCode" styleClass="form-control"
+                    <p:inputText id="txtSearchCode" styleclass="form-control input-sm"
                                  value="#{propertyMgr.searchProperty.code}"/>
                     <p:outputLabel for="txtSearchPropertyname" value="Tên tài sản"/>
-                    <p:inputText id="txtSearchPropertyname" styleClass="form-control"
+                    <p:inputText id="txtSearchPropertyname" styleclass="form-control input-sm"
                                  value="#{propertyMgr.searchProperty.name}"/>
 
                     <p:outputLabel for="txtSearchStatus" value="Trạng thái"/>
-                    <p:selectOneMenu id="txtSearchStatus" styleClass="form-control"
+                    <p:selectOneMenu id="txtSearchStatus" styleclass="form-control input-sm"
                                      value="#{propertyMgr.searchProperty.status}">
                         <f:selectItem itemLabel="Kích hoạt" itemValue="1" />
                         <f:selectItem itemLabel="Khoá" itemValue="0" />
@@ -110,7 +110,7 @@
                     <p:outputLabel id="txtPropertyCode"
                                  value="#{propertyMgr.selectedProperty.code}"/>
                     <p:outputLabel for="txtPropertyname" value="Tên tài sản"/>
-                    <p:inputText id="txtPropertyname" styleClass="form-control"
+                    <p:inputText id="txtPropertyname" styleclass="form-control input-sm"
                                  readonly="#{propertyMgr.currentAct == enumBox.getState('VIEW')}"
                                  value="#{propertyMgr.selectedProperty.name}"/>
                     <p:outputLabel for="dtReceiveDate" value="Ngày nhập"/>

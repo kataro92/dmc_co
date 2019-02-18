@@ -40,7 +40,7 @@
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('tblList').filter()" >
                                 <f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{deptMgrController.lstAllDept}" var="dept" itemLabel="#{dept.name}" itemValue="#{dept.id}" />
+                                <f:selectItems value="#{userMgr.lstAllDept}" var="dept" itemLabel="#{dept.name}" itemValue="#{dept.id}" />
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{rows.deptName}"/>

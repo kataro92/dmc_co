@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <p:dialog id="dlgView" widgetVar="dlgView"
+              modal="true"
+              resizable="false"
+              showHeader="false"
+              focus="viewDefCode"
+              style="min-width: 960px">
+        <p:outputPanel rendered="#{deptMgr.selectedDept != null}">
+            <div class="ui-g w-input-100">
+                <div class="ui-g-3">Mã</div>
+                <div class="ui-g-9">
+                    <p:inputText id="viewDefCode" value="#{deptMgr.selectedDept.defCode}"/>
+                </div>
+            </div>
+            <div class="ui-g w-input-100">
+                <div class="ui-g-3">Tên phòng ban</div>
+                <div class="ui-g-9">
+                    <p:inputText value="#{deptMgr.selectedDept.name}"/>
+                </div>
+            </div>
+            <div class="ui-g w-input-100">
+                <div class="ui-g-3">Mô tả</div>
+                <div class="ui-g-9">
+                    <p:inputText value="#{deptMgr.selectedDept.description}"/>
+                </div>
+            </div>
+            <div class="ui-g w-input-100">
+                <div class="ui-g-3">Phòng ban cha</div>
+                <div class="ui-g-9">
+                    <p:selectOneMenu value="#{deptMgr.selectedDept.parentCode}">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <f:selectItems value="#{deptMgr.lstAllDeptRoot}" var="deptSl"
+                                       itemLabel="#{deptSl.name}" itemValue="#{deptSl.id}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-3">Trạng thái</div>
+                <div class="ui-g-9">
+                    <p:selectOneMenu value="#{deptMgr.selectedDept.status}">
+                        <f:selectItem itemLabel="Hoạt động" itemValue="1" />
+                        <f:selectItem itemLabel="Khoá" itemValue="0" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <hr/>
+            <p:commandButton styleClass="float-right" value="Đóng" onclick="PF('dlgView').hide()"/>
+            <p:commandButton actionListener="#{deptMgr.actAccept()}" styleClass="float-right" value="Lưu thay đổi"/>
+        </p:outputPanel>
+    </p:dialog>
+</f:view>
+</html>

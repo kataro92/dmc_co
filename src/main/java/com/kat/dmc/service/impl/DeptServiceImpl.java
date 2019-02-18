@@ -101,9 +101,35 @@ public class DeptServiceImpl implements DeptService {
     public List<EmployeeDto> findEmpByDeptId(int deptId) {
         List<DmcEmployeeEntity> employeeEntities = employeeRepo.findByDeptId(deptId);
         List<EmployeeDto> returnEmployees = new ArrayList<>();
-        employeeEntities.forEach (entity -> {
-            returnEmployees.add(modelMapper.map(entity, EmployeeDto.class));
-        });
+        employeeEntities.forEach (entity -> returnEmployees.add(modelMapper.map(entity, EmployeeDto.class)));
         return  returnEmployees;
+    }
+
+    @Override
+    public List<DepartmentDto> findByReq(DepartmentDto searchDept) {
+        List<DmcDepartmentEntity> entityLists = deptRepo.findByReq(searchDept);
+        List<DepartmentDto> lstReturn = new ArrayList<>();
+        for(DmcDepartmentEntity entity : entityLists){
+            if(CommonUtil.isEmpty(entity.getParentCode())){
+                lstReturn.add(modelMapper.map(entity, DepartmentDto.class));
+            }
+        }
+        if(lstReturn.isEmpty() && !entityLists.isEmpty()){
+            boolean isRoot = true;
+            for(DmcDepartmentEntity parentEntity : entityLists) {
+                for (DmcDepartmentEntity entity : entityLists) {
+                    if (entity.getId() == Integer.parseInt(parentEntity.getParentCode())) {
+                        isRoot = false;
+                    }
+                }
+                if(isRoot){
+                    lstReturn.add(modelMapper.map(parentEntity, DepartmentDto.class));
+                }
+            }
+        }
+        for(DepartmentDto departmentDto : lstReturn){
+            rescusiveMapDepartment(departmentDto, entityLists);
+        }
+        return lstReturn;
     }
 }

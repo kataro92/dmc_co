@@ -34,8 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Named("deptMgr")
@@ -72,8 +71,10 @@ public class DeptMgrController implements Serializable {
     private boolean disableEdit;
     private boolean disableDelete;
     private DepartmentDto selectedDept;
+    private DepartmentDto searchDept;
     private DepartmentDto tempDept;
     private List<DepartmentDto> lstAllDept;
+    private List<DepartmentDto> lstAllDeptRoot;
     private List<DepartmentDto> lstFilteredDept;
     private TreeNode root;
     private EmployeeDto selectedEmployee;
@@ -82,12 +83,21 @@ public class DeptMgrController implements Serializable {
 
     @PostConstruct
     public void init(){
+        searchDept = new DepartmentDto();
         setCurrentAct(ControllerAction.State.VIEW);
         setCurrentEmployeeAct(ControllerAction.State.VIEW);
+        lstAllDeptRoot = new ArrayList<>();
         lstAllDept = deptService.findAll();
         makeDepttree();
         lstAllPosition = jobPositionService.findAllActive();
         selectedEmployee = new EmployeeDto();
+    }
+
+    public void actSearch(){
+        lstAllDeptRoot = new ArrayList<>();
+        lstAllDept = deptService.findByReq(searchDept);
+        makeDepttree();
+        PrimeFaces.current().ajax().update("main:treeDept");
     }
 
     @GetMapping("/downloadDocument/{code}")
@@ -147,15 +157,17 @@ public class DeptMgrController implements Serializable {
     }
 
     private void makeDepttree(){
-        lstAllDept.sort((p1, p2) -> p1.getDefCode().compareTo(p2.getDefCode()));
+        lstAllDept.sort(Comparator.comparing(DepartmentDto::getDefCode));
         root = new DefaultTreeNode(null, null);
-        lstAllDept.stream().filter(departmentDto -> CommonUtil.isEmpty(departmentDto.getParentCode())).forEach(departmentDto -> {
+        lstAllDept.stream().forEach(departmentDto -> {
             TreeNode deptRoot = new DefaultTreeNode(departmentDto, root);
             rescusiveDeptTree(deptRoot, departmentDto);
         });
     }
 
     private void rescusiveDeptTree(TreeNode deptRoot, DepartmentDto departmentDto){
+        deptRoot.setExpanded(true);
+        lstAllDeptRoot.add(departmentDto.clone());
         for(DepartmentDto child : departmentDto.getLstChildDept()){
             TreeNode deptChild = new DefaultTreeNode(child, deptRoot);
             rescusiveDeptTree(deptChild, child);
@@ -183,6 +195,7 @@ public class DeptMgrController implements Serializable {
         selectedDept.setId(utilRepo.findSequenceNextval("department__id_seq"));
         selectedDept.setDefCode("PB" + String.format("%06d", selectedDept.getId()));
         selectedDept.setLstChildDept(new ArrayList<>());
+        PrimeFaces.current().executeScript("PF('dlgView').show()");
     }
     public void actCopy(){
         selectedDept.setId(utilRepo.findSequenceNextval("department__id_seq"));
@@ -193,12 +206,19 @@ public class DeptMgrController implements Serializable {
     public void actEdit(){
         setCurrentAct(ControllerAction.State.EDIT);
     }
-    public void actDelete(){
+    public void actView(int deptId){
+        for (DepartmentDto aLstAllDept : lstAllDeptRoot) {
+            if (aLstAllDept.getId() == deptId) {
+                selectedDept = aLstAllDept.clone();
+            }
+        }
+        PrimeFaces.current().executeScript("PF('dlgView').show()");
+    }
+    public void actDelete(int deptId){
         try{
-            deptService.delete(selectedDept.getId());
-            lstAllDept.removeIf(s -> s.getId() == selectedDept.getId());
-            selectedDept = null;
-            root = new DefaultTreeNode(null, null);
+            deptService.delete(deptId);
+            lstAllDept.removeIf(s -> s.getId() == deptId);
+            makeDepttree();
             setCurrentAct(ControllerAction.State.VIEW);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "Info", "Xoá thành công"));
@@ -207,6 +227,7 @@ public class DeptMgrController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
         }
+        return;
     }
     public void actBack(){
         selectedDept = tempDept;
@@ -263,20 +284,37 @@ public class DeptMgrController implements Serializable {
     }
 
     public void actAccept(){
+        if(!isValidate(selectedDept)){
+            return;
+        }
         try {
             deptService.save(selectedDept);
             tempDept = selectedDept;
             lstAllDept = deptService.findAll();
             makeDepttree();
             setCurrentAct(ControllerAction.State.VIEW);
-            PrimeFaces.current().executeScript("PF('blkList').hide()");
+            PrimeFaces.current().ajax().update("main:treeDept");
+            PrimeFaces.current().executeScript("PF('dlgView').hide()");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO
                     , "", "Lưu thông tin thành công"));
+            PrimeFaces.current().ajax().update("main:messages");
         }catch (Exception ex){
             Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
                     , SQLErrorUtil.getSQLError(ex), "Có lỗi xảy ra"));
+            PrimeFaces.current().ajax().update("main:messages");
         }
+    }
+
+    public boolean isValidate(DepartmentDto selectedDept){
+        if(selectedDept.getParentCode().equals(selectedDept.getDefCode())){
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR
+                    , "Th", "Có lỗi xảy ra"));
+            PrimeFaces.current().ajax().update("main:messages");
+            return false;
+        }
+        return true;
     }
 
     public ControllerAction.State getCurrentAct() {
@@ -369,5 +407,21 @@ public class DeptMgrController implements Serializable {
 
     public void setCurrentEmployeeAct(ControllerAction.State currentEmployeeAct) {
         this.currentEmployeeAct = currentEmployeeAct;
+    }
+
+    public DepartmentDto getSearchDept() {
+        return searchDept;
+    }
+
+    public void setSearchDept(DepartmentDto searchDept) {
+        this.searchDept = searchDept;
+    }
+
+    public List<DepartmentDto> getLstAllDeptRoot() {
+        return lstAllDeptRoot;
+    }
+
+    public void setLstAllDeptRoot(List<DepartmentDto> lstAllDeptRoot) {
+        this.lstAllDeptRoot = lstAllDeptRoot;
     }
 }

@@ -10,8 +10,8 @@ public class CommonConst {
         EMP_GENDER_2("EMP_GENDER","2", "Nữ"),
         EMP_STATUS_0("EMP_STATUS","0", "Hoạt động"),
         EMP_STATUS_1("EMP_STATUS","1", "Khoá"),
-        DEPT_STATUS_0("DEPT_STATUS","0", "Hoạt động"),
-        DEPT_STATUS_1("DEPT_STATUS","1", "Khoá"),
+        DEPT_STATUS_0("DEPT_STATUS","0", "Khoá"),
+        DEPT_STATUS_1("DEPT_STATUS","1", "Hoạt động"),
         DEFAULT_ACTIVE("DEFAULT_ACTIVE", "1", "Kích hoạt"),
         DEFAULT_INACTIVE("DEFAULT_INACTIVE", "0", "Tạm khoá");
 

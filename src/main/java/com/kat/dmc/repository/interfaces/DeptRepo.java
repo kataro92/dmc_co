@@ -1,5 +1,6 @@
 package com.kat.dmc.repository.interfaces;
 
+import com.kat.dmc.common.dto.DepartmentDto;
 import com.kat.dmc.common.model.DmcDepartmentEntity;
 
 import java.util.List;
@@ -9,4 +10,6 @@ public interface DeptRepo {
     void save(DmcDepartmentEntity userEntity);
     void delete(DmcDepartmentEntity userEntity);
     DmcDepartmentEntity findById(Integer userId);
+
+    List<DmcDepartmentEntity> findByReq(DepartmentDto searchDept);
 }

@@ -2,11 +2,14 @@ package com.kat.dmc.controller;
 
 
 import com.kat.dmc.common.constant.ControllerAction;
+import com.kat.dmc.common.dto.DepartmentDto;
 import com.kat.dmc.common.dto.EmployeeDto;
 import com.kat.dmc.common.dto.ObjectDto;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.common.util.RescusiveUtil;
 import com.kat.dmc.common.util.SQLErrorUtil;
 import com.kat.dmc.repository.interfaces.UtilRepo;
+import com.kat.dmc.service.interfaces.DeptService;
 import com.kat.dmc.service.interfaces.EmployeeService;
 import com.kat.dmc.service.interfaces.ObjectService;
 import org.primefaces.PrimeFaces;
@@ -22,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,6 +41,8 @@ public class EmployeeMgrController implements Serializable {
 
     @Autowired
     UtilRepo utilRepo;
+    @Autowired
+    DeptService deptService;
 
     private ControllerAction.State currentAct;
     private boolean disableAdd;
@@ -50,6 +56,7 @@ public class EmployeeMgrController implements Serializable {
     private List<ObjectDto> lstObject;
     private List<ObjectDto> lstPermission;
     private TreeNode root;
+    private List<DepartmentDto> lstAllDept;
 
 
     @PostConstruct
@@ -58,6 +65,28 @@ public class EmployeeMgrController implements Serializable {
         lstAllUser = employeeService.findAll();
         lstObject = objectService.findAll();
         root = new DefaultTreeNode(null, null);
+        makeDepttree(deptService.findAll());
+    }
+
+
+    private void makeDepttree(List<DepartmentDto> lstDept){
+        lstAllDept = new ArrayList<>();
+        lstDept.sort(Comparator.comparing(DepartmentDto::getDefCode));
+        root = new DefaultTreeNode(null, null);
+        lstDept.stream().filter(departmentDto -> CommonUtil.isEmpty(departmentDto.getParentCode())).forEach(departmentDto -> {
+            TreeNode deptRoot = new DefaultTreeNode(departmentDto, root);
+            rescusiveDeptTree(deptRoot, departmentDto, 0);
+        });
+    }
+
+    private void rescusiveDeptTree(TreeNode deptRoot, DepartmentDto departmentDto, int level){
+        DepartmentDto departmentClone = departmentDto.clone();
+        departmentClone.setName(new String(new char[level]).replace("\0", "-") + departmentClone.getName());
+        getLstAllDept().add(departmentClone);
+        for(DepartmentDto child : departmentDto.getLstChildDept()){
+            TreeNode deptChild = new DefaultTreeNode(child, deptRoot);
+            rescusiveDeptTree(deptChild, child, level+1);
+        }
     }
 
     private TreeNode lstObject2Tree(List<ObjectDto> lstPermission){
@@ -275,5 +304,13 @@ public class EmployeeMgrController implements Serializable {
 
     public TreeNode getRoot() {
         return root;
+    }
+
+    public List<DepartmentDto> getLstAllDept() {
+        return lstAllDept;
+    }
+
+    public void setLstAllDept(List<DepartmentDto> lstAllDept) {
+        this.lstAllDept = lstAllDept;
     }
 }

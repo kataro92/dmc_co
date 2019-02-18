@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
-
 import javax.servlet.DispatcherType;
 
 @EnableWebMvc
@@ -42,6 +41,7 @@ public class WebConfig implements WebMvcConfigurer {
             servletContext.setInitParameter("javax.faces.STATE_SAVING_METHOD", "server");
             servletContext.setInitParameter("primefaces.THEME", "omega");
             servletContext.setInitParameter("primefaces.UPLOADER", "commons");
+            servletContext.setInitParameter("primefaces.FONT_AWESOME", "true");
         };
     }
 

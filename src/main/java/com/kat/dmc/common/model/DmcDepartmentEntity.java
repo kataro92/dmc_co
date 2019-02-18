@@ -35,7 +35,7 @@ public class DmcDepartmentEntity {
     }
 
     @Basic
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition="VARCHAR(255) default ''")
     public String getDescription() {
         return description;
     }

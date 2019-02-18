@@ -17,6 +17,8 @@
     <link href="css/mdb.min.css" rel="stylesheet"/>
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet"/>
+    <link href="css/primeicons.css" rel="stylesheet"/>
+    <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
     <ui:insert name="head" >
     </ui:insert>
 </h:head>
@@ -48,6 +50,11 @@
             </ui:insert>
         </div>
     </div>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Có" type="button" styleClass="ui-confirmdialog-yes" icon="fa pi pi-check" />
+        <p:commandButton value="Không" type="button" styleClass="ui-confirmdialog-no" icon="fa pi pi-times" />
+    </p:confirmDialog>
     <div class="footer-pad"></div>
 
     <!-- Bootstrap tooltips -->

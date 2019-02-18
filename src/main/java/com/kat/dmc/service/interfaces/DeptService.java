@@ -10,4 +10,6 @@ public interface DeptService {
     void delete(int id);
     void save(DepartmentDto selectedDept);
     List<EmployeeDto> findEmpByDeptId(int deptId);
+
+    List<DepartmentDto> findByReq(DepartmentDto searchDept);
 }

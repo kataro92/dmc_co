@@ -1,7 +1,9 @@
 package com.kat.dmc.repository.impl;
 
+import com.kat.dmc.common.dto.DepartmentDto;
 import com.kat.dmc.common.model.DmcDepartmentEntity;
 import com.kat.dmc.common.model.DmcDepartmentEntity_;
+import com.kat.dmc.common.util.CommonUtil;
 import com.kat.dmc.repository.interfaces.DeptRepo;
 import com.kat.dmc.repository.interfaces.UtilRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,29 @@ public class DeptRepoImpl implements DeptRepo {
             Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public List<DmcDepartmentEntity> findByReq(DepartmentDto searchDept) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DmcDepartmentEntity> criteriaQuery = builder.createQuery(DmcDepartmentEntity.class);
+        Root<DmcDepartmentEntity> root = criteriaQuery.from(DmcDepartmentEntity.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.isNotNull(root.get(DmcDepartmentEntity_.id)));
+        if(!CommonUtil.isEmpty(searchDept.getDefCode())) {
+            predicates.add(builder.like(builder.lower(root.get(DmcDepartmentEntity_.defCode)), "%" + searchDept.getDefCode().toLowerCase() + "%"));
+        }
+        if(!CommonUtil.isEmpty(searchDept.getName())) {
+            predicates.add(builder.like(builder.lower(root.get(DmcDepartmentEntity_.name)), "%" + searchDept.getName().toLowerCase() + "%"));
+        }
+        if(!CommonUtil.isEmpty(searchDept.getDescription())) {
+            predicates.add(builder.like(builder.lower(root.get(DmcDepartmentEntity_.description)), "%" + searchDept.getDescription().toLowerCase() + "%"));
+        }
+        if(!CommonUtil.isEmpty(searchDept.getStatus())) {
+            predicates.add(builder.equal(root.get(DmcDepartmentEntity_.status), searchDept.getStatus()));
+        }
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        final TypedQuery<DmcDepartmentEntity> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }
